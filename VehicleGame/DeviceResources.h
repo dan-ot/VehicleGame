@@ -83,11 +83,17 @@ namespace DX
             return CD3DX12_CPU_DESCRIPTOR_HANDLE(cpuHandle);
         }
 
+        ID3D12DescriptorHeap*       GetSrvDescriptorHeap() const noexcept  { return m_srvDescriptorHeap.Get(); }
+        UINT                        GetSrvDescriptorSize() const noexcept  { return m_srvDescriptorSize; }
+        UINT                        AllocateSrvIndex();
+        void                        ResetSrvAllocator() noexcept           { m_srvNextIndex = 0; }
+
     private:
         void MoveToNextFrame();
         void GetAdapter(IDXGIAdapter1** ppAdapter);
 
         static constexpr size_t MAX_BACK_BUFFER_COUNT = 3;
+        static constexpr UINT SRV_HEAP_CAPACITY = 1024;
 
         UINT                                                m_backBufferIndex;
 
@@ -111,7 +117,10 @@ namespace DX
         // Direct3D rendering objects.
         Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>        m_rtvDescriptorHeap;
         Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>        m_dsvDescriptorHeap;
+        Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>        m_srvDescriptorHeap;
         UINT                                                m_rtvDescriptorSize;
+        UINT                                                m_srvDescriptorSize = 0;
+        UINT                                                m_srvNextIndex = 0;
         D3D12_VIEWPORT                                      m_screenViewport;
         D3D12_RECT                                          m_scissorRect;
 

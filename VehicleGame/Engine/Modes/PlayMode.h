@@ -11,6 +11,12 @@ namespace Engine
 	class PlayMode final : public IEngineMode
 	{
 	protected:
+		void DeclareAssets(AssetManifest& manifest) override
+		{
+			manifest.Add(AssetType::Model, L"Assets\\vehicle.glb");
+			manifest.Add(AssetType::Sound, L"Assets\\engine.wav");
+		}
+
 		void Update(const ModeTick&, const CommandFrame& commands) override
 		{
 			if (commands[Command::System_Abort].greatest.valid)

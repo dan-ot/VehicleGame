@@ -229,6 +229,18 @@ void DeviceResources::CreateDeviceResources()
         m_dsvDescriptorHeap->SetName(L"DeviceResources");
     }
 
+    // Shader-visible SRV heap for texture and other shader resource views.
+    D3D12_DESCRIPTOR_HEAP_DESC srvDescriptorHeapDesc = {};
+    srvDescriptorHeapDesc.NumDescriptors = SRV_HEAP_CAPACITY;
+    srvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    srvDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+    ThrowIfFailed(m_d3dDevice->CreateDescriptorHeap(&srvDescriptorHeapDesc, IID_PPV_ARGS(m_srvDescriptorHeap.ReleaseAndGetAddressOf())));
+
+    m_srvDescriptorHeap->SetName(L"DeviceResourcesSRV");
+    m_srvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+    m_srvNextIndex = 0;
+
     // Create a command allocator for each back buffer that will be rendered to.
     for (UINT n = 0; n < m_backBufferCount; n++)
     {
@@ -475,6 +487,7 @@ void DeviceResources::HandleDeviceLost()
     m_fence.Reset();
     m_rtvDescriptorHeap.Reset();
     m_dsvDescriptorHeap.Reset();
+    m_srvDescriptorHeap.Reset();
     m_swapChain.Reset();
     m_d3dDevice.Reset();
     m_dxgiFactory.Reset();
@@ -669,6 +682,15 @@ void DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
 }
 
 // Sets the color space for the swap chain in order to handle HDR output.
+UINT DeviceResources::AllocateSrvIndex()
+{
+    if (m_srvNextIndex >= SRV_HEAP_CAPACITY)
+    {
+        throw std::runtime_error("DeviceResources: SRV descriptor heap is full.");
+    }
+    return m_srvNextIndex++;
+}
+
 void DeviceResources::UpdateColorSpace()
 {
     if (!m_dxgiFactory)

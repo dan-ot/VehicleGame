@@ -11,6 +11,12 @@ namespace Engine
 	class MenuMode final : public IEngineMode
 	{
 	protected:
+		void DeclareAssets(AssetManifest& manifest) override
+		{
+			manifest.Add(AssetType::Texture, L"Assets\\menu_background.tga");
+			manifest.Add(AssetType::Sound, L"Assets\\menu_click.wav");
+		}
+
 		void Update(const ModeTick& tick, const CommandFrame& commands) override
 		{
 			const int direction = Direction(commands);

@@ -1261,6 +1261,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -1790,6 +1793,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -2270,6 +2276,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -2685,6 +2694,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -3127,6 +3139,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -3542,6 +3557,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -3610,6 +3628,9 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/sbin/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/VC/vcpackages/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/"
@@ -3656,6 +3677,9 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/sbin/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/VC/vcpackages/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/"
@@ -3702,6 +3726,9 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/sbin/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/VC/vcpackages/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/TestWindow/"
@@ -3763,6 +3790,15 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.com"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.exe"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.com"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.exe"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc"
@@ -3901,6 +3937,15 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.com"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.exe"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.com"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.exe"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc"
@@ -4039,6 +4084,15 @@ events:
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.com"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc.exe"
       - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc/rc"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.com"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc.exe"
+      - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility/rc"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.com"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc.exe"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/rc"
@@ -4071,6 +4125,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"
@@ -4194,6 +4251,9 @@ events:
     search_context:
       CMAKE_PROGRAM_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/GameConfigEditorDependencies"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx-dxc"
+        - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/tools/directx12-agility"
       CMAKE_PREFIX_PATH:
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows"
         - "C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/x64-windows/debug"

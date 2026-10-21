@@ -12,6 +12,11 @@ extern void ExitGame() noexcept;
 
 using namespace DirectX;
 
+namespace
+{
+    constexpr double kAssetRestoreBudgetSeconds = 0.002;
+}
+
 using Microsoft::WRL::ComPtr;
 
 namespace
@@ -122,6 +127,7 @@ void Game::Render()
 
     // Prepare the command list to render a new frame.
     m_deviceResources->Prepare();
+    m_core.Assets().RestoreWithinBudget(*m_deviceResources, kAssetRestoreBudgetSeconds);
     Clear();
 
     auto commandList = m_deviceResources->GetCommandList();
@@ -253,7 +259,7 @@ void Game::CreateWindowSizeDependentResources()
 
 void Game::OnDeviceLost()
 {
-    // TODO: Add Direct3D resource cleanup here.
+    m_core.Assets().OnDeviceLost();
 
     // If using the DirectX Tool Kit for DX12, uncomment this line:
     // m_graphicsMemory.reset();
@@ -264,5 +270,7 @@ void Game::OnDeviceRestored()
     CreateDeviceDependentResources();
 
     CreateWindowSizeDependentResources();
+
+    m_core.Assets().OnDeviceRestored(&m_core.LoadingKit());
 }
 #pragma endregion

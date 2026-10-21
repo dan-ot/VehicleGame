@@ -163,7 +163,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -176,6 +176,8 @@
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll" "$(OutDir)D3D12"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll;$(OutDir)D3D12\d3d12SDKLayers.dll</Outputs>
@@ -197,7 +199,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -210,6 +212,8 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll" "$(OutDir)D3D12"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll;$(OutDir)D3D12\d3d12SDKLayers.dll</Outputs>
@@ -237,7 +241,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -249,7 +253,9 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     </FXCompile>
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
-copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"</Command>
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>
@@ -276,7 +282,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -288,7 +294,9 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D
     </FXCompile>
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
-copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"</Command>
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>
@@ -315,7 +323,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -328,6 +336,8 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll" "$(OutDir)D3D12"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll;$(OutDir)D3D12\d3d12SDKLayers.dll</Outputs>
@@ -355,7 +365,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxcompiler.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -368,6 +378,8 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <CustomBuildStep>
       <Command>md "$(OutDir)D3D12"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll" "$(OutDir)D3D12"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxcompiler.dll" "$(OutDir)"
+copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\dxil.dll" "$(OutDir)"
 copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll" "$(OutDir)D3D12"</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll;$(OutDir)D3D12\d3d12SDKLayers.dll</Outputs>
@@ -381,6 +393,21 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <PropertyPageSchema Condition="'$(XboxPCRemotePath)'!=''" Include="$(XboxPCRemotePath)XboxPCcppDebugger.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UploadBuffer.h" />
+    <ClInclude Include="GpuUploader.h" />
+    <ClInclude Include="Engine\Assets\TextureResource.h" />
+    <ClInclude Include="Engine\Assets\MeshResource.h" />
+    <ClInclude Include="Engine\Assets\SoundResource.h" />
+    <ClInclude Include="Engine\Assets\AssetLoader.h" />
+    <ClInclude Include="Engine\Assets\AssetKey.h" />
+    <ClInclude Include="Engine\Assets\AssetRequester.h" />
+    <ClInclude Include="Engine\Assets\AssetManifest.h" />
+    <ClInclude Include="Engine\Assets\AssetKit.h" />
+    <ClInclude Include="Engine\Assets\AssetManager.h" />
+    <ClInclude Include="Engine\Assets\TgaLoader.h" />
+    <ClInclude Include="Engine\Assets\WavLoader.h" />
+    <ClInclude Include="Engine\Assets\GltfLoader.h" />
+    <ClInclude Include="Engine\Assets\ShaderCompiler.h" />
     <ClInclude Include="Engine\Modes\LoadingMode.h" />
     <ClInclude Include="Engine\Modes\MenuMode.h" />
     <ClInclude Include="Engine\Modes\PlayMode.h" />
@@ -399,6 +426,17 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="DeviceResources.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GpuUploader.cpp" />
+    <ClCompile Include="Engine\Assets\TextureResource.cpp" />
+    <ClCompile Include="Engine\Assets\MeshResource.cpp" />
+    <ClCompile Include="Engine\Assets\SoundResource.cpp" />
+    <ClCompile Include="Engine\Assets\AssetLoader.cpp" />
+    <ClCompile Include="Engine\Assets\AssetKey.cpp" />
+    <ClCompile Include="Engine\Assets\AssetManager.cpp" />
+    <ClCompile Include="Engine\Assets\TgaLoader.cpp" />
+    <ClCompile Include="Engine\Assets\WavLoader.cpp" />
+    <ClCompile Include="Engine\Assets\GltfLoader.cpp" />
+    <ClCompile Include="Engine\Assets\ShaderCompiler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
@@ -446,6 +484,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\Assets\README.md" />
     <None Include="README.md" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />

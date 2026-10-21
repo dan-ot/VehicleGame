@@ -7,6 +7,8 @@
 #include <optional>
 
 #include "../../DeviceResources.h"
+#include "../Assets/AssetKit.h"
+#include "../Assets/AssetManifest.h"
 #include "EngineState.h"
 #include "InputCommands.h"
 #include "ModeTimer.h"
@@ -56,6 +58,18 @@ namespace Engine
 
 		virtual void Render(SharedRenderer&) {}
 
+		virtual void DeclareAssets(AssetManifest&) {}
+
+		AssetKit& Assets() noexcept
+		{
+			return *m_kit;
+		}
+
+		void BindKit(AssetKit& kit) noexcept
+		{
+			m_kit = &kit;
+		}
+
 	protected:
 		virtual void OnEnter() {}
 		virtual void OnExit() {}
@@ -74,5 +88,6 @@ namespace Engine
 	private:
 		ModeTimer m_timer;
 		std::optional<EngineState> m_requested;
+		AssetKit* m_kit = nullptr;
 	};
 }

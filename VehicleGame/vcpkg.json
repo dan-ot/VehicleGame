@@ -8,6 +8,7 @@
     "directx-dxc",
     "directx-headers",
     "directx12-agility",
+    "cgltf",
     "directxmath",
     "dstorage",
     {

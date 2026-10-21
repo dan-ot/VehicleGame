@@ -88,8 +88,8 @@
 //#include <playfab/services/PFServices.h>
 #endif
 
-// If using the DirectX Shader Compiler API, uncomment this line:
-//#include <directx-dxc/dxcapi.h>
+// DirectX Shader Compiler API (runtime shader compilation)
+#include <directx-dxc/dxcapi.h>
 
 // If using DirectStorage, uncomment this line:
 //#include <dstorage.h>

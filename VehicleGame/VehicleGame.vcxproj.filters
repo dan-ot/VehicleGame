@@ -4,6 +4,7 @@
     <Filter Include="Common">
       <UniqueIdentifier>0536e2f7-75a5-4ffe-95a7-120254758a80</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Assets"><UniqueIdentifier>{5f0c2b7e-3a1d-4c8e-9b6f-2d7a1e4c9f10}</UniqueIdentifier></Filter>
     <Filter Include="Assets">
       <UniqueIdentifier>bd534c15-7c3c-4757-8968-d192fdca6372</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -30,10 +31,36 @@
     <ClInclude Include="Engine\State\InputSystem.h" />
     <ClInclude Include="Engine\State\InputFrame.h" />
     <ClInclude Include="Engine\State\InputDevices.h" />
+    <ClInclude Include="UploadBuffer.h" />
+    <ClInclude Include="GpuUploader.h" />
+    <ClInclude Include="Engine\Assets\TextureResource.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\MeshResource.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\SoundResource.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetLoader.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetKey.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetRequester.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetManifest.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetKit.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\AssetManager.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\TgaLoader.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\WavLoader.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\GltfLoader.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\ShaderCompiler.h"><Filter>Engine\Assets</Filter></ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GpuUploader.cpp" />
+    <ClCompile Include="Engine\Assets\TextureResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\MeshResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\SoundResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\AssetLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\AssetKey.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\AssetManager.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\TgaLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\WavLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\GltfLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\ShaderCompiler.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Common</Filter>
