@@ -1,0 +1,20 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "1ae497fe84760d42176ba0f0c6e6e975f7c1ba3be1799fb1416810ea37244f5506098f7454a9831855ae76a2becff48aed9c3dca8934048124c88bd86eeb149f"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "https://www.nuget.org/api/v2/package/WinPixEventRuntime/1.0.240308001",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "winpixevent.1.0.240308001.zip",
+  "packageFileName" : "winpixevent.1.0.240308001.zip"
+}
+  ]
+}

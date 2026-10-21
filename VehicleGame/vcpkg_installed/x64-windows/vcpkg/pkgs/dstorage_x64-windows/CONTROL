@@ -1,0 +1,6 @@
+Package: dstorage
+Version: 1.3.0
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 988019a137c3e3437c0f0091f28f9342b571f0c8e81d581db0c62ab4a2876df8
+Description: DirectStorage for Windows
