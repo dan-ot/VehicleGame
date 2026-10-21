@@ -22,15 +22,9 @@ namespace Engine
 			m_active->Enter();
 		}
 
-		void Tick(double coreDt)
+		void Tick(double coreDt, const CommandFrame& commands)
 		{
-			m_active->Tick(coreDt);
-			ApplyRequestedTransition();
-		}
-
-		void HandleInput(const InputEvent& input)
-		{
-			m_active->ExecuteCommand(m_active->HandleInput(input));
+			m_active->Tick(coreDt, commands);
 			ApplyRequestedTransition();
 		}
 

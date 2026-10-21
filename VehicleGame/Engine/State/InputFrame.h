@@ -76,8 +76,8 @@ namespace Engine
 
 	struct MouseState
 	{
-		float x = 0.0f;
-		float y = 0.0f;
+		float deltaX = 0.0f;
+		float deltaY = 0.0f;
 		float wheel = 0.0f;
 		std::array<ButtonState, kMouseButtonCount> buttons{};
 	};

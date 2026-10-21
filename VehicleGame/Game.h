@@ -35,7 +35,6 @@ public:
     void Tick();
 
     // Input
-    void HandleInput(const Engine::InputEvent& input);
     void OnRawInput(LPARAM lParam);
 
     // IDeviceNotify

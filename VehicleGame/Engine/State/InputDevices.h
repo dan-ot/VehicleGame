@@ -31,6 +31,7 @@ namespace Engine
 
 		void OnRawInput(LPARAM lParam)
 		{
+			// TODO: Pen/touch input (raw input RIM_TYPEHID / WM_POINTER) is not handled.
 			UINT size = 0;
 			if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) != 0)
 			{

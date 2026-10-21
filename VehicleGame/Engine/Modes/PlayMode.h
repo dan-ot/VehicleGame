@@ -10,43 +10,26 @@ namespace Engine
 {
 	class PlayMode final : public IEngineMode
 	{
-	public:
-		LocalCommand HandleInput(const InputEvent& input) override
-		{
-			if (input.source != InputSource::Keyboard || !input.pressed)
-			{
-				return LocalCommand::None;
-			}
-
-			switch (input.code)
-			{
-			case 'W':       return LocalCommand::Accelerate;
-			case 'S':       return LocalCommand::Brake;
-			case VK_ESCAPE: return LocalCommand::Back;
-			default:        return LocalCommand::None;
-			}
-		}
-
-		void ExecuteCommand(LocalCommand command) override
-		{
-			switch (command)
-			{
-			case LocalCommand::Back:
-				RequestTransition(EngineState::Menu);
-				break;
-
-			default:
-				m_lastCommand = command;
-				break;
-			}
-		}
-
 	protected:
-		void Update(const ModeTick&) override
+		void Update(const ModeTick&, const CommandFrame& commands) override
 		{
+			if (commands[Command::System_Abort].greatest.valid)
+			{
+				RequestTransition(EngineState::Menu);
+				return;
+			}
+
+			m_throttle = Strength(commands[Command::Movement_Up]);
+			m_brake = Strength(commands[Command::Movement_Down]);
 		}
 
 	private:
-		LocalCommand m_lastCommand = LocalCommand::None;
+		static float Strength(const CommandValue& value) noexcept
+		{
+			return value.greatest.valid ? value.greatest.strength : 0.0f;
+		}
+
+		float m_throttle = 0.0f;
+		float m_brake = 0.0f;
 	};
 }

@@ -10,18 +10,8 @@ namespace Engine
 {
 	class LoadingMode final : public IEngineMode
 	{
-	public:
-		LocalCommand HandleInput(const InputEvent&) override
-		{
-			return LocalCommand::None;
-		}
-
-		void ExecuteCommand(LocalCommand) override
-		{
-		}
-
 	protected:
-		void Update(const ModeTick&) override
+		void Update(const ModeTick&, const CommandFrame&) override
 		{
 			if (Elapsed() >= kLoadSeconds)
 			{

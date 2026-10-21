@@ -93,48 +93,15 @@ void Game::Update(double elapsedSeconds)
 {
     PIXBeginEvent(PIX_COLOR_DEFAULT, L"Update");
 
-    m_core.Tick(elapsedSeconds);
+    m_core.Tick(elapsedSeconds, m_input.Commands());
 
     PIXEndEvent();
 }
 
-// Routes an input event to the active engine mode.
-void Game::HandleInput(const Engine::InputEvent& input)
-{
-    m_core.HandleInput(input);
-}
-
-// Samples devices once per frame and forwards button transitions to the active mode.
+// Samples devices once per frame and builds the frame's command set.
 void Game::PollInput()
 {
-    const auto& frame = m_input.Advance(m_devices.Sample());
-
-    for (int key = 0; key < static_cast<int>(Engine::kKeyCount); ++key)
-    {
-        const auto& state = frame.keyboard.keys[key];
-        if (state.pressed || state.released)
-        {
-            HandleInput(Engine::InputEvent{ Engine::InputSource::Keyboard, key, 0.0f, 0.0f, state.pressed });
-        }
-    }
-
-    for (std::size_t i = 0; i < Engine::kMouseButtonCount; ++i)
-    {
-        const auto& state = frame.mouse.buttons[i];
-        if (state.pressed || state.released)
-        {
-            HandleInput(Engine::InputEvent{ Engine::InputSource::Pointer, static_cast<int>(i), frame.mouse.x, frame.mouse.y, state.pressed });
-        }
-    }
-
-    for (std::size_t i = 0; i < Engine::kGamepadButtonCount; ++i)
-    {
-        const auto& state = frame.gamepad.buttons[i];
-        if (state.pressed || state.released)
-        {
-            HandleInput(Engine::InputEvent{ Engine::InputSource::Gamepad, static_cast<int>(i), 0.0f, 0.0f, state.pressed });
-        }
-    }
+    m_input.Advance(m_devices.Sample());
 }
 
 void Game::OnRawInput(LPARAM lParam)

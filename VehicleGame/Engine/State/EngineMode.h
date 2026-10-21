@@ -8,7 +8,7 @@
 
 #include "../../DeviceResources.h"
 #include "EngineState.h"
-#include "Input.h"
+#include "InputCommands.h"
 #include "ModeTimer.h"
 
 namespace Engine
@@ -37,9 +37,9 @@ namespace Engine
 			OnExit();
 		}
 
-		void Tick(double coreDt)
+		void Tick(double coreDt, const CommandFrame& commands)
 		{
-			Update(ModeTick{ coreDt, m_timer.Advance(coreDt) });
+			Update(ModeTick{ coreDt, m_timer.Advance(coreDt) }, commands);
 		}
 
 		void SetTimeScale(double scale) noexcept
@@ -54,14 +54,12 @@ namespace Engine
 			return requested;
 		}
 
-		virtual LocalCommand HandleInput(const InputEvent& input) = 0;
-		virtual void ExecuteCommand(LocalCommand command) = 0;
 		virtual void Render(SharedRenderer&) {}
 
 	protected:
 		virtual void OnEnter() {}
 		virtual void OnExit() {}
-		virtual void Update(const ModeTick& tick) = 0;
+		virtual void Update(const ModeTick& tick, const CommandFrame& commands) = 0;
 
 		void RequestTransition(EngineState next) noexcept
 		{
