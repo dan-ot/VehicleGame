@@ -26,7 +26,6 @@ This project is a demonstration of a fully standalone method for making use of t
   * MicrosoftGameConfig.mgc
 
 * Resources
-  * xbox.ico
   * resource.rc
   * settings.manifest
   * MGC image assets

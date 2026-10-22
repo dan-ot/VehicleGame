@@ -1,6 +1,6 @@
 # Engine Asset System
 
-The asset system lives in `VehicleGame/Engine/Assets/`. `AssetManager` owns asset lifetime, and each engine mode keeps its own retained `AssetKit`.
+The asset system lives in `Game/Engine/Assets/`.
 
 ## Supported Formats
 
