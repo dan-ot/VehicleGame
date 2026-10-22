@@ -1,7 +1,0 @@
-Package: directx12-agility
-Version: 1.619.5
-Depends: directx-headers, vcpkg-cmake, vcpkg-cmake-config
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 20bf5268f8b79f5aff1de3728d4f80e0fe77f3d251f3a7e6559b8f5c77ea84e3
-Description: DirectX 12 Agility SDK

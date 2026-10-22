@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/vcpkg/blds/yoga/x64-windows-dbg/cmake_install.cmake",
-		"C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/vcpkg/blds/yoga/x64-windows-dbg/yoga/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
