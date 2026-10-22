@@ -36,7 +36,7 @@ VehicleGame/                      <- Repository / solution root
 │   ├── Engine/                   <- Game engine/state framework
 │   │   ├── Assets/               <- Asset manager, loaders, GPU/sound resources, shader compiler
 │   │   ├── Layout/               <- Layout tree and layouts (e.g. SplashLayout)
-│   │   ├── Render/               <- Renderers, render helpers, QuadShader.hlsl
+│   │   ├── Render/               <- Renderers, render helpers, SoftwareCursor.h, QuadShader.hlsl
 │   │   ├── Scene/                <- Scene
 │   │   ├── State/                <- Engine state, modes base, input system
 │   │   │   ├── EngineState.h     <- Global engine state container
@@ -51,8 +51,8 @@ VehicleGame/                      <- Repository / solution root
 │   │   │   ├── InputMap.h        <- Input-to-command mapping
 │   │   │   └── InputSystem.h     <- Input polling/dispatch
 │   │   └── Modes/                <- Concrete game modes/screens
-│   │       ├── LoadingMode.h
-│   │       ├── MenuMode.h
+│   │       ├── LoadingMode.h     <- Owns a SoftwareCursor
+│   │       ├── MenuMode.h        <- Owns a SoftwareCursor
 │   │       └── PlayMode.h
 │   └── (x64/, ARM64/)            <- Build output (ignore; never edit)
 └── x64/Debug/                    <- Build output and copied runtime DLLs/assets (ignore)

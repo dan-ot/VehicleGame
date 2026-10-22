@@ -121,6 +121,7 @@
     <ClInclude Include="Engine\Render\TiledImage.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\RevealedImage.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\RevealedTiledImage.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\SoftwareCursor.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\SpriteAnimation.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Layout\LayoutTree.h"><Filter>Engine\Layout</Filter></ClInclude>
     <ClInclude Include="Engine\Layout\SplashLayout.h"><Filter>Engine\Layout</Filter></ClInclude>

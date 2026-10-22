@@ -415,6 +415,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Render\TiledImage.h" />
     <ClInclude Include="Engine\Render\RevealedImage.h" />
     <ClInclude Include="Engine\Render\RevealedTiledImage.h" />
+    <ClInclude Include="Engine\Render\SoftwareCursor.h" />
     <ClInclude Include="Engine\Render\SpriteAnimation.h" />
     <ClInclude Include="Engine\Layout\LayoutTree.h" />
     <ClInclude Include="Engine\Layout\SplashLayout.h" />
