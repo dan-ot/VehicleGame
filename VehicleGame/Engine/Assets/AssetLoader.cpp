@@ -32,7 +32,7 @@ namespace Engine
 		}
 	}
 
-	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, DX::DeviceResources& resources) noexcept
+	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, DX::DeviceResources& resources, AssetUploader& uploader) noexcept
 	{
 		auto resource = Create(key);
 		if (!resource)
@@ -44,7 +44,7 @@ namespace Engine
 		bool built = false;
 		try
 		{
-			built = resource->Rebuild(resources);
+			built = resource->Rebuild(resources, uploader);
 		}
 		catch (...)
 		{

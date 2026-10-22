@@ -49,7 +49,11 @@ namespace Engine
 
 		if (resources && !entry.resource)
 		{
-			entry.resource = AssetLoader::CreateAndBuild(key, *resources);
+			if (!m_uploader.IsStarted())
+			{
+				m_uploader.Start(resources->GetD3DDevice());
+			}
+			entry.resource = AssetLoader::CreateAndBuild(key, *resources, m_uploader);
 		}
 	}
 
@@ -122,6 +126,8 @@ namespace Engine
 				pair.second.resource->Release();
 			}
 		}
+
+		m_uploader.Stop();
 	}
 
 	void AssetManager::OnDeviceRestored(const AssetKit* preferred)
@@ -154,6 +160,11 @@ namespace Engine
 	{
 		const auto start = std::chrono::steady_clock::now();
 
+		if (m_restoreCursor < m_restoreQueue.size() && !m_uploader.IsStarted())
+		{
+			m_uploader.Start(resources.GetD3DDevice());
+		}
+
 		while (m_restoreCursor < m_restoreQueue.size())
 		{
 			const double spent = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
@@ -164,7 +175,7 @@ namespace Engine
 
 			if (IAssetResource* resource = Find(m_restoreQueue[m_restoreCursor]))
 			{
-				resource->Rebuild(resources);
+				resource->Rebuild(resources, m_uploader);
 			}
 			++m_restoreCursor;
 		}

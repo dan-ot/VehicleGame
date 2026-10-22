@@ -5,6 +5,7 @@ This file describes the layout of the VehicleGame workspace so planning and codi
 ## Overview
 
 - **Type:** Native C++ Windows game, Direct3D 12, built with MSBuild (Visual Studio C++ project).
+- **Solution:** `VehicleGame.slnx` (XML solution format) at the repository root. All project paths in it are relative to the folder containing this file, e.g. `VehicleGame/VehicleGame.vcxproj` (project file at `VehicleGame\VehicleGame\VehicleGame.vcxproj`). Resolve project paths against the repository root, not the nested `VehicleGame\` project folder.
 - **Platform:** Windows x64 (Debug and Release configurations). Targets the Microsoft GDK (Xbox PC / Microsoft Store).
 - **Package management:** vcpkg in manifest mode.
 - **Language standard:** Modern C++ (C++17 or later). Precompiled headers are used.

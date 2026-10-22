@@ -36,6 +36,10 @@ namespace Engine
 			m_menu.BindKit(m_kits.Menu());
 			m_play.BindKit(m_kits.Play());
 			m_loading.BindAssets(m_assets);
+			m_menu.BindAssets(m_assets);
+			m_loading.BindHandoffs(m_handoffs);
+			m_menu.BindHandoffs(m_handoffs);
+			m_play.BindHandoffs(m_handoffs);
 
 			m_active = &m_loading;
 			DeclareActiveAssets();
@@ -160,6 +164,7 @@ namespace Engine
 
 		ModeKits m_kits;
 		AssetManager m_assets;
+		EngineHandoffSlot m_handoffs;
 		LoadingMode m_loading;
 		MenuMode m_menu;
 		PlayMode m_play;

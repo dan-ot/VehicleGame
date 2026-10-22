@@ -12,7 +12,7 @@ namespace Engine
 	{
 	}
 
-	bool SoundResource::Rebuild(DX::DeviceResources&)
+	bool SoundResource::Rebuild(DX::DeviceResources&, AssetUploader&)
 	{
 		if (m_loaded)
 		{

@@ -424,6 +424,10 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\State\CoreMode.h" />
     <ClInclude Include="Engine\State\EngineMode.h" />
     <ClInclude Include="Engine\State\EngineState.h" />
+    <ClInclude Include="Engine\State\ModeHandoff.h" />
+    <ClInclude Include="Engine\State\LoadingTracker.h" />
+    <ClInclude Include="Engine\Assets\AssetUploader.h" />
+    <ClInclude Include="Engine\Scene\Scene.h" />
     <ClInclude Include="Engine\State\InputCommands.h" />
     <ClInclude Include="Engine\State\InputMap.h" />
     <ClInclude Include="Engine\State\InputDevices.h" />
@@ -449,6 +453,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClCompile Include="Engine\Layout\SplashLayout.cpp" />
     <ClCompile Include="Engine\Assets\WavLoader.cpp" />
     <ClCompile Include="Engine\Assets\GltfLoader.cpp" />
+    <ClCompile Include="Engine\Assets\AssetUploader.cpp" />
     <ClCompile Include="Engine\Assets\ShaderCompiler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />

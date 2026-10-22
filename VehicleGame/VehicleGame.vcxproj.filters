@@ -22,6 +22,10 @@
     <ClInclude Include="Engine\State\InputCommands.h" />
     <ClInclude Include="Engine\State\InputMap.h" />
     <ClInclude Include="Engine\State\EngineState.h" />
+    <ClInclude Include="Engine\State\ModeHandoff.h" />
+    <ClInclude Include="Engine\State\LoadingTracker.h" />
+    <ClInclude Include="Engine\Assets\AssetUploader.h" />
+    <ClInclude Include="Engine\Scene\Scene.h"><Filter>Engine\Scene</Filter></ClInclude>
     <ClInclude Include="Engine\State\ModeTimer.h" />
     <ClInclude Include="Engine\State\EngineMode.h" />
     <ClInclude Include="Engine\Modes\MenuMode.h" />
@@ -60,6 +64,7 @@
     <ClCompile Include="Engine\Assets\TgaLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\WavLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\GltfLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\AssetUploader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\ShaderCompiler.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DeviceResources.cpp">

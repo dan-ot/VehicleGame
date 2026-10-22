@@ -11,6 +11,7 @@
 #include "../Assets/AssetManifest.h"
 #include "EngineState.h"
 #include "InputCommands.h"
+#include "ModeHandoff.h"
 #include "ModeTimer.h"
 
 namespace Engine
@@ -70,6 +71,11 @@ namespace Engine
 			m_kit = &kit;
 		}
 
+		void BindHandoffs(EngineHandoffSlot& slot) noexcept
+		{
+			m_handoffs = &slot;
+		}
+
 	protected:
 		virtual void OnEnter() {}
 		virtual void OnExit() {}
@@ -78,6 +84,19 @@ namespace Engine
 		void RequestTransition(EngineState next) noexcept
 		{
 			m_requested = next;
+		}
+
+		void PublishHandoff(ModeHandoff handoff) noexcept
+		{
+			if (m_handoffs != nullptr)
+			{
+				m_handoffs->Publish(std::move(handoff));
+			}
+		}
+
+		std::optional<ModeHandoff> TakeHandoff() noexcept
+		{
+			return m_handoffs != nullptr ? m_handoffs->Take() : std::nullopt;
 		}
 
 		double Elapsed() const noexcept
@@ -89,5 +108,6 @@ namespace Engine
 		ModeTimer m_timer;
 		std::optional<EngineState> m_requested;
 		AssetKit* m_kit = nullptr;
+		EngineHandoffSlot* m_handoffs = nullptr;
 	};
 }

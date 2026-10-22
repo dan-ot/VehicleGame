@@ -6,6 +6,7 @@
 
 #include "../../DeviceResources.h"
 #include "AssetKit.h"
+#include "AssetUploader.h"
 
 #include <memory>
 #include <unordered_map>
@@ -22,7 +23,7 @@ namespace Engine
 		virtual ~IAssetResource() = default;
 
 		virtual void Release() noexcept = 0;
-		virtual bool Rebuild(DX::DeviceResources& resources) = 0;
+		virtual bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) = 0;
 	};
 
 	class AssetManager
@@ -75,5 +76,6 @@ namespace Engine
 		std::unordered_map<AssetKey, Entry> m_entries;
 		std::vector<AssetKey> m_restoreQueue;
 		size_t m_restoreCursor = 0;
+		AssetUploader m_uploader;
 	};
 }

@@ -12,9 +12,13 @@
 #include "../Render/SpriteAnimation.h"
 #include "../Render/StretchedImage.h"
 #include "../State/EngineMode.h"
+#include "../State/LoadingTracker.h"
 
 #include <algorithm>
+#include <atomic>
 #include <memory>
+#include <optional>
+#include <vector>
 
 namespace Engine
 {
@@ -28,6 +32,7 @@ namespace Engine
 			, m_spinner(TextureKey(kSpinnerPath), kSpinnerColumns, kSpinnerRows, kSpinnerFrames, kSpinnerFrameSeconds)
 			, m_cursor(TextureKey(kCursorPath))
 		{
+			m_placeholderWork = m_tracker.AddWork();
 		}
 
 		void BindAssets(AssetManager& assets) noexcept { m_assets = &assets; }
@@ -55,7 +60,6 @@ namespace Engine
 				m_cursorPlaced = true;
 			}
 
-			if (m_assets == nullptr)
 			{
 				return;
 			}
@@ -79,12 +83,45 @@ namespace Engine
 			manifest.Add(AssetType::Texture, kCursorPath);
 		}
 
+		void OnEnter() override
+		{
+			m_tracker = LoadingTracker{};
+			m_placeholderWork = m_tracker.AddWork();
+			m_assetWork.clear();
+			for (const AssetKey& key : m_assetKeys)
+			{
+				m_assetWork.push_back(AssetWork{ key, m_tracker.AddWork() });
+			}
+			m_destination = EngineState::Menu;
+			m_pendingHandoff.reset();
+			if (const auto handoff = TakeHandoff())
+			{
+				m_destination = handoff->target;
+				m_pendingHandoff = handoff;
+			}
+		}
+
 		void Update(const ModeTick& tick, const CommandFrame& commands) override
 		{
-			// TODO: Replace the fixed timer with an asset-ready signal from the Loading kit.
-			if (Elapsed() >= kLoadSeconds)
+			for (const AssetWork& work : m_assetWork)
 			{
-				RequestTransition(EngineState::Menu);
+				if (m_assets != nullptr && m_assets->Find(work.key) != nullptr)
+				{
+					m_tracker.Complete(work.id);
+				}
+			}
+
+			// Minimum display time; the tracker otherwise reflects real asset residency.
+			m_tracker.Report(m_placeholderWork, Elapsed() / kLoadSeconds);
+			m_loadingBar.SetPercent(static_cast<float>(m_tracker.Aggregate()));
+
+			if (m_tracker.IsComplete())
+			{
+				if (m_pendingHandoff)
+				{
+					PublishHandoff(*m_pendingHandoff);
+				}
+				RequestTransition(m_destination);
 			}
 
 			m_spinner.Update(tick.modeDt);
@@ -162,5 +199,19 @@ namespace Engine
 		float m_cursorX = 0.0f;
 		float m_cursorY = 0.0f;
 		bool m_cursorPlaced = false;
+
+		struct AssetWork
+		{
+			AssetKey key;
+			std::size_t id;
+		};
+
+		const std::vector<AssetKey> m_assetKeys{ TextureKey(kSplashPath), TextureKey(kLogoPath), TextureKey(kBarFillPath), TextureKey(kSpinnerPath), TextureKey(kCursorPath) };
+		std::vector<AssetWork> m_assetWork;
+
+		LoadingTracker m_tracker;
+		std::size_t m_placeholderWork = 0;
+		EngineState m_destination = EngineState::Menu;
+		std::optional<ModeHandoff> m_pendingHandoff;
 	};
 }

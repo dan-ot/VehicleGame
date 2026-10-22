@@ -16,7 +16,7 @@ namespace Engine
 		explicit MeshResource(std::wstring sourcePath);
 
 		void Release() noexcept override;
-		bool Rebuild(DX::DeviceResources& resources) override;
+		bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) override;
 
 		D3D12_VERTEX_BUFFER_VIEW VertexBufferView() const noexcept { return m_vbView; }
 		D3D12_INDEX_BUFFER_VIEW IndexBufferView() const noexcept { return m_ibView; }

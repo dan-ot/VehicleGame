@@ -19,7 +19,7 @@ namespace Engine
 		explicit SoundResource(std::wstring sourcePath);
 
 		void Release() noexcept override {}
-		bool Rebuild(DX::DeviceResources& resources) override;
+		bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) override;
 
 		const DecodedSound& Sound() const noexcept { return m_sound; }
 		bool IsLoaded() const noexcept { return m_loaded; }

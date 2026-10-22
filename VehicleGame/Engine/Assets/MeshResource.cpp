@@ -23,7 +23,7 @@ namespace Engine
 		m_indexCount = 0;
 	}
 
-	bool MeshResource::Rebuild(DX::DeviceResources& resources)
+	bool MeshResource::Rebuild(DX::DeviceResources& resources, AssetUploader&)
 	{
 		Release();
 
