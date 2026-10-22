@@ -6,5 +6,5 @@
     <Platform Name="ARM64" />
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="VehicleGame/VehicleGame.vcxproj" />
+  <Project Path="Game/Game.vcxproj" Id="2f234f6a-3a95-40e0-990f-a6474abb8813" />
 </Solution>
