@@ -89,3 +89,12 @@ Abi: 0bf104166c89c2259945fccf027afc90650aa8c721cb3158929b118bf611e492
 Description: Single-file glTF 2.0 loader and writer written in C99
 Status: install ok installed
 
+Package: yoga
+Version: 3.2.1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 9b4e6e68259ff32b8c35ea918095742d2ff37d477c5f1d25ee1550b5b8cb053f
+Description: Yoga is a cross-platform layout engine which implements Flexbox
+Status: install ok installed
+

@@ -408,6 +408,16 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Assets\WavLoader.h" />
     <ClInclude Include="Engine\Assets\GltfLoader.h" />
     <ClInclude Include="Engine\Assets\ShaderCompiler.h" />
+    <ClInclude Include="Engine\Render\Primitives.h" />
+    <ClInclude Include="Engine\Render\PrimitiveSupport.h" />
+    <ClInclude Include="Engine\Render\QuadRenderer.h" />
+    <ClInclude Include="Engine\Render\StretchedImage.h" />
+    <ClInclude Include="Engine\Render\TiledImage.h" />
+    <ClInclude Include="Engine\Render\RevealedImage.h" />
+    <ClInclude Include="Engine\Render\RevealedTiledImage.h" />
+    <ClInclude Include="Engine\Render\SpriteAnimation.h" />
+    <ClInclude Include="Engine\Layout\LayoutTree.h" />
+    <ClInclude Include="Engine\Layout\SplashLayout.h" />
     <ClInclude Include="Engine\Modes\LoadingMode.h" />
     <ClInclude Include="Engine\Modes\MenuMode.h" />
     <ClInclude Include="Engine\Modes\PlayMode.h" />
@@ -434,6 +444,9 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClCompile Include="Engine\Assets\AssetKey.cpp" />
     <ClCompile Include="Engine\Assets\AssetManager.cpp" />
     <ClCompile Include="Engine\Assets\TgaLoader.cpp" />
+    <ClCompile Include="Engine\Render\QuadRenderer.cpp" />
+    <ClCompile Include="Engine\Layout\LayoutTree.cpp" />
+    <ClCompile Include="Engine\Layout\SplashLayout.cpp" />
     <ClCompile Include="Engine\Assets\WavLoader.cpp" />
     <ClCompile Include="Engine\Assets\GltfLoader.cpp" />
     <ClCompile Include="Engine\Assets\ShaderCompiler.cpp" />
@@ -485,6 +498,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Assets\README.md" />
+    <None Include="Engine\Render\QuadShader.hlsl" />
     <None Include="README.md" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />

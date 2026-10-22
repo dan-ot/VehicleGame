@@ -1,0 +1,23 @@
+# ninja log v7
+8	41	8143877810052627	C:/Users/DanMcFerren/source/repos/VehicleGame/VehicleGame/vcpkg_installed/x64-windows/vcpkg/blds/yoga/x64-windows-dbg/CMakeFiles/cmake.verify_globs	4004bacaa5917dd6
+48	424	8143877810455120	yoga/CMakeFiles/yogacore.dir/YGEnums.cpp.obj	9390c9a5d9640df9
+76	1187	8143877810733578	yoga/CMakeFiles/yogacore.dir/YGValue.cpp.obj	9646701cd7aebee3
+130	1260	8143877811273833	yoga/CMakeFiles/yogacore.dir/event/event.cpp.obj	11a4934db4986fe6
+136	1299	8143877811329947	yoga/CMakeFiles/yogacore.dir/node/LayoutResults.cpp.obj	fea40d05524c56ac
+70	1884	8143877810673588	yoga/CMakeFiles/yogacore.dir/YGPixelGrid.cpp.obj	df7e50170d44626d
+109	1904	8143877811063607	yoga/CMakeFiles/yogacore.dir/algorithm/PixelGrid.cpp.obj	97d7f824641876b5
+43	1905	8143877810398240	yoga/CMakeFiles/yogacore.dir/YGConfig.cpp.obj	3b9e74dc4bb612d4
+125	1927	8143877811223837	yoga/CMakeFiles/yogacore.dir/debug/Log.cpp.obj	7d7ee277c86fd2cc
+59	1932	8143877810564566	yoga/CMakeFiles/yogacore.dir/YGNodeLayout.cpp.obj	c4c50a52da95832f
+65	1942	8143877810621331	yoga/CMakeFiles/yogacore.dir/YGNodeStyle.cpp.obj	f34de7ad492148d5
+114	1951	8143877811113604	yoga/CMakeFiles/yogacore.dir/config/Config.cpp.obj	d5d68e16ea03fa34
+119	1962	8143877811163833	yoga/CMakeFiles/yogacore.dir/debug/AssertFatal.cpp.obj	8791e35923b8a0da
+92	1968	8143877810893562	yoga/CMakeFiles/yogacore.dir/algorithm/Cache.cpp.obj	8d10652f631be426
+103	1974	8143877811003597	yoga/CMakeFiles/yogacore.dir/algorithm/FlexLine.cpp.obj	eb5574dfe774a32
+81	2062	8143877810783562	yoga/CMakeFiles/yogacore.dir/algorithm/AbsoluteLayout.cpp.obj	2e7b5d70494b681b
+86	2085	8143877810833562	yoga/CMakeFiles/yogacore.dir/algorithm/Baseline.cpp.obj	8fd65d4dea35bbcb
+54	2086	8143877810512994	yoga/CMakeFiles/yogacore.dir/YGNode.cpp.obj	e218d4b5ef0de7ae
+97	2176	8143877810943557	yoga/CMakeFiles/yogacore.dir/algorithm/CalculateLayout.cpp.obj	8caeb258ead24d66
+141	2316	8143877811379971	yoga/CMakeFiles/yogacore.dir/node/Node.cpp.obj	4f285e1099df241e
+2317	2414	8143877833141404	yoga/yogacore.lib	7fa240093db5f959
+2414	3048	8143877834113528	CMakeFiles/install.util	ef6acc93a93dab62

@@ -104,4 +104,24 @@
     <None Include="vcpkg.json" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine\Render"><UniqueIdentifier>{7a3e9d1c-5b2f-4e8a-8c6d-1f0b9a2e3d41}</UniqueIdentifier></Filter>
+    <Filter Include="Engine\Layout"><UniqueIdentifier>{2c8f4a6e-9d1b-4f3c-a5e7-6b0d8c1f2a92}</UniqueIdentifier></Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Render\Primitives.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\PrimitiveSupport.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\QuadRenderer.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\StretchedImage.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\TiledImage.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\RevealedImage.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\RevealedTiledImage.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\SpriteAnimation.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Layout\LayoutTree.h"><Filter>Engine\Layout</Filter></ClInclude>
+    <ClInclude Include="Engine\Layout\SplashLayout.h"><Filter>Engine\Layout</Filter></ClInclude>
+    <ClCompile Include="Engine\Render\QuadRenderer.cpp"><Filter>Engine\Render</Filter></ClCompile>
+    <ClCompile Include="Engine\Layout\LayoutTree.cpp"><Filter>Engine\Layout</Filter></ClCompile>
+    <ClCompile Include="Engine\Layout\SplashLayout.cpp"><Filter>Engine\Layout</Filter></ClCompile>
+    <None Include="Engine\Render\QuadShader.hlsl"><Filter>Engine\Render</Filter></None>
+  </ItemGroup>
 </Project>

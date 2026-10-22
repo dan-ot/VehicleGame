@@ -35,7 +35,7 @@ Sound stays in CPU memory on purpose. The GPU does not consume it, and reading i
 
 Placeholder paths are declared in the mode manifests. Missing files are logged through `OutputDebugStringW`, and the asset is left unloaded without throwing.
 
-- Loading: `Assets\loading_splash.tga`
+- Loading: `Assets\loading_splash.tga`, `Assets\loading_logo.tga`, `Assets\loading_bar_fill.tga`, `Assets\loading_spinner.tga`, `Assets\cursor.tga`
 - Menu: `Assets\menu_background.tga`, `Assets\menu_click.wav`
 - Play: `Assets\vehicle.glb`, `Assets\engine.wav`
 
@@ -43,6 +43,7 @@ Placeholder paths are declared in the mode manifests. Missing files are logged t
 
 - `dxcompiler.lib` is linked in every configuration.
 - `dxcompiler.dll` and `dxil.dll` are copied from `vcpkg_installed\x64-windows\x64-windows\bin` to the output directory after each build.
+- `Engine/Render/QuadShader.hlsl` is compiled at runtime by `QuadRenderer` and is declared as a `None` project item. It is not an `FXCompile` item, so it has no precompiled output.
 - Xbox does not support runtime DXC compilation. Shaders must be precompiled for Xbox builds (see the TODO in `ShaderCompiler.h`).
 
 ## Known Follow-Ups

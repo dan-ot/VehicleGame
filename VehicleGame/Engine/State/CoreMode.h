@@ -35,6 +35,7 @@ namespace Engine
 			m_loading.BindKit(m_kits.Loading());
 			m_menu.BindKit(m_kits.Menu());
 			m_play.BindKit(m_kits.Play());
+			m_loading.BindAssets(m_assets);
 
 			m_active = &m_loading;
 			DeclareActiveAssets();
