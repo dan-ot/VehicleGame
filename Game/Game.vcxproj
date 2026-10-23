@@ -399,6 +399,8 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Assets\MeshResource.h" />
     <ClInclude Include="Engine\Assets\SoundResource.h" />
     <ClInclude Include="Engine\Assets\AssetLoader.h" />
+    <ClInclude Include="Engine\Assets\FontResource.h" />
+    <ClInclude Include="Engine\Assets\GlyphAtlasPacker.h" />
     <ClInclude Include="Engine\Assets\AssetKey.h" />
     <ClInclude Include="Engine\Assets\AssetRequester.h" />
     <ClInclude Include="Engine\Assets\AssetManifest.h" />
@@ -411,6 +413,8 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Render\Primitives.h" />
     <ClInclude Include="Engine\Render\PrimitiveSupport.h" />
     <ClInclude Include="Engine\Render\QuadRenderer.h" />
+    <ClInclude Include="Engine\Render\TextBlock.h" />
+    <ClInclude Include="Engine\Render\TextLayout.h" />
     <ClInclude Include="Engine\Render\StretchedImage.h" />
     <ClInclude Include="Engine\Render\TiledImage.h" />
     <ClInclude Include="Engine\Render\RevealedImage.h" />
@@ -446,10 +450,12 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClCompile Include="Engine\Assets\MeshResource.cpp" />
     <ClCompile Include="Engine\Assets\SoundResource.cpp" />
     <ClCompile Include="Engine\Assets\AssetLoader.cpp" />
+    <ClCompile Include="Engine\Assets\FontResource.cpp" />
     <ClCompile Include="Engine\Assets\AssetKey.cpp" />
     <ClCompile Include="Engine\Assets\AssetManager.cpp" />
     <ClCompile Include="Engine\Assets\TgaLoader.cpp" />
     <ClCompile Include="Engine\Render\QuadRenderer.cpp" />
+    <ClCompile Include="Engine\Render\TextLayout.cpp" />
     <ClCompile Include="Engine\Layout\LayoutTree.cpp" />
     <ClCompile Include="Engine\Layout\SplashLayout.cpp" />
     <ClCompile Include="Engine\Assets\WavLoader.cpp" />

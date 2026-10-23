@@ -41,6 +41,8 @@
     <ClInclude Include="Engine\Assets\MeshResource.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Assets\SoundResource.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Assets\AssetLoader.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\FontResource.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\GlyphAtlasPacker.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Assets\AssetKey.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Assets\AssetRequester.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Assets\AssetManifest.h"><Filter>Engine\Assets</Filter></ClInclude>
@@ -59,6 +61,7 @@
     <ClCompile Include="Engine\Assets\MeshResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\SoundResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\AssetLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
+    <ClCompile Include="Engine\Assets\FontResource.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\AssetKey.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\AssetManager.cpp"><Filter>Engine\Assets</Filter></ClCompile>
     <ClCompile Include="Engine\Assets\TgaLoader.cpp"><Filter>Engine\Assets</Filter></ClCompile>
@@ -117,6 +120,8 @@
     <ClInclude Include="Engine\Render\Primitives.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\PrimitiveSupport.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\QuadRenderer.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\TextBlock.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\TextLayout.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\StretchedImage.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\TiledImage.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\RevealedImage.h"><Filter>Engine\Render</Filter></ClInclude>
@@ -126,6 +131,7 @@
     <ClInclude Include="Engine\Layout\LayoutTree.h"><Filter>Engine\Layout</Filter></ClInclude>
     <ClInclude Include="Engine\Layout\SplashLayout.h"><Filter>Engine\Layout</Filter></ClInclude>
     <ClCompile Include="Engine\Render\QuadRenderer.cpp"><Filter>Engine\Render</Filter></ClCompile>
+    <ClCompile Include="Engine\Render\TextLayout.cpp"><Filter>Engine\Render</Filter></ClCompile>
     <ClCompile Include="Engine\Layout\LayoutTree.cpp"><Filter>Engine\Layout</Filter></ClCompile>
     <ClCompile Include="Engine\Layout\SplashLayout.cpp"><Filter>Engine\Layout</Filter></ClCompile>
     <None Include="Engine\Render\QuadShader.hlsl"><Filter>Engine\Render</Filter></None>

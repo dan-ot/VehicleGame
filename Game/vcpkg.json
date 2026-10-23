@@ -21,6 +21,7 @@
     },
     "ms-gdk",
     "winpixevent",
-    "yoga"
+    "yoga",
+    "freetype"
   ]
 }

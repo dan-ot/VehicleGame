@@ -16,6 +16,7 @@ namespace Engine
 		Model,
 		Sound,
 		Shader,
+		Font,
 	};
 
 	struct AssetKey

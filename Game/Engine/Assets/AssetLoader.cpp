@@ -7,6 +7,7 @@
 #include "TextureResource.h"
 #include "MeshResource.h"
 #include "SoundResource.h"
+#include "FontResource.h"
 
 namespace Engine
 {
@@ -22,6 +23,8 @@ namespace Engine
 				return std::make_unique<MeshResource>(key.path);
 			case AssetType::Sound:
 				return std::make_unique<SoundResource>(key.path);
+			case AssetType::Font:
+				return std::make_unique<FontResource>(key.path);
 			default:
 				return nullptr;
 			}
