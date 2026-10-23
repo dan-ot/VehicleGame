@@ -6,7 +6,9 @@
 
 #include "../Layout/LayoutTree.h"
 
+#include <any>
 #include <cstddef>
+#include <memory>
 #include <string>
 
 namespace Engine
@@ -14,6 +16,12 @@ namespace Engine
 	class IMenuControl;
 
 	using MenuItemId = size_t;
+
+	struct MenuValueChange
+	{
+		MenuItemId item = 0;
+		std::any value;
+	};
 
 	enum class MenuItemKind
 	{
@@ -28,7 +36,7 @@ namespace Engine
 		std::wstring label;
 		LayoutNodeId layoutNode = LayoutTree::kNoHit;
 		size_t commandId = 0;
-		IMenuControl* control = nullptr;
+		std::shared_ptr<IMenuControl> control;
 
 		bool CanFocus() const noexcept
 		{

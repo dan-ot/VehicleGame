@@ -95,6 +95,8 @@ namespace Engine
 		m_wasAccept = accept;
 		m_wasAbort = abort;
 
+		m_root->RouteInput(ResidualCommands(commands), result.valueChanges);
+
 		result.cursor = m_cursor.Position();
 		return result;
 	}
@@ -105,6 +107,28 @@ namespace Engine
 		{
 			m_root->Update(dt);
 		}
+	}
+
+	CommandFrame MenuBase::ResidualCommands(const CommandFrame& commands) noexcept
+	{
+		CommandFrame residual = commands;
+		for (std::size_t i = 0; i < kCommandCount; ++i)
+		{
+			const auto command = static_cast<Command>(i);
+			const bool consumed = command == Command::System_Accept
+				|| command == Command::System_Abort
+				|| command == Command::Navigate_Up || command == Command::Navigate_Down
+				|| command == Command::Navigate_Left || command == Command::Navigate_Right
+				|| command == Command::Direction_Up || command == Command::Direction_Down
+				|| command == Command::Direction_Left || command == Command::Direction_Right
+				|| command == Command::Movement_Up || command == Command::Movement_Down
+				|| command == Command::Movement_Left || command == Command::Movement_Right;
+			if (consumed)
+			{
+				residual.values[i] = CommandValue{};
+			}
+		}
+		return residual;
 	}
 
 	bool MenuBase::IsActive(const CommandFrame& commands, Command command) noexcept

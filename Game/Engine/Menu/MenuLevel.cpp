@@ -6,6 +6,8 @@
 #include "MenuLevel.h"
 #include "MenuControl.h"
 
+#include <any>
+
 namespace Engine
 {
 	MenuLevel::MenuLevel(MenuLevel* parent)
@@ -96,6 +98,34 @@ namespace Engine
 		m_layout.Calculate(m_root, screenWidth, screenHeight);
 	}
 
+	void MenuLevel::RouteInput(const CommandFrame& commands, std::vector<MenuValueChange>& changes)
+	{
+		for (const MenuLevel* level = this; level != nullptr; level = level->m_parent)
+		{
+			if (!level->m_focus)
+			{
+				continue;
+			}
+
+			const MenuItemId id = *level->m_focus;
+			const auto& control = level->m_items[id].control;
+			if (control == nullptr)
+			{
+				continue;
+			}
+
+			std::optional<std::any> change;
+			if (control->HandleInput(commands, change) == MenuInputOutcome::Handled)
+			{
+				if (change)
+				{
+					changes.push_back(MenuValueChange{ id, std::move(*change) });
+				}
+				return;
+			}
+		}
+	}
+
 	void MenuLevel::Update(double dt)
 	{
 		for (auto& item : m_items)
@@ -128,3 +158,4 @@ namespace Engine
 		}
 	}
 }
+

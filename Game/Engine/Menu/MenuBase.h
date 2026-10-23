@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <optional>
+#include <vector>
 
 namespace Engine
 {
@@ -20,6 +21,7 @@ namespace Engine
 		CursorPosition cursor;
 		bool accept = false;
 		bool abort = false;
+		std::vector<MenuValueChange> valueChanges;
 	};
 
 	class MenuBase : public IEngineMode
@@ -34,6 +36,7 @@ namespace Engine
 	protected:
 		virtual void BuildRoot(MenuLevel& root) = 0;
 		virtual void OnRender(QuadRenderer&, const AssetManager&) {}
+		virtual void OnValueChanged(const MenuValueChange&) {}
 
 		void OnEnter() override;
 
@@ -50,6 +53,7 @@ namespace Engine
 
 		static bool IsActive(const CommandFrame& commands, Command command) noexcept;
 		static std::optional<MenuDirection> ActiveDirection(const CommandFrame& commands) noexcept;
+		static CommandFrame ResidualCommands(const CommandFrame& commands) noexcept;
 
 		void Step(MenuDirection direction, MenuInputResult& result);
 		void FocusItem(MenuItemId id, MenuInputResult& result);

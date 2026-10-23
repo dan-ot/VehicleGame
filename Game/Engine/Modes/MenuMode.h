@@ -54,6 +54,11 @@ namespace Engine
 			UpdateLevel(tick.modeDt);
 
 			const MenuInputResult result = ConsumeInput(commands, tick.modeDt);
+			for (const auto& change : result.valueChanges)
+			{
+				OnValueChanged(change);
+			}
+
 			if (!result.accept)
 			{
 				return;

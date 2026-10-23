@@ -6,6 +6,7 @@
 
 #include "../Layout/LayoutTree.h"
 #include "../Render/StretchedImage.h"
+#include "../State/InputCommands.h"
 #include "MenuItem.h"
 #include "MenuNavigation.h"
 
@@ -39,6 +40,9 @@ namespace Engine
 
 		RectF ItemRect(MenuItemId id) const;
 		std::optional<MenuItemId> ItemAt(float x, float y) const;
+
+		MenuLevel* Parent() const noexcept { return m_parent; }
+		void RouteInput(const CommandFrame& commands, std::vector<MenuValueChange>& changes);
 
 		void Recalculate(float screenWidth, float screenHeight);
 		void Update(double dt);
