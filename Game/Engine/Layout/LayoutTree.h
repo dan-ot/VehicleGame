@@ -46,6 +46,10 @@ namespace Engine
 		// Returns the node's computed rect in the coordinate space of the root passed to Calculate.
 		RectF Layout(LayoutNodeId node) const;
 
+		// Returns the deepest node whose computed rect contains the point (root space), or kNoHit.
+		static constexpr LayoutNodeId kNoHit = static_cast<LayoutNodeId>(-1);
+		LayoutNodeId HitTest(float x, float y) const;
+
 	private:
 		static constexpr LayoutNodeId kNoParent = static_cast<LayoutNodeId>(-1);
 

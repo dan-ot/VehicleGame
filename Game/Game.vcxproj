@@ -422,6 +422,11 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Render\SoftwareCursor.h" />
     <ClInclude Include="Engine\Render\SpriteAnimation.h" />
     <ClInclude Include="Engine\Layout\LayoutTree.h" />
+    <ClInclude Include="Engine\Menu\MenuItem.h" />
+    <ClInclude Include="Engine\Menu\MenuControl.h" />
+    <ClInclude Include="Engine\Menu\MenuNavigation.h" />
+    <ClInclude Include="Engine\Menu\MenuLevel.h" />
+    <ClInclude Include="Engine\Menu\MenuBase.h" />
     <ClInclude Include="Engine\Layout\SplashLayout.h" />
     <ClInclude Include="Engine\Modes\LoadingMode.h" />
     <ClInclude Include="Engine\Modes\MenuMode.h" />
@@ -457,6 +462,9 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClCompile Include="Engine\Render\QuadRenderer.cpp" />
     <ClCompile Include="Engine\Render\TextLayout.cpp" />
     <ClCompile Include="Engine\Layout\LayoutTree.cpp" />
+    <ClCompile Include="Engine\Menu\MenuNavigation.cpp" />
+    <ClCompile Include="Engine\Menu\MenuLevel.cpp" />
+    <ClCompile Include="Engine\Menu\MenuBase.cpp" />
     <ClCompile Include="Engine\Layout\SplashLayout.cpp" />
     <ClCompile Include="Engine\Assets\WavLoader.cpp" />
     <ClCompile Include="Engine\Assets\GltfLoader.cpp" />

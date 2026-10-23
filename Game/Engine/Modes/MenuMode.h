@@ -4,61 +4,16 @@
 
 #pragma once
 
-#include "../Render/QuadRenderer.h"
-#include "../Render/SoftwareCursor.h"
-#include "../Render/StretchedImage.h"
-#include "../State/EngineMode.h"
-
-#include <memory>
+#include "../Menu/MenuBase.h"
 
 namespace Engine
 {
-	class MenuMode final : public IEngineMode
+	class MenuMode final : public MenuBase
 	{
 	public:
 		MenuMode()
-			: m_background(BackgroundKey())
-			, m_cursor(CursorKey(), kCursorSize)
+			: MenuBase(CursorKey())
 		{
-			m_cursor.SetScaling(CursorScaling{ kStickSpeedPixels, kMousePixelsPerUnit });
-		}
-
-		void BindAssets(AssetManager& assets) noexcept { m_assets = &assets; }
-
-		void Render(SharedRenderer& renderer) override
-		{
-			const auto viewport = renderer.GetScreenViewport();
-			m_screenWidth = viewport.Width;
-			m_screenHeight = viewport.Height;
-			if (m_quads == nullptr || m_device != renderer.GetD3DDevice())
-			{
-				m_quads = std::make_unique<QuadRenderer>(renderer);
-				m_device = renderer.GetD3DDevice();
-			}
-
-			if (m_assets == nullptr)
-			{
-				return;
-			}
-
-			m_cursor.EnsurePlaced(m_screenWidth, m_screenHeight);
-
-			const RectF screen{ 0.0f, 0.0f, viewport.Width, viewport.Height };
-			m_background.Draw(*m_quads, *m_assets, screen);
-
-			const auto* texture = FindResidentTexture(*m_assets, BackgroundKey());
-			if (texture != nullptr)
-			{
-				const float x = viewport.Width * 0.5f - kItemWidth * 0.5f;
-				for (int i = 0; i < kItemCount; ++i)
-				{
-					const float y = viewport.Height * (kFirstItemY + kItemSpacingY * static_cast<float>(i));
-					const ColorF tint = i == m_selected ? kSelectedTint : kUnselectedTint;
-					m_quads->Draw(texture->GpuDescriptor(), RectF{ x, y, kItemWidth, kItemHeight }, UvRectF{}, tint);
-				}
-			}
-
-			m_cursor.Render(*m_quads, *m_assets);
 		}
 
 	protected:
@@ -69,87 +24,61 @@ namespace Engine
 			manifest.Add(AssetType::Sound, L"Assets\\menu_click.wav");
 		}
 
+		void BuildRoot(MenuLevel& root) override
+		{
+			root.SetBackground(BackgroundKey());
+			root.AddItem(MenuItem{ MenuItemKind::Command, L"Play" }, kItemWidth, kItemHeight);
+			root.AddItem(MenuItem{ MenuItemKind::Command, L"Options" }, kItemWidth, kItemHeight);
+			root.Link(0, MenuDirection::Down, 1);
+			root.Link(1, MenuDirection::Up, 0);
+		}
+
+		void OnRender(QuadRenderer& quads, const AssetManager& assets) override
+		{
+			const auto* texture = FindResidentTexture(assets, BackgroundKey());
+			if (texture == nullptr)
+			{
+				return;
+			}
+
+			MenuLevel& root = Root();
+			for (MenuItemId id = 0; id < root.ItemCount(); ++id)
+			{
+				const ColorF tint = root.Focus() == id ? kSelectedTint : kUnselectedTint;
+				quads.Draw(texture->GpuDescriptor(), root.ItemRect(id), UvRectF{}, tint);
+			}
+		}
+
 		void Update(const ModeTick& tick, const CommandFrame& commands) override
 		{
-			m_cursor.ProcessInput(commands, tick.modeDt, m_screenWidth, m_screenHeight);
-			m_cursor.Update(tick.modeDt);
+			UpdateLevel(tick.modeDt);
 
-			const int direction = Direction(commands);
-			if (direction == 0)
+			const MenuInputResult result = ConsumeInput(commands, tick.modeDt);
+			if (!result.accept)
 			{
-				m_repeatTimer = 0.0;
-				m_held = 0;
+				return;
 			}
-			else if (direction != m_held)
+
+			const auto selected = Root().Focus();
+			if (!selected)
 			{
-				m_held = direction;
-				m_repeatTimer = 0.0;
-				Step(direction);
+				return;
+			}
+
+			if (*selected == 0)
+			{
+				PublishHandoff(ModeHandoff{ EngineState::Play, PlayHandoff{} });
 			}
 			else
 			{
-				m_repeatTimer += tick.modeDt;
-				if (m_repeatTimer >= kRepeatInterval)
-				{
-					m_repeatTimer -= kRepeatInterval;
-					Step(direction);
-				}
+				PublishHandoff(ModeHandoff{ EngineState::Menu, MenuHandoff{ static_cast<int>(*selected) } });
 			}
-
-			if (IsActive(commands, Command::System_Accept) && !m_wasAccept)
-			{
-				if (m_selected == 0)
-				{
-					PublishHandoff(ModeHandoff{ EngineState::Play, PlayHandoff{} });
-					RequestTransition(EngineState::Loading);
-				}
-				else
-				{
-					PublishHandoff(ModeHandoff{ EngineState::Menu, MenuHandoff{ m_selected } });
-					RequestTransition(EngineState::Loading);
-				}
-			}
-			m_wasAccept = IsActive(commands, Command::System_Accept);
+			RequestTransition(EngineState::Loading);
 		}
 
 	private:
-		static bool IsActive(const CommandFrame& commands, Command command) noexcept
-		{
-			return commands[command].greatest.valid && commands[command].greatest.strength >= 0.5f;
-		}
-
-		static int Direction(const CommandFrame& commands) noexcept
-		{
-			if (IsActive(commands, Command::Direction_Up) || IsActive(commands, Command::Movement_Up))
-			{
-				return -1;
-			}
-			if (IsActive(commands, Command::Direction_Down) || IsActive(commands, Command::Movement_Down))
-			{
-				return 1;
-			}
-			return 0;
-		}
-
-		void Step(int direction) noexcept
-		{
-			const int next = m_selected + direction;
-			if (next >= 0 && next < kItemCount)
-			{
-				m_selected = next;
-			}
-		}
-
-		static constexpr int kItemCount = 2;
-		static constexpr double kRepeatInterval = 0.12;
-
 		static constexpr const wchar_t* kBackgroundPath = L"Assets\\menu_background.tga";
 		static constexpr const wchar_t* kCursorPath = L"Assets\\cursor.tga";
-		static constexpr float kCursorSize = 32.0f;
-		static constexpr float kStickSpeedPixels = 900.0f;
-		static constexpr float kMousePixelsPerUnit = 1.0f;
-		static constexpr float kFirstItemY = 0.45f;
-		static constexpr float kItemSpacingY = 0.12f;
 		static constexpr float kItemWidth = 240.0f;
 		static constexpr float kItemHeight = 48.0f;
 		static constexpr ColorF kSelectedTint{ 1.0f, 0.9f, 0.3f, 1.0f };
@@ -164,18 +93,5 @@ namespace Engine
 		{
 			return MakeAssetKey(AssetType::Texture, kCursorPath);
 		}
-
-		int m_selected = 0;
-		int m_held = 0;
-		double m_repeatTimer = 0.0;
-		bool m_wasAccept = false;
-		float m_screenWidth = 0.0f;
-		float m_screenHeight = 0.0f;
-
-		AssetManager* m_assets = nullptr;
-		std::unique_ptr<QuadRenderer> m_quads;
-		ID3D12Device* m_device = nullptr;
-		StretchedImage m_background;
-		SoftwareCursor m_cursor;
 	};
 }

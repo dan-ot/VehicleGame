@@ -113,4 +113,31 @@ namespace Engine
 		}
 		return rect;
 	}
+
+	LayoutNodeId LayoutTree::HitTest(float x, float y) const
+	{
+		LayoutNodeId best = kNoHit;
+		size_t bestDepth = 0;
+		for (LayoutNodeId node = 0; node < m_nodes.size(); ++node)
+		{
+			const RectF rect = Layout(node);
+			if (x < rect.x || y < rect.y || x >= rect.x + rect.width || y >= rect.y + rect.height)
+			{
+				continue;
+			}
+
+			size_t depth = 0;
+			for (LayoutNodeId current = m_parents[node]; current != kNoParent; current = m_parents[current])
+			{
+				++depth;
+			}
+
+			if (best == kNoHit || depth >= bestDepth)
+			{
+				best = node;
+				bestDepth = depth;
+			}
+		}
+		return best;
+	}
 }
