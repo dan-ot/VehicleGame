@@ -94,7 +94,7 @@ namespace Engine
 			}
 		}
 
-		void Update(const ModeTick& tick, const CommandFrame& commands) override
+		void Update(const ModeTick& tick, const CommandFrame& commands, const RawKeyboardFrame& keyboard) override
 		{
 			for (const AssetWork& work : m_assetWork)
 			{

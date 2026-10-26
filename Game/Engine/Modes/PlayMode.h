@@ -33,7 +33,7 @@ namespace Engine
 			}
 		}
 
-		void Update(const ModeTick& tick, const CommandFrame& commands) override
+		void Update(const ModeTick& tick, const CommandFrame& commands, const RawKeyboardFrame& keyboard) override
 		{
 			if (commands[Command::System_Abort].greatest.valid)
 			{

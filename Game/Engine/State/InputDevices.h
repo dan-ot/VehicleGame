@@ -5,6 +5,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 #include <vector>
 
 #include <XInput.h>
@@ -69,12 +70,40 @@ namespace Engine
 			}
 		}
 
+		void OnChar(char16_t unit)
+		{
+			if (unit >= 0xD800 && unit <= 0xDBFF)
+			{
+				m_highSurrogate = unit;
+				return;
+			}
+
+			if (unit >= 0xDC00 && unit <= 0xDFFF)
+			{
+				if (m_highSurrogate)
+				{
+					const char32_t codepoint = 0x10000 + ((static_cast<char32_t>(m_highSurrogate) - 0xD800) << 10) + (static_cast<char32_t>(unit) - 0xDC00);
+					m_pendingCharacters.push_back(codepoint);
+				}
+				m_highSurrogate = 0;
+				return;
+			}
+
+			m_highSurrogate = 0;
+			if (unit >= 0x20 && unit != 0x7F)
+			{
+				m_pendingCharacters.push_back(static_cast<char32_t>(unit));
+			}
+		}
+
 		void OnFocusLost() noexcept
 		{
 			m_mouseButtons = {};
 			m_pendingDeltaX = 0;
 			m_pendingDeltaY = 0;
 			m_pendingWheel = 0;
+			m_pendingCharacters.clear();
+			m_highSurrogate = 0;
 		}
 
 		RawInputSample Sample() noexcept
@@ -94,6 +123,8 @@ namespace Engine
 			sample.mouse.deltaY = m_pendingDeltaY;
 			sample.mouse.wheel = m_pendingWheel;
 			sample.mouse.buttons = m_mouseButtons;
+			sample.characters = std::move(m_pendingCharacters);
+			m_pendingCharacters.clear();
 
 			m_pendingDeltaX = 0;
 			m_pendingDeltaY = 0;
@@ -173,5 +204,7 @@ namespace Engine
 		LONG m_pendingDeltaX = 0;
 		LONG m_pendingDeltaY = 0;
 		LONG m_pendingWheel = 0;
+		std::u32string m_pendingCharacters;
+		char16_t m_highSurrogate = 0;
 	};
 }

@@ -424,6 +424,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Layout\LayoutTree.h" />
     <ClInclude Include="Engine\Menu\MenuItem.h" />
     <ClInclude Include="Engine\Menu\MenuControl.h" />
+    <ClInclude Include="Engine\Menu\MenuTextBox.h" />
     <ClInclude Include="Engine\Menu\MenuNavigation.h" />
     <ClInclude Include="Engine\Menu\MenuLevel.h" />
     <ClInclude Include="Engine\Menu\MenuBase.h" />
@@ -443,6 +444,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\State\InputDevices.h" />
     <ClInclude Include="Engine\State\InputFrame.h" />
     <ClInclude Include="Engine\State\InputSystem.h" />
+    <ClInclude Include="Engine\State\OnScreenKeyboard.h" />
     <ClInclude Include="Engine\State\ModeTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="pch.h" />

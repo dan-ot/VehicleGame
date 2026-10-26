@@ -33,6 +33,7 @@
     <ClInclude Include="Engine\Modes\LoadingMode.h" />
     <ClInclude Include="Engine\State\CoreMode.h" />
     <ClInclude Include="Engine\State\InputSystem.h" />
+    <ClInclude Include="Engine\State\OnScreenKeyboard.h" />
     <ClInclude Include="Engine\State\InputFrame.h" />
     <ClInclude Include="Engine\State\InputDevices.h" />
     <ClInclude Include="UploadBuffer.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Engine\Layout\LayoutTree.h"><Filter>Engine\Layout</Filter></ClInclude>
     <ClInclude Include="Engine\Menu\MenuItem.h"><Filter>Engine\Menu</Filter></ClInclude>
     <ClInclude Include="Engine\Menu\MenuControl.h"><Filter>Engine\Menu</Filter></ClInclude>
+    <ClInclude Include="Engine\Menu\MenuTextBox.h"><Filter>Engine\Menu</Filter></ClInclude>
     <ClInclude Include="Engine\Menu\MenuNavigation.h"><Filter>Engine\Menu</Filter></ClInclude>
     <ClInclude Include="Engine\Menu\MenuLevel.h"><Filter>Engine\Menu</Filter></ClInclude>
     <ClInclude Include="Engine\Menu\MenuBase.h"><Filter>Engine\Menu</Filter></ClInclude>

@@ -98,7 +98,9 @@ void Game::Update(double elapsedSeconds)
 {
     PIXBeginEvent(PIX_COLOR_DEFAULT, L"Update");
 
-    m_core.Tick(elapsedSeconds, m_input.Commands());
+    m_core.Tick(elapsedSeconds, m_input.Commands(), m_keyboard);
+    m_keyboard.characters.clear();
+    m_keyboard.keyPressed = {};
 
     PIXEndEvent();
 }
@@ -107,11 +109,27 @@ void Game::Update(double elapsedSeconds)
 void Game::PollInput()
 {
     m_input.Advance(m_devices.Sample());
+
+    const Engine::RawKeyboardFrame frame = m_input.TakeKeyboard();
+    m_keyboard.characters += frame.characters;
+    for (std::size_t i = 0; i < Engine::kKeyCount; ++i)
+    {
+        m_keyboard.keyPressed[i] = m_keyboard.keyPressed[i] || frame.keyPressed[i];
+    }
+    m_keyboard.keyDown = frame.keyDown;
+    m_keyboard.shift = frame.shift;
+    m_keyboard.ctrl = frame.ctrl;
+    m_keyboard.lastDevice = m_input.LastDevice();
 }
 
 void Game::OnRawInput(LPARAM lParam)
 {
     m_devices.OnRawInput(lParam);
+}
+
+void Game::OnChar(char16_t unit)
+{
+    m_devices.OnChar(unit);
 }
 #pragma endregion
 

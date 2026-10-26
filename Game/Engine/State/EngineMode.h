@@ -12,6 +12,7 @@
 #include "EngineState.h"
 #include "InputCommands.h"
 #include "ModeHandoff.h"
+#include "RawKeyboardFrame.h"
 #include "ModeTimer.h"
 
 namespace Engine
@@ -40,9 +41,9 @@ namespace Engine
 			OnExit();
 		}
 
-		void Tick(double coreDt, const CommandFrame& commands)
+		void Tick(double coreDt, const CommandFrame& commands, const RawKeyboardFrame& keyboard)
 		{
-			Update(ModeTick{ coreDt, m_timer.Advance(coreDt) }, commands);
+			Update(ModeTick{ coreDt, m_timer.Advance(coreDt) }, commands, keyboard);
 		}
 
 		void SetTimeScale(double scale) noexcept
@@ -79,7 +80,7 @@ namespace Engine
 	protected:
 		virtual void OnEnter() {}
 		virtual void OnExit() {}
-		virtual void Update(const ModeTick& tick, const CommandFrame& commands) = 0;
+		virtual void Update(const ModeTick& tick, const CommandFrame& commands, const RawKeyboardFrame& keyboard) = 0;
 
 		void RequestTransition(EngineState next) noexcept
 		{

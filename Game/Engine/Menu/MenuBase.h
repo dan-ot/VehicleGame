@@ -7,6 +7,7 @@
 #include "../Render/QuadRenderer.h"
 #include "../Render/SoftwareCursor.h"
 #include "../State/EngineMode.h"
+#include "../State/OnScreenKeyboard.h"
 #include "MenuLevel.h"
 
 #include <memory>
@@ -40,12 +41,15 @@ namespace Engine
 
 		void OnEnter() override;
 
-		MenuInputResult ConsumeInput(const CommandFrame& commands, double dt);
+		MenuInputResult ConsumeInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, double dt);
 		void UpdateLevel(double dt);
 
 		MenuLevel& Root() noexcept { return *m_root; }
+		virtual AssetKey TextFontKey() const { return AssetKey{}; }
+		virtual AssetKey WhiteTextureKey() const { return AssetKey{}; }
 
 	private:
+		static constexpr std::size_t kVkTab = 0x09;
 		static constexpr double kRepeatInterval = 0.12;
 		static constexpr float kCursorSize = 32.0f;
 		static constexpr float kStickSpeedPixels = 900.0f;
@@ -57,7 +61,9 @@ namespace Engine
 
 		void Step(MenuDirection direction, MenuInputResult& result);
 		void FocusItem(MenuItemId id, MenuInputResult& result);
+		void CycleFocus(int step, MenuInputResult& result);
 		void CenterCursorOn(MenuItemId id);
+		MenuTextAssets ResolveTextAssets(const AssetManager& assets) const;
 
 		std::unique_ptr<MenuLevel> m_root;
 		std::optional<MenuDirection> m_held;
@@ -71,5 +77,6 @@ namespace Engine
 		std::unique_ptr<QuadRenderer> m_quads;
 		ID3D12Device* m_device = nullptr;
 		SoftwareCursor m_cursor;
+		OnScreenKeyboard m_keyboard;
 	};
 }

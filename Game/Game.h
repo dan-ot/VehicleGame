@@ -36,6 +36,7 @@ public:
 
     // Input
     void OnRawInput(LPARAM lParam);
+    void OnChar(char16_t unit);
 
     // IDeviceNotify
     void OnDeviceLost() override;
@@ -77,6 +78,7 @@ private:
     // Polled input devices and absolute input state.
     Engine::InputDevices                        m_devices;
     Engine::InputSystem                         m_input;
+    Engine::RawKeyboardFrame                    m_keyboard;
 
     // If using the DirectX Tool Kit for DX12, uncomment this line:
     // std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;

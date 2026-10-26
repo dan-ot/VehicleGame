@@ -70,9 +70,9 @@ namespace Engine
 			m_pendingManifest.emplace(next, std::move(manifest));
 		}
 
-		void Tick(double coreDt, const CommandFrame& commands)
+		void Tick(double coreDt, const CommandFrame& commands, const RawKeyboardFrame& keyboard)
 		{
-			m_active->Tick(coreDt, commands);
+			m_active->Tick(coreDt, commands, keyboard);
 			ApplyRequestedTransition();
 		}
 

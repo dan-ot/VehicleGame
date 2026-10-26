@@ -25,6 +25,20 @@ namespace Engine
 		}
 	}
 
+	MenuTextAssets MenuBase::ResolveTextAssets(const AssetManager& assets) const
+	{
+		MenuTextAssets result;
+		if (const auto* font = dynamic_cast<const FontResource*>(assets.Find(TextFontKey())))
+		{
+			result.font = font;
+		}
+		if (const auto* texture = FindResidentTexture(assets, WhiteTextureKey()))
+		{
+			result.whiteTexture = texture->GpuDescriptor();
+		}
+		return result;
+	}
+
 	void MenuBase::Render(SharedRenderer& renderer)
 	{
 		const auto viewport = renderer.GetScreenViewport();
@@ -42,13 +56,14 @@ namespace Engine
 		}
 
 		m_root->Recalculate(m_screenWidth, m_screenHeight);
+		m_root->SetTextAssets(ResolveTextAssets(*m_assets));
 		m_cursor.EnsurePlaced(m_screenWidth, m_screenHeight);
 		m_root->Render(*m_quads, *m_assets, RectF{ 0.0f, 0.0f, viewport.Width, viewport.Height });
 		OnRender(*m_quads, *m_assets);
 		m_cursor.Render(*m_quads, *m_assets);
 	}
 
-	MenuInputResult MenuBase::ConsumeInput(const CommandFrame& commands, double dt)
+	MenuInputResult MenuBase::ConsumeInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, double dt)
 	{
 		assert(m_root != nullptr);
 
@@ -95,7 +110,21 @@ namespace Engine
 		m_wasAccept = accept;
 		m_wasAbort = abort;
 
-		m_root->RouteInput(ResidualCommands(commands), result.valueChanges);
+		if (keyboard.keyPressed[kVkTab])
+		{
+			CycleFocus(keyboard.shift ? -1 : 1, result);
+		}
+
+		m_root->RouteInput(ResidualCommands(commands), keyboard, result.valueChanges);
+
+		if (m_root->FocusedIsTextBox())
+		{
+			m_keyboard.Show(keyboard.lastDevice);
+		}
+		else
+		{
+			m_keyboard.Hide();
+		}
 
 		result.cursor = m_cursor.Position();
 		return result;
@@ -178,7 +207,30 @@ namespace Engine
 	void MenuBase::FocusItem(MenuItemId id, MenuInputResult& result)
 	{
 		m_root->SetFocus(id);
+		m_root->SetTextFocus(id);
 		result.focusChanged = id;
+	}
+
+	void MenuBase::CycleFocus(int step, MenuInputResult& result)
+	{
+		const std::size_t count = m_root->ItemCount();
+		if (count == 0)
+		{
+			return;
+		}
+
+		const auto current = m_root->Focus();
+		std::size_t index = current ? *current : (step > 0 ? count - 1 : 0);
+		for (std::size_t tried = 0; tried < count; ++tried)
+		{
+			index = (index + count + (step > 0 ? 1 : count - 1)) % count;
+			const auto id = static_cast<MenuItemId>(index);
+			if (m_root->Item(id).CanFocus())
+			{
+				FocusItem(id, result);
+				return;
+			}
+		}
 	}
 
 	void MenuBase::CenterCursorOn(MenuItemId id)

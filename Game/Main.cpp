@@ -226,6 +226,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 
+    case WM_CHAR:
+        if (game)
+        {
+            game->OnChar(static_cast<char16_t>(wParam));
+        }
+        break;
+
     case WM_ACTIVATEAPP:
         if (game)
         {

@@ -4,11 +4,13 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cmath>
 
 #include "InputCommands.h"
 #include "InputFrame.h"
 #include "InputMap.h"
+#include "RawKeyboardFrame.h"
 
 namespace Engine
 {
@@ -37,6 +39,7 @@ namespace Engine
 		RawGamepad gamepad;
 		std::array<bool, kKeyCount> keys{};
 		RawMouse mouse;
+		std::u32string characters;
 	};
 
 	class InputSystem final
@@ -60,7 +63,16 @@ namespace Engine
 			for (std::size_t i = 0; i < kKeyCount; ++i)
 			{
 				m_frame.keyboard.keys[i].Advance(raw.keys[i]);
+				if (raw.keys[i] && !m_keyboard.keyDown[i])
+				{
+					m_keyboard.keyPressed[i] = true;
+					m_lastDevice = InputDevice::Keyboard;
+				}
+				m_keyboard.keyDown[i] = raw.keys[i];
 			}
+			m_keyboard.shift = raw.keys[kVkShift];
+			m_keyboard.ctrl = raw.keys[kVkControl];
+			m_keyboard.characters += raw.characters;
 
 			m_frame.mouse.deltaX = static_cast<float>(raw.mouse.deltaX);
 			m_frame.mouse.deltaY = static_cast<float>(raw.mouse.deltaY);
@@ -68,6 +80,19 @@ namespace Engine
 			for (std::size_t i = 0; i < kMouseButtonCount; ++i)
 			{
 				m_frame.mouse.buttons[i].Advance(raw.mouse.buttons[i]);
+			}
+
+			if (!m_keyboard.characters.empty())
+			{
+				m_lastDevice = InputDevice::Keyboard;
+			}
+			if (raw.mouse.deltaX != 0 || raw.mouse.deltaY != 0 || raw.mouse.wheel != 0 || AnyMouseButton(raw.mouse))
+			{
+				m_lastDevice = InputDevice::Mouse;
+			}
+			if (AnyGamepadActivity(raw.gamepad))
+			{
+				m_lastDevice = InputDevice::Controller;
 			}
 
 			BuildCommands(raw);
@@ -84,6 +109,7 @@ namespace Engine
 		{
 			m_frame.keyboard = {};
 			m_frame.mouse.buttons = {};
+			m_keyboard = {};
 		}
 
 		const InputFrame& Frame() const noexcept
@@ -91,9 +117,37 @@ namespace Engine
 			return m_frame;
 		}
 
+		InputDevice LastDevice() const noexcept
+		{
+			return m_lastDevice;
+		}
+
+		RawKeyboardFrame TakeKeyboard() noexcept
+		{
+			RawKeyboardFrame latched = m_keyboard;
+			m_keyboard.characters.clear();
+			m_keyboard.keyPressed = {};
+			return latched;
+		}
+
 	private:
 		static constexpr float kStickDeadzone = 0.24f;
 		static constexpr float kTriggerDeadzone = 0.12f;
+		static constexpr std::size_t kVkShift = 0x10;
+		static constexpr std::size_t kVkControl = 0x11;
+
+		static bool AnyMouseButton(const RawMouse& mouse) noexcept
+		{
+			return std::any_of(mouse.buttons.begin(), mouse.buttons.end(), [](bool down) { return down; });
+		}
+
+		static bool AnyGamepadActivity(const RawGamepad& gamepad) noexcept
+		{
+			const bool buttonDown = std::any_of(gamepad.buttons.begin(), gamepad.buttons.end(), [](bool down) { return down; });
+			return buttonDown || std::fabs(gamepad.leftX) > kStickDeadzone || std::fabs(gamepad.leftY) > kStickDeadzone
+				|| std::fabs(gamepad.rightX) > kStickDeadzone || std::fabs(gamepad.rightY) > kStickDeadzone
+				|| gamepad.leftTrigger > kTriggerDeadzone || gamepad.rightTrigger > kTriggerDeadzone;
+		}
 
 		static bool IsNavigation(Command command) noexcept
 		{
@@ -190,5 +244,7 @@ namespace Engine
 
 		InputFrame m_frame;
 		CommandFrame m_commands;
+		RawKeyboardFrame m_keyboard;
+		InputDevice m_lastDevice = InputDevice::Keyboard;
 	};
 }

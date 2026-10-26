@@ -7,8 +7,10 @@
 #include "../Layout/LayoutTree.h"
 #include "../Render/StretchedImage.h"
 #include "../State/InputCommands.h"
+#include "../State/RawKeyboardFrame.h"
 #include "MenuItem.h"
 #include "MenuNavigation.h"
+#include "MenuTextBox.h"
 
 #include <optional>
 #include <vector>
@@ -42,7 +44,11 @@ namespace Engine
 		std::optional<MenuItemId> ItemAt(float x, float y) const;
 
 		MenuLevel* Parent() const noexcept { return m_parent; }
-		void RouteInput(const CommandFrame& commands, std::vector<MenuValueChange>& changes);
+		void RouteInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, std::vector<MenuValueChange>& changes);
+
+		void SetTextAssets(const MenuTextAssets& assets);
+		void SetTextFocus(std::optional<MenuItemId> id);
+		bool FocusedIsTextBox() const noexcept;
 
 		void Recalculate(float screenWidth, float screenHeight);
 		void Update(double dt);

@@ -98,7 +98,7 @@ namespace Engine
 		m_layout.Calculate(m_root, screenWidth, screenHeight);
 	}
 
-	void MenuLevel::RouteInput(const CommandFrame& commands, std::vector<MenuValueChange>& changes)
+	void MenuLevel::RouteInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, std::vector<MenuValueChange>& changes)
 	{
 		for (const MenuLevel* level = this; level != nullptr; level = level->m_parent)
 		{
@@ -115,7 +115,7 @@ namespace Engine
 			}
 
 			std::optional<std::any> change;
-			if (control->HandleInput(commands, change) == MenuInputOutcome::Handled)
+			if (control->HandleInput(commands, keyboard, change) == MenuInputOutcome::Handled)
 			{
 				if (change)
 				{
@@ -154,6 +154,33 @@ namespace Engine
 			if (m_items[id].control != nullptr)
 			{
 				m_items[id].control->Render(renderer, assets, ItemRect(id));
+			}
+		}
+	}
+
+	bool MenuLevel::FocusedIsTextBox() const noexcept
+	{
+		return m_focus && dynamic_cast<const MenuTextBox*>(m_items[*m_focus].control.get()) != nullptr;
+	}
+
+	void MenuLevel::SetTextFocus(std::optional<MenuItemId> id)
+	{
+		for (MenuItemId i = 0; i < m_items.size(); ++i)
+		{
+			if (auto* textBox = dynamic_cast<MenuTextBox*>(m_items[i].control.get()))
+			{
+				textBox->SetFocused(id && *id == i);
+			}
+		}
+	}
+
+	void MenuLevel::SetTextAssets(const MenuTextAssets& assets)
+	{
+		for (auto& item : m_items)
+		{
+			if (auto* textBox = dynamic_cast<MenuTextBox*>(item.control.get()))
+			{
+				textBox->SetAssets(assets);
 			}
 		}
 	}
