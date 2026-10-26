@@ -6,7 +6,7 @@
 
 #include <optional>
 
-#include "../../DeviceResources.h"
+#include "../Render/QuadRenderer.h"
 #include "../Assets/AssetKit.h"
 #include "../Assets/AssetManifest.h"
 #include "EngineState.h"
@@ -17,7 +17,7 @@
 
 namespace Engine
 {
-	using SharedRenderer = DX::DeviceResources;
+	using SharedRenderer = Renderer;
 
 	struct ModeTick
 	{

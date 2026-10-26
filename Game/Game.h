@@ -60,13 +60,14 @@ private:
     void Update(double elapsedSeconds);
     void Render();
 
-    void Clear();
-
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>        m_deviceResources;
+
+    // Draws keyed assets resolved through the asset manager.
+    std::unique_ptr<Engine::Renderer>           m_renderer;
 
     // Rendering loop timer.
     DX::StepTimer                               m_timer;

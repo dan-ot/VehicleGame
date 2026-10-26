@@ -66,7 +66,7 @@ namespace
 
 namespace Engine
 {
-	void LayoutText(std::string_view text, const FontResource& font, const TextStyle& style,
+	void LayoutText(std::string_view text, const IFontData& font, const TextStyle& style,
 		float originX, float originY, TextQuadList& quads)
 	{
 		quads.clear();

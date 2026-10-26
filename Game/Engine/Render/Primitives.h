@@ -4,18 +4,11 @@
 
 #pragma once
 
+#include "RenderTypes.h"
+
 namespace Engine
 {
-	class QuadRenderer;
-	class AssetManager;
-
-	struct RectF
-	{
-		float x = 0.0f;
-		float y = 0.0f;
-		float width = 0.0f;
-		float height = 0.0f;
-	};
+	class Renderer;
 
 	class IRenderPrimitive
 	{
@@ -23,6 +16,6 @@ namespace Engine
 		virtual ~IRenderPrimitive() = default;
 
 		virtual void Update(double dt) = 0;
-		virtual void Draw(QuadRenderer& renderer, const AssetManager& assets, const RectF& bounds) const = 0;
+		virtual void Draw(Renderer& renderer, const RectF& bounds) const = 0;
 	};
 }

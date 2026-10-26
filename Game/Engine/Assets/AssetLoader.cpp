@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "AssetLoader.h"
+#include "../../DeviceResources.h"
 #include "TextureResource.h"
 #include "MeshResource.h"
 #include "SoundResource.h"
@@ -35,7 +36,7 @@ namespace Engine
 		}
 	}
 
-	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, DX::DeviceResources& resources, AssetUploader& uploader) noexcept
+	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, GpuContext& resources, AssetUploader& uploader) noexcept
 	{
 		auto resource = Create(key);
 		if (!resource)

@@ -137,23 +137,23 @@ namespace Engine
 		}
 	}
 
-	void MenuLevel::Render(QuadRenderer& renderer, const AssetManager& assets, const RectF& screen) const
+	void MenuLevel::Render(Renderer& renderer, const RectF& screen) const
 	{
 		if (const auto* background = Background())
 		{
-			background->Draw(renderer, assets, screen);
+			background->Draw(renderer, screen);
 		}
 
 		if (m_focus && m_focusGraphic)
 		{
-			m_focusGraphic->Draw(renderer, assets, ItemRect(*m_focus));
+			m_focusGraphic->Draw(renderer, ItemRect(*m_focus));
 		}
 
 		for (MenuItemId id = 0; id < m_items.size(); ++id)
 		{
 			if (m_items[id].control != nullptr)
 			{
-				m_items[id].control->Render(renderer, assets, ItemRect(id));
+				m_items[id].control->Render(renderer, ItemRect(id));
 			}
 		}
 	}

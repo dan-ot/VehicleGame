@@ -4,6 +4,8 @@
 
 #include "pch.h"
 #include "FontResource.h"
+#include "AssetUploader.h"
+#include "../../DeviceResources.h"
 #include "GlyphAtlasPacker.h"
 #include "../../UploadBuffer.h"
 

@@ -31,19 +31,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
-#include <wrl/client.h>
-#include <wrl/event.h>
-
-#include <directx/dxgiformat.h>
-#include <directx/d3d12.h>
-#include <directx/d3dx12.h>
-#include <dxguids/dxguids.h>
-
-#include <dxgi1_6.h>
-
-#include <DirectXMath.h>
-#include <DirectXColors.h>
-
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -59,12 +46,8 @@
 #include <system_error>
 #include <tuple>
 
-#ifdef _DEBUG
-#include <dxgidebug.h>
-#endif
-
 // WinPixEvent Runtime
-#include <pix3.h>
+
 
 // Game Runtime
 #include <XGameRuntime.h>
@@ -87,9 +70,6 @@
 //#include <playfab/core/PFErrors.h>
 //#include <playfab/services/PFServices.h>
 #endif
-
-// DirectX Shader Compiler API (runtime shader compilation)
-#include <directx-dxc/dxcapi.h>
 
 // If using DirectStorage, uncomment this line:
 //#include <dstorage.h>

@@ -52,14 +52,9 @@ namespace Engine
 				(row + 1) * cellHeight };
 		}
 
-		void Draw(QuadRenderer& renderer, const AssetManager& assets, const RectF& bounds) const override
+		void Draw(Renderer& renderer, const RectF& bounds) const override
 		{
-			const auto* texture = FindResidentTexture(assets, m_key);
-			if (texture == nullptr)
-			{
-				return;
-			}
-			renderer.Draw(texture->GpuDescriptor(), bounds, CurrentUv(), ColorF{});
+			renderer.Draw(m_key, bounds, CurrentUv(), ColorF{});
 		}
 
 	private:

@@ -18,17 +18,16 @@ namespace Engine
 
 		void Update(double) override {}
 
-		void Draw(QuadRenderer& renderer, const AssetManager& assets, const RectF& bounds) const override
+		void Draw(Renderer& renderer, const RectF& bounds) const override
 		{
-			const auto* texture = FindResidentTexture(assets, m_key);
-			if (texture == nullptr || m_percent <= 0.0f)
+			if (m_percent <= 0.0f)
 			{
 				return;
 			}
 			RectF destination;
 			UvRectF uv;
 			RevealLeft(bounds, UvRectF{}, m_percent, destination, uv);
-			renderer.Draw(texture->GpuDescriptor(), destination, uv, ColorF{});
+			renderer.Draw(m_key, destination, uv, ColorF{});
 		}
 
 	private:

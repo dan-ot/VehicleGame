@@ -5,6 +5,9 @@
 #include "pch.h"
 #include "ShaderCompiler.h"
 
+#include <wrl/client.h>
+#include <directx-dxc/dxcapi.h>
+
 #include <cstring>
 #include <fstream>
 #include <iterator>

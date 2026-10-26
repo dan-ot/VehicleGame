@@ -38,19 +38,13 @@ namespace Engine
 			root.Link(2, MenuDirection::Up, 1);
 		}
 
-		void OnRender(QuadRenderer& quads, const AssetManager& assets) override
+		void OnRender(Renderer& renderer) override
 		{
-			const auto* texture = FindResidentTexture(assets, BackgroundKey());
-			if (texture == nullptr)
-			{
-				return;
-			}
-
 			MenuLevel& root = Root();
 			for (MenuItemId id = 0; id < root.ItemCount(); ++id)
 			{
 				const ColorF tint = root.Focus() == id ? kSelectedTint : kUnselectedTint;
-				quads.Draw(texture->GpuDescriptor(), root.ItemRect(id), UvRectF{}, tint);
+				renderer.Draw(BackgroundKey(), root.ItemRect(id), UvRectF{}, tint);
 			}
 		}
 

@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "MenuBase.h"
+#include "../Assets/AssetManager.h"
 
 #include <cassert>
 
@@ -28,27 +29,17 @@ namespace Engine
 	MenuTextAssets MenuBase::ResolveTextAssets(const AssetManager& assets) const
 	{
 		MenuTextAssets result;
-		if (const auto* font = dynamic_cast<const FontResource*>(assets.Find(TextFontKey())))
-		{
-			result.font = font;
-		}
-		if (const auto* texture = FindResidentTexture(assets, WhiteTextureKey()))
-		{
-			result.whiteTexture = texture->GpuDescriptor();
-		}
+		result.fontKey = TextFontKey();
+		result.font = assets.FindFont(result.fontKey);
+		result.whiteKey = WhiteTextureKey();
+		result.whiteResident = assets.Find(result.whiteKey) != nullptr;
 		return result;
 	}
 
 	void MenuBase::Render(SharedRenderer& renderer)
 	{
-		const auto viewport = renderer.GetScreenViewport();
-		m_screenWidth = viewport.Width;
-		m_screenHeight = viewport.Height;
-		if (m_quads == nullptr || m_device != renderer.GetD3DDevice())
-		{
-			m_quads = std::make_unique<QuadRenderer>(renderer);
-			m_device = renderer.GetD3DDevice();
-		}
+		m_screenWidth = renderer.ViewportWidth();
+		m_screenHeight = renderer.ViewportHeight();
 
 		if (m_assets == nullptr || m_root == nullptr)
 		{
@@ -58,9 +49,9 @@ namespace Engine
 		m_root->Recalculate(m_screenWidth, m_screenHeight);
 		m_root->SetTextAssets(ResolveTextAssets(*m_assets));
 		m_cursor.EnsurePlaced(m_screenWidth, m_screenHeight);
-		m_root->Render(*m_quads, *m_assets, RectF{ 0.0f, 0.0f, viewport.Width, viewport.Height });
-		OnRender(*m_quads, *m_assets);
-		m_cursor.Render(*m_quads, *m_assets);
+		m_root->Render(renderer, RectF{ 0.0f, 0.0f, m_screenWidth, m_screenHeight });
+		OnRender(renderer);
+		m_cursor.Render(renderer);
 	}
 
 	MenuInputResult MenuBase::ConsumeInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, double dt)

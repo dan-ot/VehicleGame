@@ -4,6 +4,19 @@
 
 #pragma once
 
+#include <wrl/client.h>
+#include <wrl/event.h>
+#include <directx/dxgiformat.h>
+#include <directx/d3d12.h>
+#include <directx/d3dx12.h>
+#include <dxguids/dxguids.h>
+#include <dxgi1_6.h>
+#include <DirectXMath.h>
+#include <DirectXColors.h>
+#ifdef _DEBUG
+#include <dxgidebug.h>
+#endif
+
 namespace DX
 {
     // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.

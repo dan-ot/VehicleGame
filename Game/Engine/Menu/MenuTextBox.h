@@ -22,8 +22,10 @@ namespace Engine
 
 	struct MenuTextAssets
 	{
-		const FontResource* font = nullptr;
-		D3D12_GPU_DESCRIPTOR_HANDLE whiteTexture{};
+		AssetKey fontKey;
+		const IFontData* font = nullptr;
+		AssetKey whiteKey;
+		bool whiteResident = false;
 	};
 
 	class MenuTextBox final : public MenuControl<std::wstring>
@@ -54,19 +56,19 @@ namespace Engine
 
 		void SetAssets(MenuTextAssets assets) noexcept { m_assets = assets; }
 
-		void Render(QuadRenderer& renderer, const AssetManager&, const RectF& rect) const override
+		void Render(Renderer& renderer, const RectF& rect) const override
 		{
-			if (m_assets.whiteTexture.ptr == 0)
+			if (!m_assets.whiteResident)
 			{
 				return;
 			}
 
 			const ColorF border{ 1.0f, 1.0f, 1.0f, 1.0f };
 			const float thickness = 2.0f;
-			renderer.Draw(m_assets.whiteTexture, RectF{ rect.x, rect.y, rect.width, thickness }, UvRectF{}, border);
-			renderer.Draw(m_assets.whiteTexture, RectF{ rect.x, rect.y + rect.height - thickness, rect.width, thickness }, UvRectF{}, border);
-			renderer.Draw(m_assets.whiteTexture, RectF{ rect.x, rect.y, thickness, rect.height }, UvRectF{}, border);
-			renderer.Draw(m_assets.whiteTexture, RectF{ rect.x + rect.width - thickness, rect.y, thickness, rect.height }, UvRectF{}, border);
+			renderer.Draw(m_assets.whiteKey, RectF{ rect.x, rect.y, rect.width, thickness }, UvRectF{}, border);
+			renderer.Draw(m_assets.whiteKey, RectF{ rect.x, rect.y + rect.height - thickness, rect.width, thickness }, UvRectF{}, border);
+			renderer.Draw(m_assets.whiteKey, RectF{ rect.x, rect.y, thickness, rect.height }, UvRectF{}, border);
+			renderer.Draw(m_assets.whiteKey, RectF{ rect.x + rect.width - thickness, rect.y, thickness, rect.height }, UvRectF{}, border);
 
 			if (m_assets.font == nullptr)
 			{
@@ -75,13 +77,13 @@ namespace Engine
 
 			const float textX = rect.x + kPadding;
 			const float textY = rect.y + kPadding;
-			m_text.SetText(ToUtf8(DisplayText()), *m_assets.font, m_style, textX, textY);
+			m_text.SetText(ToUtf8(DisplayText()), m_assets.fontKey, *m_assets.font, m_style, textX, textY);
 			m_text.Draw(renderer);
 
 			if (m_focused)
 			{
 				const float caretX = textX + static_cast<float>(m_caret) * kCaretAdvance;
-				renderer.Draw(m_assets.whiteTexture, RectF{ caretX, textY, thickness, rect.height - 2.0f * kPadding }, UvRectF{}, border);
+				renderer.Draw(m_assets.whiteKey, RectF{ caretX, textY, thickness, rect.height - 2.0f * kPadding }, UvRectF{}, border);
 			}
 		}
 

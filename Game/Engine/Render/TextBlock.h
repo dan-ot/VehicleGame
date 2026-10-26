@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "../Assets/AssetKey.h"
+#include "QuadRenderer.h"
 #include "TextLayout.h"
 
 #include <string>
@@ -15,16 +17,16 @@ namespace Engine
 	{
 	public:
 		// Re-lays out the text only when the text, font, style, or origin differ from the last call.
-		void SetText(std::string_view text, const FontResource& font, const TextStyle& style, float originX, float originY)
+		void SetText(std::string_view text, const AssetKey& fontKey, const IFontData& font, const TextStyle& style, float originX, float originY)
 		{
-			if (m_valid && m_font == &font && m_text == text && SameStyle(m_style, style) &&
+			if (m_valid && m_fontKey == fontKey && m_text == text && SameStyle(m_style, style) &&
 				m_originX == originX && m_originY == originY)
 			{
 				return;
 			}
 
 			m_text.assign(text);
-			m_font = &font;
+			m_fontKey = fontKey;
 			m_style = style;
 			m_originX = originX;
 			m_originY = originY;
@@ -32,17 +34,16 @@ namespace Engine
 			m_valid = true;
 		}
 
-		void Draw(QuadRenderer& renderer) const
+		void Draw(Renderer& renderer) const
 		{
 			if (!m_valid)
 			{
 				return;
 			}
 
-			const auto texture = m_font->GpuDescriptor();
 			for (const GlyphQuad& quad : m_quads)
 			{
-				renderer.Draw(texture, quad.destination, quad.uv, quad.tint);
+				renderer.Draw(m_fontKey, quad.destination, quad.uv, quad.tint);
 			}
 		}
 
@@ -56,7 +57,7 @@ namespace Engine
 		}
 
 		std::string m_text;
-		const FontResource* m_font = nullptr;
+		AssetKey m_fontKey;
 		TextStyle m_style;
 		float m_originX = 0.0f;
 		float m_originY = 0.0f;

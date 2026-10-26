@@ -5,6 +5,7 @@
 #pragma once
 
 #include "AssetManager.h"
+#include "AssetUploader.h"
 
 #include <string>
 

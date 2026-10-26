@@ -36,7 +36,7 @@ namespace Engine
 
 	protected:
 		virtual void BuildRoot(MenuLevel& root) = 0;
-		virtual void OnRender(QuadRenderer&, const AssetManager&) {}
+		virtual void OnRender(Renderer&) {}
 		virtual void OnValueChanged(const MenuValueChange&) {}
 
 		void OnEnter() override;
@@ -74,8 +74,6 @@ namespace Engine
 		float m_screenHeight = 0.0f;
 
 		AssetManager* m_assets = nullptr;
-		std::unique_ptr<QuadRenderer> m_quads;
-		ID3D12Device* m_device = nullptr;
 		SoftwareCursor m_cursor;
 		OnScreenKeyboard m_keyboard;
 	};

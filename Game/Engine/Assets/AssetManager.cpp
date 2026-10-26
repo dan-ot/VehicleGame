@@ -5,13 +5,24 @@
 #include "pch.h"
 #include "AssetManager.h"
 #include "AssetLoader.h"
+#include "AssetUploader.h"
+#include "../../DeviceResources.h"
 
 #include <chrono>
 #include <unordered_set>
 
 namespace Engine
 {
-	void AssetManager::Declare(AssetKit& kit, const AssetManifest& manifest, DX::DeviceResources* resources)
+	AssetManager::AssetManager() : m_uploader(std::make_unique<AssetUploader>()) {}
+
+	AssetManager::~AssetManager() = default;
+
+	AssetUploader& AssetManager::Uploader() noexcept
+	{
+		return *m_uploader;
+	}
+
+	void AssetManager::Declare(AssetKit& kit, const AssetManifest& manifest, GpuContext* resources)
 	{
 		std::unordered_set<AssetKey> declared;
 		for (const AssetKey& key : manifest.Keys())
@@ -36,7 +47,7 @@ namespace Engine
 		}
 	}
 
-	void AssetManager::Request(AssetKit& kit, const AssetKey& key, DX::DeviceResources* resources)
+	void AssetManager::Request(AssetKit& kit, const AssetKey& key, GpuContext* resources)
 	{
 		if (kit.Holds(key))
 		{
@@ -49,11 +60,11 @@ namespace Engine
 
 		if (resources && !entry.resource)
 		{
-			if (!m_uploader.IsStarted())
+			if (!Uploader().IsStarted())
 			{
-				m_uploader.Start(resources->GetD3DDevice());
+				Uploader().Start(resources->GetD3DDevice());
 			}
-			entry.resource = AssetLoader::CreateAndBuild(key, *resources, m_uploader);
+			entry.resource = AssetLoader::CreateAndBuild(key, *resources, Uploader());
 		}
 	}
 
@@ -103,6 +114,11 @@ namespace Engine
 		return it == m_entries.end() ? nullptr : it->second.resource.get();
 	}
 
+	const IFontData* AssetManager::FindFont(const AssetKey& key) const
+	{
+		return dynamic_cast<const IFontData*>(Find(key));
+	}
+
 	bool AssetManager::IsResident(const AssetKey& key) const
 	{
 		return m_entries.find(key) != m_entries.end();
@@ -127,7 +143,7 @@ namespace Engine
 			}
 		}
 
-		m_uploader.Stop();
+		m_uploader->Stop();
 	}
 
 	void AssetManager::OnDeviceRestored(const AssetKit* preferred)
@@ -156,13 +172,13 @@ namespace Engine
 		}
 	}
 
-	bool AssetManager::RestoreWithinBudget(DX::DeviceResources& resources, double budgetSeconds)
+	bool AssetManager::RestoreWithinBudget(GpuContext& resources, double budgetSeconds)
 	{
 		const auto start = std::chrono::steady_clock::now();
 
-		if (m_restoreCursor < m_restoreQueue.size() && !m_uploader.IsStarted())
+		if (m_restoreCursor < m_restoreQueue.size() && !Uploader().IsStarted())
 		{
-			m_uploader.Start(resources.GetD3DDevice());
+			Uploader().Start(resources.GetD3DDevice());
 		}
 
 		while (m_restoreCursor < m_restoreQueue.size())
@@ -175,7 +191,7 @@ namespace Engine
 
 			if (IAssetResource* resource = Find(m_restoreQueue[m_restoreCursor]))
 			{
-				resource->Rebuild(resources, m_uploader);
+				resource->Rebuild(resources, Uploader());
 			}
 			++m_restoreCursor;
 		}

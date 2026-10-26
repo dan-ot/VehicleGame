@@ -121,6 +121,9 @@
     <ClInclude Include="Engine\Render\Primitives.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\PrimitiveSupport.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\QuadRenderer.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Render\RenderTypes.h"><Filter>Engine\Render</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\GpuContext.h"><Filter>Engine\Assets</Filter></ClInclude>
+    <ClInclude Include="Engine\Assets\FontData.h"><Filter>Engine\Assets</Filter></ClInclude>
     <ClInclude Include="Engine\Render\TextBlock.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\TextLayout.h"><Filter>Engine\Render</Filter></ClInclude>
     <ClInclude Include="Engine\Render\StretchedImage.h"><Filter>Engine\Render</Filter></ClInclude>

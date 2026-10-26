@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "TextureResource.h"
+#include "../../DeviceResources.h"
 #include "TgaLoader.h"
 #include "../../UploadBuffer.h"
 

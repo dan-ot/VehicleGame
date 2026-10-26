@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "../Assets/AssetManager.h"
+#include "../Assets/AssetKey.h"
+#include "../Assets/FontData.h"
 #include "../Render/Primitives.h"
 #include "../Render/QuadRenderer.h"
 #include "../State/InputCommands.h"
@@ -29,7 +30,7 @@ namespace Engine
 		virtual ~IMenuControl() = default;
 
 		virtual void Update(double dt) = 0;
-		virtual void Render(QuadRenderer& renderer, const AssetManager& assets, const RectF& rect) const = 0;
+		virtual void Render(Renderer& renderer, const RectF& rect) const = 0;
 		virtual MenuInputOutcome HandleInput(const CommandFrame& commands, const RawKeyboardFrame& keyboard, std::optional<std::any>& change) = 0;
 	};
 

@@ -15,14 +15,9 @@ namespace Engine
 
 		void Update(double) override {}
 
-		void Draw(QuadRenderer& renderer, const AssetManager& assets, const RectF& bounds) const override
+		void Draw(Renderer& renderer, const RectF& bounds) const override
 		{
-			const auto* texture = FindResidentTexture(assets, m_key);
-			if (texture == nullptr)
-			{
-				return;
-			}
-			renderer.Draw(texture->GpuDescriptor(), bounds, UvRectF{}, ColorF{});
+			renderer.Draw(m_key, bounds, UvRectF{}, ColorF{});
 		}
 
 	private:

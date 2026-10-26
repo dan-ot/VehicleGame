@@ -52,7 +52,7 @@ namespace Engine
 
 		void Recalculate(float screenWidth, float screenHeight);
 		void Update(double dt);
-		void Render(QuadRenderer& renderer, const AssetManager& assets, const RectF& screen) const;
+		void Render(Renderer& renderer, const RectF& screen) const;
 
 	private:
 		MenuLevel* m_parent = nullptr;

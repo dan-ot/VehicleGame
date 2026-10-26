@@ -4,6 +4,11 @@
 
 #pragma once
 
+#include <wrl/client.h>
+#include <wrl/event.h>
+#include <directx/d3d12.h>
+#include <directx/d3dx12.h>
+
 #include <cstring>
 
 namespace DX

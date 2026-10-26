@@ -45,25 +45,18 @@ namespace Engine
 
 		void Render(SharedRenderer& renderer) override
 		{
-			const auto viewport = renderer.GetScreenViewport();
-			m_screenWidth = viewport.Width;
-			m_screenHeight = viewport.Height;
-
-			if (m_quads == nullptr || m_device != renderer.GetD3DDevice())
-			{
-				m_quads = std::make_unique<QuadRenderer>(renderer);
-				m_device = renderer.GetD3DDevice();
-			}
+			m_screenWidth = renderer.ViewportWidth();
+			m_screenHeight = renderer.ViewportHeight();
 
 			m_cursor.EnsurePlaced(m_screenWidth, m_screenHeight);
 
 			m_layout.Recalculate(m_screenWidth, m_screenHeight);
 			const RectF screen{ 0.0f, 0.0f, m_screenWidth, m_screenHeight };
-			m_background.Draw(*m_quads, *m_assets, screen);
-			m_logo.Draw(*m_quads, *m_assets, m_layout.Logo());
-			m_loadingBar.Draw(*m_quads, *m_assets, m_layout.LoadingBar());
-			m_spinner.Draw(*m_quads, *m_assets, m_layout.Spinner());
-			m_cursor.Render(*m_quads, *m_assets);
+			m_background.Draw(renderer, screen);
+			m_logo.Draw(renderer, m_layout.Logo());
+			m_loadingBar.Draw(renderer, m_layout.LoadingBar());
+			m_spinner.Draw(renderer, m_layout.Spinner());
+			m_cursor.Render(renderer);
 		}
 
 	protected:
@@ -148,8 +141,6 @@ namespace Engine
 		}
 
 		AssetManager* m_assets = nullptr;
-		std::unique_ptr<QuadRenderer> m_quads;
-		ID3D12Device* m_device = nullptr;
 
 		SplashLayout m_layout;
 		float m_screenWidth = 0.0f;

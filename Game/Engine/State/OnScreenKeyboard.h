@@ -7,6 +7,7 @@
 #include "InputCommands.h"
 
 #include <windows.h>
+#include <shellapi.h>
 
 namespace Engine
 {

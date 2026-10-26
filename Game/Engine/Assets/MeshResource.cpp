@@ -4,6 +4,8 @@
 
 #include "pch.h"
 #include "MeshResource.h"
+#include "AssetUploader.h"
+#include "../../DeviceResources.h"
 #include "GltfLoader.h"
 #include "GpuUploader.h"
 

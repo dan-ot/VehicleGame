@@ -74,9 +74,9 @@ namespace Engine
 			m_sprite.Advance(dt);
 		}
 
-		void Render(QuadRenderer& renderer, const AssetManager& assets) const
+		void Render(Renderer& renderer) const
 		{
-			m_sprite.Draw(renderer, assets, RectF{ m_position.x, m_position.y, m_size, m_size });
+			m_sprite.Draw(renderer, RectF{ m_position.x, m_position.y, m_size, m_size });
 		}
 
 	private:

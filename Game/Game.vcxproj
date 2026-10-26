@@ -413,6 +413,9 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Render\Primitives.h" />
     <ClInclude Include="Engine\Render\PrimitiveSupport.h" />
     <ClInclude Include="Engine\Render\QuadRenderer.h" />
+    <ClInclude Include="Engine\Render\RenderTypes.h" />
+    <ClInclude Include="Engine\Assets\GpuContext.h" />
+    <ClInclude Include="Engine\Assets\FontData.h" />
     <ClInclude Include="Engine\Render\TextBlock.h" />
     <ClInclude Include="Engine\Render\TextLayout.h" />
     <ClInclude Include="Engine\Render\StretchedImage.h" />

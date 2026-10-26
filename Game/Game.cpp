@@ -5,17 +5,13 @@
 #include "pch.h"
 #include "Game.h"
 
+#include <pix3.h>
 #include <algorithm>
 #include <chrono>
 
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
-
-namespace
-{
-    constexpr double kAssetRestoreBudgetSeconds = 0.002;
-}
 
 using Microsoft::WRL::ComPtr;
 
@@ -143,49 +139,10 @@ void Game::Render()
         return;
     }
 
-    // Prepare the command list to render a new frame.
-    m_deviceResources->Prepare();
-    m_core.Assets().RestoreWithinBudget(*m_deviceResources, kAssetRestoreBudgetSeconds);
-    Clear();
-
-    auto commandList = m_deviceResources->GetCommandList();
-    PIXBeginEvent(commandList, PIX_COLOR_DEFAULT, L"Render");
-
-    m_core.Render(*m_deviceResources);
-
-    PIXEndEvent(commandList);
-
-    // Show the new frame.
-    PIXBeginEvent(m_deviceResources->GetCommandQueue(), PIX_COLOR_DEFAULT, L"Present");
-    m_deviceResources->Present();
-
-    // If using the DirectX Tool Kit for DX12, uncomment this line:
-    // m_graphicsMemory->Commit(m_deviceResources->GetCommandQueue());
-
-    PIXEndEvent(m_deviceResources->GetCommandQueue());
-}
-
-// Helper method to clear the back buffers.
-void Game::Clear()
-{
-    auto commandList = m_deviceResources->GetCommandList();
-    PIXBeginEvent(commandList, PIX_COLOR_DEFAULT, L"Clear");
-
-    // Clear the views.
-    const auto rtvDescriptor = m_deviceResources->GetRenderTargetView();
-    const auto dsvDescriptor = m_deviceResources->GetDepthStencilView();
-
-    commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
-    commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-
-    // Set the viewport and scissor rect.
-    const auto viewport = m_deviceResources->GetScreenViewport();
-    const auto scissorRect = m_deviceResources->GetScissorRect();
-    commandList->RSSetViewports(1, &viewport);
-    commandList->RSSetScissorRects(1, &scissorRect);
-
-    PIXEndEvent(commandList);
+    // Prepare, clear, restore queued assets, draw the active mode and present.
+    m_renderer->BeginFrame();
+    m_core.Render(*m_renderer);
+    m_renderer->EndFrame();
 }
 #pragma endregion
 
@@ -267,6 +224,14 @@ void Game::CreateDeviceDependentResources()
     // m_graphicsMemory = std::make_unique<GraphicsMemory>(device);
 
     // TODO: Initialize device dependent objects here (independent of window size).
+    if (m_renderer == nullptr)
+    {
+        m_renderer = std::make_unique<Engine::Renderer>(*m_deviceResources, m_core.Assets());
+    }
+    else
+    {
+        m_renderer->CreateDeviceResources();
+    }
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -278,6 +243,10 @@ void Game::CreateWindowSizeDependentResources()
 void Game::OnDeviceLost()
 {
     m_core.Assets().OnDeviceLost();
+    if (m_renderer)
+    {
+        m_renderer->OnDeviceLost();
+    }
 
     // If using the DirectX Tool Kit for DX12, uncomment this line:
     // m_graphicsMemory.reset();

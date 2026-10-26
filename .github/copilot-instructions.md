@@ -76,6 +76,13 @@ VehicleGame/                      <- Repository / solution root
 | Shaders (if added) | `Game/Engine/Render/` alongside other render code, registered in `Game.vcxproj` as HLSL |
 | Image assets | Under `Game/Assets/`, copied on build |
 
+## Rendering Boundary
+
+- Only `Engine/Render/QuadRenderer.*` (class `Renderer`), `Engine/Assets/*` GPU resources/uploader, `DeviceResources`, `GpuUploader`/`UploadBuffer`, `Game.*` and `Main.cpp` may include DirectX headers. `pch.h` contains no DirectX headers; include them directly where needed.
+- Modes, menus and primitives hold `AssetKey`s and `RectF`/`UvRectF`/`ColorF` (`Engine/Render/RenderTypes.h`) and call `Renderer::Draw(key, ...)`.
+- Font metrics for layout come from `IFontData` (`Engine/Assets/FontData.h`) via `AssetManager::FindFont`.
+- `Renderer` owns the frame lifecycle (`BeginFrame`/`EndFrame`); `AssetManager` owns GPU resource lifetime.
+
 ## Conventions
 
 - Headers and sources are flat in `Game/` for core framework files; engine code is grouped under `Game/Engine/`.

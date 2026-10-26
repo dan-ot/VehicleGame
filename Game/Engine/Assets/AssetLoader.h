@@ -6,6 +6,7 @@
 
 #include "AssetKey.h"
 #include "AssetManager.h"
+#include "AssetUploader.h"
 
 #include <memory>
 
@@ -18,6 +19,6 @@ namespace Engine
 		static std::unique_ptr<IAssetResource> Create(const AssetKey& key) noexcept;
 
 		// Creates and rebuilds the resource. Returns null and logs when the source cannot be loaded.
-		static std::unique_ptr<IAssetResource> CreateAndBuild(const AssetKey& key, DX::DeviceResources& resources, AssetUploader& uploader) noexcept;
+		static std::unique_ptr<IAssetResource> CreateAndBuild(const AssetKey& key, GpuContext& resources, AssetUploader& uploader) noexcept;
 	};
 }
