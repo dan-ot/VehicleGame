@@ -7,6 +7,7 @@
 #include <chrono>
 
 #include "../Assets/AssetManager.h"
+#include "../Audio/Mixer.h"
 #include "../Modes/LoadingMode.h"
 #include "../Modes/MenuMode.h"
 #include "../Modes/PlayMode.h"
@@ -40,6 +41,9 @@ namespace Engine
 			m_loading.BindHandoffs(m_handoffs);
 			m_menu.BindHandoffs(m_handoffs);
 			m_play.BindHandoffs(m_handoffs);
+			m_loading.BindMixer(m_mixer);
+			m_menu.BindMixer(m_mixer);
+			m_play.BindMixer(m_mixer);
 
 			m_active = &m_loading;
 			DeclareActiveAssets();
@@ -48,6 +52,8 @@ namespace Engine
 
 		~CoreMode()
 		{
+			m_mixer.Shutdown();
+			m_assets.Release(m_mixer.PersistentKit());
 			m_assets.Release(m_kits.Loading());
 			m_assets.Release(m_kits.Menu());
 			m_assets.Release(m_kits.Play());
@@ -56,6 +62,11 @@ namespace Engine
 		AssetManager& Assets() noexcept
 		{
 			return m_assets;
+		}
+
+		Mixer& GetMixer() noexcept
+		{
+			return m_mixer;
 		}
 
 		AssetKit& LoadingKit() noexcept
@@ -74,6 +85,7 @@ namespace Engine
 		{
 			m_active->Tick(coreDt, commands, keyboard);
 			ApplyRequestedTransition();
+			m_mixer.Update();
 		}
 
 		void Render(SharedRenderer& renderer)
@@ -129,6 +141,7 @@ namespace Engine
 			}
 
 			m_active->Exit();
+			m_mixer.OnModeExit();
 			m_state = *next;
 			m_active = ModeFor(m_state);
 			DeclareActiveAssets();
@@ -164,6 +177,7 @@ namespace Engine
 
 		ModeKits m_kits;
 		AssetManager m_assets;
+		Mixer m_mixer{ m_assets };
 		EngineHandoffSlot m_handoffs;
 		LoadingMode m_loading;
 		MenuMode m_menu;

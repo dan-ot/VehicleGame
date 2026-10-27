@@ -15,6 +15,7 @@ namespace Engine
 		Texture,
 		Model,
 		Sound,
+		Music,
 		Shader,
 		Font,
 	};

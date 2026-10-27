@@ -20,5 +20,8 @@ namespace Engine
 
 		// Creates and rebuilds the resource. Returns null and logs when the source cannot be loaded.
 		static std::unique_ptr<IAssetResource> CreateAndBuild(const AssetKey& key, GpuContext& resources, AssetUploader& uploader) noexcept;
+
+		// Creates and loads a CPU-only resource (Sound, Music). Returns null for GPU types or failed loads.
+		static std::unique_ptr<IAssetResource> CreateCpu(const AssetKey& key) noexcept;
 	};
 }

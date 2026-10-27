@@ -91,7 +91,7 @@ namespace Engine
 		{
 			for (const AssetWork& work : m_assetWork)
 			{
-				if (m_assets != nullptr && m_assets->Find(work.key) != nullptr)
+				if (m_assets->IsBuilt(work.key))
 				{
 					m_tracker.Complete(work.id);
 				}

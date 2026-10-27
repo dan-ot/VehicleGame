@@ -20,6 +20,7 @@ namespace Engine
 
 		void Release() noexcept override {}
 		bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) override;
+		bool Load() override;
 
 		const DecodedSound& Sound() const noexcept { return m_sound; }
 		bool IsLoaded() const noexcept { return m_loaded; }

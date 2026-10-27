@@ -7,6 +7,7 @@
 #include <optional>
 
 #include "../Render/QuadRenderer.h"
+#include "../Audio/Mixer.h"
 #include "../Assets/AssetKit.h"
 #include "../Assets/AssetManifest.h"
 #include "EngineState.h"
@@ -18,6 +19,7 @@
 namespace Engine
 {
 	using SharedRenderer = Renderer;
+	using SharedMixer = Mixer;
 
 	struct ModeTick
 	{
@@ -77,6 +79,11 @@ namespace Engine
 			m_handoffs = &slot;
 		}
 
+		void BindMixer(SharedMixer& mixer) noexcept
+		{
+			m_mixer = &mixer;
+		}
+
 	protected:
 		virtual void OnEnter() {}
 		virtual void OnExit() {}
@@ -85,6 +92,11 @@ namespace Engine
 		void RequestTransition(EngineState next) noexcept
 		{
 			m_requested = next;
+		}
+
+		SharedMixer& GetMixer() noexcept
+		{
+			return *m_mixer;
 		}
 
 		void PublishHandoff(ModeHandoff handoff) noexcept
@@ -110,5 +122,6 @@ namespace Engine
 		std::optional<EngineState> m_requested;
 		AssetKit* m_kit = nullptr;
 		EngineHandoffSlot* m_handoffs = nullptr;
+		SharedMixer* m_mixer = nullptr;
 	};
 }

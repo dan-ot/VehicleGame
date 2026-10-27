@@ -9,15 +9,38 @@ The asset system lives in `Game/Engine/Assets/`.
 | Texture | `.tga` (uncompressed 32-bit type 2) | `TgaLoader` | GPU (`TextureResource`) |
 | Model | `.gltf` / `.glb` (first mesh primitive) | `GltfLoader` | GPU (`MeshResource`) |
 | Sound | `.wav` (RIFF/WAVE 16-bit PCM) | `WavLoader` | CPU (`SoundResource`) |
+| Music | `.wav` (RIFF/WAVE 16-bit PCM, streamed) | `WavStreamReader` | CPU metadata (`MusicResource`), audio streamed on demand |
 | Shader | `.hlsl` | `ShaderCompiler` (DXC, HLSL to DXIL) | Compiled at runtime |
 
-Sound stays in CPU memory on purpose. The GPU does not consume it, and reading it back from the GPU would be inefficient.
+Sound and Music stay in CPU memory on purpose. The GPU does not consume them, and reading them back from the GPU would be inefficient.
+
+## Typed Accessors
+
+- `AssetManager` keeps one residency map keyed by `AssetKey` and exposes typed lookups: `FindTexture`, `FindModel`, `FindFont`, `FindSound`, and `FindMusic`.
+- Consumers use the typed accessors. The generic `Find` is private to `AssetManager`.
+- Renderers and the Mixer receive `AssetKey`s and never handle file paths or loading.
+
+## Build Timing
+
+- CPU assets (`Sound`, `Music`) are built immediately in `AssetManager::Request` through `AssetLoader::CreateCpu`, which needs no `GpuContext`.
+- GPU assets (`Texture`, `Model`, `Font`) are built through `AssetLoader::CreateAndBuild` with a `GpuContext`.
 
 ## Declaring Assets
 
 - Each mode overrides `DeclareAssets(AssetManifest&)` and lists the assets it needs.
 - `CoreMode` retains the Loading, Menu, and Play kits. Entering a mode declares its manifest on that mode's kit.
 - `CoreMode::RequestTransition(EngineState, AssetManifest)` supplies a manifest for the next state. The manifest is used only when that state is entered, and otherwise the mode's `DeclareAssets` runs. No mode uses this overload yet.
+
+## Persistent Requesters
+
+- `RequesterId` identifies either an `EngineState` or a `PersistentOwner`. Each `AssetManager` entry tracks its requesters in a set.
+- `Mixer` holds a persistent `AssetKit` under `PersistentOwner::Mixer`. Its assets survive mode transitions until the Mixer releases them.
+
+## Audio
+
+- The `Game/Engine/Audio/` folder contains the XAudio2 `Mixer` (`Mixer.h`, `Mixer.cpp`) and the XAudio2-free `MixerTypes.h`.
+- `Mixer` uses XAudio2 through a pImpl, so XAudio2 headers stay out of public headers.
+- Channels are Music, System, Gameplay, Background, and Other. Gameplay and Other stop on mode exit. Music, System, and Background persist.
 
 ## Device Loss
 

@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "MenuBase.h"
 #include "../Assets/AssetManager.h"
+#include "../Assets/FontResource.h"
 
 #include <cassert>
 
@@ -30,9 +31,8 @@ namespace Engine
 	{
 		MenuTextAssets result;
 		result.fontKey = TextFontKey();
-		result.font = assets.FindFont(result.fontKey);
-		result.whiteKey = WhiteTextureKey();
-		result.whiteResident = assets.Find(result.whiteKey) != nullptr;
+		result.font = assets.FindFont(result.fontKey);		result.whiteKey = WhiteTextureKey();
+		result.whiteResident = assets.FindTexture(result.whiteKey) != nullptr;
 		return result;
 	}
 

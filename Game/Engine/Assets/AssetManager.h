@@ -15,7 +15,13 @@
 
 namespace Engine
 {
-	// GPU-side representation of one asset. Implementations keep only the source path and
+	class TextureResource;
+	class FontResource;
+	class MeshResource;
+	class SoundResource;
+	class MusicResource;
+
+	// GPU-side representation of one asset.
 	// GPU objects; they never retain decoded CPU copies, so Rebuild reads the source again.
 	class IAssetResource
 	{
@@ -24,6 +30,7 @@ namespace Engine
 
 		virtual void Release() noexcept = 0;
 		virtual bool Rebuild(GpuContext& resources, AssetUploader& uploader) = 0;
+		virtual bool Load() { return false; }
 	};
 
 	class AssetManager
@@ -52,12 +59,14 @@ namespace Engine
 		// Associates a GPU resource with a resident entry; the entry takes ownership.
 		void Attach(const AssetKey& key, std::unique_ptr<IAssetResource> resource);
 
-		IAssetResource* Find(const AssetKey& key) const;
-
-		// DX-free glyph data for a resident font; null when the key is not a font or not built.
-		const IFontData* FindFont(const AssetKey& key) const;
+		const TextureResource* FindTexture(const AssetKey& key) const;
+		const FontResource* FindFont(const AssetKey& key) const;
+		const MeshResource* FindModel(const AssetKey& key) const;
+		const SoundResource* FindSound(const AssetKey& key) const;
+		const MusicResource* FindMusic(const AssetKey& key) const;
 
 		bool IsResident(const AssetKey& key) const;
+		bool IsBuilt(const AssetKey& key) const;
 		size_t RequesterCount(const AssetKey& key) const;
 		size_t EntryCount() const noexcept { return m_entries.size(); }
 
@@ -73,13 +82,14 @@ namespace Engine
 	private:
 		struct Entry
 		{
-			std::unordered_set<EngineState> requesters;
+			std::unordered_set<RequesterId> requesters;
 			std::unique_ptr<IAssetResource> resource;
 		};
 
 		std::unordered_map<AssetKey, Entry> m_entries;
 		std::vector<AssetKey> m_restoreQueue;
 		size_t m_restoreCursor = 0;
+		IAssetResource* Find(const AssetKey& key) const;
 		AssetUploader& Uploader() noexcept;
 		std::unique_ptr<AssetUploader> m_uploader;
 	};

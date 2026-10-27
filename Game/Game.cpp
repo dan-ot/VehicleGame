@@ -227,6 +227,7 @@ void Game::CreateDeviceDependentResources()
     if (m_renderer == nullptr)
     {
         m_renderer = std::make_unique<Engine::Renderer>(*m_deviceResources, m_core.Assets());
+        m_core.GetMixer().Initialize();
     }
     else
     {

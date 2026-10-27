@@ -6,6 +6,11 @@
 #include "AssetManager.h"
 #include "AssetLoader.h"
 #include "AssetUploader.h"
+#include "TextureResource.h"
+#include "MeshResource.h"
+#include "SoundResource.h"
+#include "MusicResource.h"
+#include "FontResource.h"
 #include "../../DeviceResources.h"
 
 #include <chrono>
@@ -55,10 +60,19 @@ namespace Engine
 		}
 
 		Entry& entry = m_entries[key];
-		entry.requesters.insert(kit.Requester().State());
+		entry.requesters.insert(kit.Requester());
 		kit.MarkHeld(key);
 
-		if (resources && !entry.resource)
+		if (entry.resource)
+		{
+			return;
+		}
+
+		if (key.type == AssetType::Sound || key.type == AssetType::Music)
+		{
+			entry.resource = AssetLoader::CreateCpu(key);
+		}
+		else if (resources)
 		{
 			if (!Uploader().IsStarted())
 			{
@@ -83,7 +97,7 @@ namespace Engine
 			return;
 		}
 
-		it->second.requesters.erase(kit.Requester().State());
+		it->second.requesters.erase(kit.Requester());
 		if (it->second.requesters.empty())
 		{
 			m_entries.erase(it);
@@ -114,14 +128,39 @@ namespace Engine
 		return it == m_entries.end() ? nullptr : it->second.resource.get();
 	}
 
-	const IFontData* AssetManager::FindFont(const AssetKey& key) const
+	const TextureResource* AssetManager::FindTexture(const AssetKey& key) const
 	{
-		return dynamic_cast<const IFontData*>(Find(key));
+		return key.type == AssetType::Texture ? dynamic_cast<const TextureResource*>(Find(key)) : nullptr;
+	}
+
+	const FontResource* AssetManager::FindFont(const AssetKey& key) const
+	{
+		return key.type == AssetType::Font ? dynamic_cast<const FontResource*>(Find(key)) : nullptr;
+	}
+
+	const MeshResource* AssetManager::FindModel(const AssetKey& key) const
+	{
+		return key.type == AssetType::Model ? dynamic_cast<const MeshResource*>(Find(key)) : nullptr;
+	}
+
+	const SoundResource* AssetManager::FindSound(const AssetKey& key) const
+	{
+		return key.type == AssetType::Sound ? dynamic_cast<const SoundResource*>(Find(key)) : nullptr;
+	}
+
+	const MusicResource* AssetManager::FindMusic(const AssetKey& key) const
+	{
+		return key.type == AssetType::Music ? dynamic_cast<const MusicResource*>(Find(key)) : nullptr;
 	}
 
 	bool AssetManager::IsResident(const AssetKey& key) const
 	{
 		return m_entries.find(key) != m_entries.end();
+	}
+
+	bool AssetManager::IsBuilt(const AssetKey& key) const
+	{
+		return Find(key) != nullptr;
 	}
 
 	size_t AssetManager::RequesterCount(const AssetKey& key) const

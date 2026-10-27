@@ -8,6 +8,7 @@
 #include "TextureResource.h"
 #include "MeshResource.h"
 #include "SoundResource.h"
+#include "MusicResource.h"
 #include "FontResource.h"
 
 namespace Engine
@@ -24,6 +25,8 @@ namespace Engine
 				return std::make_unique<MeshResource>(key.path);
 			case AssetType::Sound:
 				return std::make_unique<SoundResource>(key.path);
+			case AssetType::Music:
+				return std::make_unique<MusicResource>(key.path);
 			case AssetType::Font:
 				return std::make_unique<FontResource>(key.path);
 			default:
@@ -61,5 +64,31 @@ namespace Engine
 			return nullptr;
 		}
 		return resource;
+	}
+
+	std::unique_ptr<IAssetResource> AssetLoader::CreateCpu(const AssetKey& key) noexcept
+	{
+		if (key.type != AssetType::Sound && key.type != AssetType::Music)
+		{
+			return nullptr;
+		}
+
+		auto resource = Create(key);
+		if (!resource)
+		{
+			return nullptr;
+		}
+
+		bool built = false;
+		try
+		{
+			built = resource->Load();
+		}
+		catch (...)
+		{
+			built = false;
+		}
+
+		return built ? std::move(resource) : nullptr;
 	}
 }

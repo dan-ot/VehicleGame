@@ -31,12 +31,11 @@ namespace Engine
 
 		D3D12_GPU_DESCRIPTOR_HANDLE Resolve(const AssetKey& key) const
 		{
-			const IAssetResource* resource = assets.Find(key);
-			if (const auto* texture = dynamic_cast<const TextureResource*>(resource))
+			if (const auto* texture = assets.FindTexture(key))
 			{
 				return texture->GpuDescriptor();
 			}
-			if (const auto* font = dynamic_cast<const FontResource*>(resource))
+			if (const auto* font = assets.FindFont(key))
 			{
 				return font->GpuDescriptor();
 			}
