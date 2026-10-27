@@ -7,7 +7,8 @@
 #include "AssetUploader.h"
 #include "../../DeviceResources.h"
 #include "GltfLoader.h"
-#include "GpuUploader.h"
+
+#include <cstring>
 
 namespace Engine
 {
@@ -20,12 +21,14 @@ namespace Engine
 	{
 		m_vertexBuffer.Reset();
 		m_indexBuffer.Reset();
+		m_vertexStaging.Reset();
+		m_indexStaging.Reset();
 		m_vbView = {};
 		m_ibView = {};
 		m_indexCount = 0;
 	}
 
-	bool MeshResource::Rebuild(DX::DeviceResources& resources, AssetUploader&)
+	bool MeshResource::Rebuild(DX::DeviceResources& resources, ID3D12GraphicsCommandList* commandList)
 	{
 		Release();
 
@@ -40,29 +43,37 @@ namespace Engine
 		const size_t indexBytes = model.indices.size() * sizeof(uint32_t);
 
 		const CD3DX12_HEAP_PROPERTIES heapProps(D3D12_HEAP_TYPE_DEFAULT);
+		const CD3DX12_HEAP_PROPERTIES uploadProps(D3D12_HEAP_TYPE_UPLOAD);
 
-		const CD3DX12_RESOURCE_DESC vbDesc = CD3DX12_RESOURCE_DESC::Buffer(vertexBytes);
-		DX::ThrowIfFailed(device->CreateCommittedResource(
-			&heapProps,
-			D3D12_HEAP_FLAG_NONE,
-			&vbDesc,
-			D3D12_RESOURCE_STATE_COPY_DEST,
-			nullptr,
-			IID_PPV_ARGS(m_vertexBuffer.ReleaseAndGetAddressOf())));
+		const auto createBuffer = [device](const CD3DX12_HEAP_PROPERTIES& props, size_t bytes, D3D12_RESOURCE_STATES state,
+			ID3D12Resource** out) {
+			const CD3DX12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Buffer(bytes);
+			DX::ThrowIfFailed(device->CreateCommittedResource(&props, D3D12_HEAP_FLAG_NONE, &desc, state, nullptr,
+				IID_PPV_ARGS(out)));
+		};
 
-		const CD3DX12_RESOURCE_DESC ibDesc = CD3DX12_RESOURCE_DESC::Buffer(indexBytes);
-		DX::ThrowIfFailed(device->CreateCommittedResource(
-			&heapProps,
-			D3D12_HEAP_FLAG_NONE,
-			&ibDesc,
-			D3D12_RESOURCE_STATE_COPY_DEST,
-			nullptr,
-			IID_PPV_ARGS(m_indexBuffer.ReleaseAndGetAddressOf())));
+		createBuffer(heapProps, vertexBytes, D3D12_RESOURCE_STATE_COPY_DEST, m_vertexBuffer.ReleaseAndGetAddressOf());
+		createBuffer(heapProps, indexBytes, D3D12_RESOURCE_STATE_COPY_DEST, m_indexBuffer.ReleaseAndGetAddressOf());
+		createBuffer(uploadProps, vertexBytes, D3D12_RESOURCE_STATE_GENERIC_READ, m_vertexStaging.ReleaseAndGetAddressOf());
+		createBuffer(uploadProps, indexBytes, D3D12_RESOURCE_STATE_GENERIC_READ, m_indexStaging.ReleaseAndGetAddressOf());
 
-		DX::GpuUploader uploader;
-		uploader.Create(device, resources.GetCommandQueue(), vertexBytes > indexBytes ? vertexBytes : indexBytes);
-		uploader.CopyBufferAndWait(m_vertexBuffer.Get(), model.vertices.data(), vertexBytes);
-		uploader.CopyBufferAndWait(m_indexBuffer.Get(), model.indices.data(), indexBytes);
+		const auto fill = [](ID3D12Resource* staging, const void* data, size_t bytes) {
+			void* mapped = nullptr;
+			DX::ThrowIfFailed(staging->Map(0, nullptr, &mapped));
+			std::memcpy(mapped, data, bytes);
+			staging->Unmap(0, nullptr);
+		};
+		fill(m_vertexStaging.Get(), model.vertices.data(), vertexBytes);
+		fill(m_indexStaging.Get(), model.indices.data(), indexBytes);
+
+		commandList->CopyBufferRegion(m_vertexBuffer.Get(), 0, m_vertexStaging.Get(), 0, vertexBytes);
+		commandList->CopyBufferRegion(m_indexBuffer.Get(), 0, m_indexStaging.Get(), 0, indexBytes);
+
+		const D3D12_RESOURCE_BARRIER barriers[] = {
+			CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER),
+			CD3DX12_RESOURCE_BARRIER::Transition(m_indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER),
+		};
+		commandList->ResourceBarrier(_countof(barriers), barriers);
 
 		m_vbView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
 		m_vbView.SizeInBytes = static_cast<UINT>(vertexBytes);
@@ -76,3 +87,4 @@ namespace Engine
 		return true;
 	}
 }
+

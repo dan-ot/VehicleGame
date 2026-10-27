@@ -12,6 +12,7 @@
 #include "../Modes/MenuMode.h"
 #include "../Modes/PlayMode.h"
 #include "EngineMode.h"
+#include "TransitionSpec.h"
 
 namespace Engine
 {
@@ -21,11 +22,13 @@ namespace Engine
 		AssetKit& Loading() noexcept { return m_loading; }
 		AssetKit& Menu() noexcept { return m_menu; }
 		AssetKit& Play() noexcept { return m_play; }
+		AssetKit& Staging() noexcept { return m_staging; }
 
 	private:
 		AssetKit m_loading{ RequesterId(EngineState::Loading) };
 		AssetKit m_menu{ RequesterId(EngineState::Menu) };
 		AssetKit m_play{ RequesterId(EngineState::Play) };
+		AssetKit m_staging{ RequesterId(EngineState::Loading) };
 	};
 
 	class CoreMode final
@@ -47,6 +50,8 @@ namespace Engine
 
 			m_active = &m_loading;
 			DeclareActiveAssets();
+			m_assets.Declare(m_kits.Staging(), StagedManifestFor(EngineState::Menu));
+			m_loading.BindStagedManifest(m_kits.Staging().Manifest());
 			m_active->Enter();
 		}
 
@@ -57,6 +62,7 @@ namespace Engine
 			m_assets.Release(m_kits.Loading());
 			m_assets.Release(m_kits.Menu());
 			m_assets.Release(m_kits.Play());
+			m_assets.Release(m_kits.Staging());
 		}
 
 		AssetManager& Assets() noexcept
@@ -74,15 +80,18 @@ namespace Engine
 			return m_kits.Loading();
 		}
 
-		// Supplies the manifest the target state declares when it is entered. Modes that do not
-		// call this fall back to their own DeclareAssets override.
-		void RequestTransition(EngineState next, AssetManifest manifest)
+		// Supplies the transition the next state is entered with. The destination's manifest is staged
+		// on the Staging kit so it is resident while Loading runs, and is released once the destination is active.
+		void RequestTransition(EngineState next, TransitionSpec spec)
 		{
-			m_pendingManifest.emplace(next, std::move(manifest));
+			m_assets.Declare(m_kits.Staging(), spec.manifest);
+			m_pendingSpec.emplace(next, std::move(spec));
+			m_loading.BindStagedManifest(m_kits.Staging().Manifest());
 		}
 
 		void Tick(double coreDt, const CommandFrame& commands, const RawKeyboardFrame& keyboard)
 		{
+			m_assets.Pump();
 			m_active->Tick(coreDt, commands, keyboard);
 			ApplyRequestedTransition();
 			m_mixer.Update();
@@ -145,17 +154,28 @@ namespace Engine
 			m_state = *next;
 			m_active = ModeFor(m_state);
 			DeclareActiveAssets();
+			if (m_state != EngineState::Loading)
+			{
+				m_assets.Release(m_kits.Staging());
+			}
 			m_active->Enter();
+		}
+
+		AssetManifest StagedManifestFor(EngineState state)
+		{
+			AssetManifest manifest;
+			ModeFor(state)->DeclareAssets(manifest);
+			return manifest;
 		}
 
 		void DeclareActiveAssets()
 		{
 			AssetKit& kit = KitFor(m_state);
 			AssetManifest manifest;
-			if (m_pendingManifest && m_pendingManifest->first == m_state)
+			if (m_pendingSpec && m_pendingSpec->first == m_state)
 			{
-				manifest = std::move(m_pendingManifest->second);
-				m_pendingManifest.reset();
+				manifest = std::move(m_pendingSpec->second.manifest);
+				m_pendingSpec.reset();
 			}
 			else
 			{
@@ -183,7 +203,7 @@ namespace Engine
 		MenuMode m_menu;
 		PlayMode m_play;
 		IEngineMode* m_active = nullptr;
-		std::optional<std::pair<EngineState, AssetManifest>> m_pendingManifest;
+		std::optional<std::pair<EngineState, TransitionSpec>> m_pendingSpec;
 		EngineState m_state = EngineState::Loading;
 		double m_renderCost = 0.0;
 	};

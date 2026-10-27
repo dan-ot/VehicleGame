@@ -684,6 +684,7 @@ void DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
 // Sets the color space for the swap chain in order to handle HDR output.
 UINT DeviceResources::AllocateSrvIndex()
 {
+    std::lock_guard lock(m_srvMutex);
     if (m_srvNextIndex >= SRV_HEAP_CAPACITY)
     {
         throw std::runtime_error("DeviceResources: SRV descriptor heap is full.");

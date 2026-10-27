@@ -23,9 +23,11 @@
     <ClInclude Include="Engine\State\InputCommands.h" />
     <ClInclude Include="Engine\State\InputMap.h" />
     <ClInclude Include="Engine\State\EngineState.h" />
+    <ClInclude Include="Engine\State\TransitionSpec.h" />
     <ClInclude Include="Engine\State\ModeHandoff.h" />
     <ClInclude Include="Engine\State\LoadingTracker.h" />
     <ClInclude Include="Engine\Assets\AssetUploader.h" />
+    <ClInclude Include="Engine\Assets\AssetWorker.h" />
     <ClInclude Include="Engine\Scene\Scene.h"><Filter>Engine\Scene</Filter></ClInclude>
     <ClInclude Include="Engine\State\ModeTimer.h" />
     <ClInclude Include="Engine\State\EngineMode.h" />

@@ -30,8 +30,9 @@ namespace Engine
 		void Stop() noexcept;
 		bool IsStarted() const noexcept;
 
-		void Enqueue(UploadJob job);
-		void ExecuteAndWait(UploadJob job);
+		// Returns a token that IsComplete() accepts once the job's GPU work has finished.
+		uint64_t Enqueue(UploadJob job);
+		bool IsComplete(uint64_t token) const noexcept;
 		bool IsIdle() const noexcept;
 
 	private:
@@ -39,6 +40,7 @@ namespace Engine
 		{
 			UploadJob record;
 			std::function<void()> onComplete;
+			uint64_t token = 0;
 		};
 
 		void Run();
@@ -50,7 +52,7 @@ namespace Engine
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
 		Microsoft::WRL::Wrappers::Event m_fenceEvent;
-		uint64_t m_fenceValue = 0;
+		uint64_t m_issuedValue = 0;
 
 		std::thread m_thread;
 		mutable std::mutex m_mutex;

@@ -20,7 +20,7 @@ namespace Engine
 		explicit FontResource(std::wstring sourcePath);
 
 		void Release() noexcept override;
-		bool Rebuild(GpuContext& resources, AssetUploader& uploader) override;
+		bool Rebuild(GpuContext& resources, ID3D12GraphicsCommandList* commandList) override;
 
 		const GlyphInfo* Find(char32_t codepoint) const noexcept override;
 		const FontMetrics& Metrics() const noexcept override { return m_metrics; }
@@ -29,6 +29,7 @@ namespace Engine
 	private:
 		std::wstring m_sourcePath;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_staging;
 		D3D12_CPU_DESCRIPTOR_HANDLE m_cpuDescriptor = {};
 		D3D12_GPU_DESCRIPTOR_HANDLE m_gpuDescriptor = {};
 		std::unordered_map<char32_t, GlyphInfo> m_glyphs;

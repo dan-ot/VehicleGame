@@ -20,7 +20,7 @@ namespace Engine
 		explicit MusicResource(std::wstring sourcePath) : m_sourcePath(std::move(sourcePath)) {}
 
 		void Release() noexcept override {}
-		bool Rebuild(DX::DeviceResources&, AssetUploader&) override { return Load(); }
+		bool Rebuild(DX::DeviceResources&, ID3D12GraphicsCommandList*) override { return Load(); }
 
 		bool Load() override
 		{

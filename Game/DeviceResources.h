@@ -13,6 +13,7 @@
 #include <dxgi1_6.h>
 #include <DirectXMath.h>
 #include <DirectXColors.h>
+#include <mutex>
 #ifdef _DEBUG
 #include <dxgidebug.h>
 #endif
@@ -99,7 +100,7 @@ namespace DX
         ID3D12DescriptorHeap*       GetSrvDescriptorHeap() const noexcept  { return m_srvDescriptorHeap.Get(); }
         UINT                        GetSrvDescriptorSize() const noexcept  { return m_srvDescriptorSize; }
         UINT                        AllocateSrvIndex();
-        void                        ResetSrvAllocator() noexcept           { m_srvNextIndex = 0; }
+        void                        ResetSrvAllocator() noexcept           { std::lock_guard lock(m_srvMutex); m_srvNextIndex = 0; }
 
     private:
         void MoveToNextFrame();
@@ -134,6 +135,7 @@ namespace DX
         UINT                                                m_rtvDescriptorSize;
         UINT                                                m_srvDescriptorSize = 0;
         UINT                                                m_srvNextIndex = 0;
+        std::mutex                                          m_srvMutex;
         D3D12_VIEWPORT                                      m_screenViewport;
         D3D12_RECT                                          m_scissorRect;
 

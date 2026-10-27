@@ -12,7 +12,7 @@ namespace Engine
 	{
 	}
 
-	bool SoundResource::Rebuild(DX::DeviceResources&, AssetUploader&)
+	bool SoundResource::Rebuild(DX::DeviceResources&, ID3D12GraphicsCommandList*)
 	{
 		return Load();
 	}

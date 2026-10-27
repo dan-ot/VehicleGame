@@ -6,7 +6,6 @@
 #include "TextureResource.h"
 #include "../../DeviceResources.h"
 #include "TgaLoader.h"
-#include "../../UploadBuffer.h"
 
 #include <cstring>
 #include <vector>
@@ -21,13 +20,14 @@ namespace Engine
 	void TextureResource::Release() noexcept
 	{
 		m_texture.Reset();
+		m_staging.Reset();
 		m_cpuDescriptor = {};
 		m_gpuDescriptor = {};
 		m_width = 0;
 		m_height = 0;
 	}
 
-	bool TextureResource::Rebuild(DX::DeviceResources& resources, AssetUploader& uploader)
+	bool TextureResource::Rebuild(DX::DeviceResources& resources, ID3D12GraphicsCommandList* commandList)
 	{
 		Release();
 
@@ -62,40 +62,42 @@ namespace Engine
 				static_cast<size_t>(image.width) * 4);
 		}
 
-		DX::UploadBuffer staging;
-		staging.Create(device, totalBytes + D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
-		size_t offset = 0;
-		if (!staging.Write(padded.data(), totalBytes, D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT, offset))
-		{
-			return false;
-		}
+		const CD3DX12_HEAP_PROPERTIES uploadProps(D3D12_HEAP_TYPE_UPLOAD);
+		const CD3DX12_RESOURCE_DESC stagingDesc = CD3DX12_RESOURCE_DESC::Buffer(totalBytes + D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
+		DX::ThrowIfFailed(device->CreateCommittedResource(
+			&uploadProps,
+			D3D12_HEAP_FLAG_NONE,
+			&stagingDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(m_staging.ReleaseAndGetAddressOf())));
 
-		ID3D12Resource* dest = m_texture.Get();
-		ID3D12Resource* source = staging.Get();
-		const UINT width = image.width;
-		const UINT height = image.height;
-		uploader.ExecuteAndWait([dest, source, offset, width, height, rowPitch](ID3D12GraphicsCommandList* commandList) {
-			D3D12_TEXTURE_COPY_LOCATION src = {};
-			src.pResource = source;
-			src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
-			src.PlacedFootprint.Offset = offset;
-			src.PlacedFootprint.Footprint.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			src.PlacedFootprint.Footprint.Width = width;
-			src.PlacedFootprint.Footprint.Height = height;
-			src.PlacedFootprint.Footprint.Depth = 1;
-			src.PlacedFootprint.Footprint.RowPitch = static_cast<UINT>(rowPitch);
+		void* mapped = nullptr;
+		DX::ThrowIfFailed(m_staging->Map(0, nullptr, &mapped));
+		const size_t offset = 0;
+		std::memcpy(static_cast<uint8_t*>(mapped) + offset, padded.data(), totalBytes);
+		m_staging->Unmap(0, nullptr);
 
-			D3D12_TEXTURE_COPY_LOCATION dst = {};
-			dst.pResource = dest;
-			dst.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
-			dst.SubresourceIndex = 0;
+		D3D12_TEXTURE_COPY_LOCATION src = {};
+		src.pResource = m_staging.Get();
+		src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+		src.PlacedFootprint.Offset = offset;
+		src.PlacedFootprint.Footprint.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		src.PlacedFootprint.Footprint.Width = image.width;
+		src.PlacedFootprint.Footprint.Height = image.height;
+		src.PlacedFootprint.Footprint.Depth = 1;
+		src.PlacedFootprint.Footprint.RowPitch = static_cast<UINT>(rowPitch);
 
-			commandList->CopyTextureRegion(&dst, 0, 0, 0, &src, nullptr);
+		D3D12_TEXTURE_COPY_LOCATION dst = {};
+		dst.pResource = m_texture.Get();
+		dst.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+		dst.SubresourceIndex = 0;
 
-			const CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-				dest, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-			commandList->ResourceBarrier(1, &barrier);
-		});
+		commandList->CopyTextureRegion(&dst, 0, 0, 0, &src, nullptr);
+
+		const CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+			m_texture.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+		commandList->ResourceBarrier(1, &barrier);
 
 		const UINT index = resources.AllocateSrvIndex();
 		const UINT size = resources.GetSrvDescriptorSize();

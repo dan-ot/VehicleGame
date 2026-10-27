@@ -233,6 +233,8 @@ void Game::CreateDeviceDependentResources()
     {
         m_renderer->CreateDeviceResources();
     }
+
+    m_core.Assets().BindGpu(*m_deviceResources);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -255,10 +257,10 @@ void Game::OnDeviceLost()
 
 void Game::OnDeviceRestored()
 {
+    m_core.Assets().OnDeviceRestored(&m_core.LoadingKit());
+
     CreateDeviceDependentResources();
 
     CreateWindowSizeDependentResources();
-
-    m_core.Assets().OnDeviceRestored(&m_core.LoadingKit());
 }
 #pragma endregion

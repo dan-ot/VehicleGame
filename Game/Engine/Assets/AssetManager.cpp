@@ -63,7 +63,7 @@ namespace Engine
 		entry.requesters.insert(kit.Requester());
 		kit.MarkHeld(key);
 
-		if (entry.resource)
+		if (entry.resource || entry.pending)
 		{
 			return;
 		}
@@ -74,12 +74,91 @@ namespace Engine
 		}
 		else if (resources)
 		{
-			if (!Uploader().IsStarted())
-			{
-				Uploader().Start(resources->GetD3DDevice());
-			}
-			entry.resource = AssetLoader::CreateAndBuild(key, *resources, Uploader());
+			m_failed.erase(key);
+			BuildGpu(*resources, key, entry);
 		}
+	}
+
+	void AssetManager::BindGpu(GpuContext& gpu)
+	{
+		m_gpu = &gpu;
+		for (auto& pair : m_entries)
+		{
+			const AssetKey& key = pair.first;
+			Entry& entry = pair.second;
+			if (!entry.resource && !entry.pending && key.type != AssetType::Sound && key.type != AssetType::Music && m_restoreQueue.empty())
+			{
+				BuildGpu(gpu, key, entry);
+			}
+		}
+	}
+
+	void AssetManager::BuildGpu(GpuContext& gpu, const AssetKey& key, Entry& entry)
+	{
+		if (!Uploader().IsStarted())
+		{
+			Uploader().Start(gpu.GetD3DDevice());
+		}
+
+		// Parsing and staging happen on the upload thread; the resource is retained here until it is attached.
+		auto status = std::make_shared<BuildStatus>();
+		auto holder = std::make_shared<std::unique_ptr<IAssetResource>>();
+		const AssetKey keyCopy = key;
+		const uint64_t token = Uploader().Enqueue([&gpu, keyCopy, status, holder](ID3D12GraphicsCommandList* commandList) {
+			try
+			{
+				*holder = AssetLoader::CreateAndBuild(keyCopy, gpu, commandList);
+			}
+			catch (...)
+			{
+				holder->reset();
+			}
+			status->ok = *holder != nullptr;
+			status->done = true;
+		});
+
+		entry.pending = true;
+		m_pending.push_back(PendingBuild{ key, holder, status, token, false });
+	}
+
+	void AssetManager::Pump()
+	{
+		for (auto it = m_pending.begin(); it != m_pending.end();)
+		{
+			if (!it->status->done)
+			{
+				++it;
+				continue;
+			}
+
+			const auto entryIt = m_entries.find(it->key);
+			if (entryIt != m_entries.end())
+			{
+				entryIt->second.pending = false;
+			}
+
+			if (!it->discard)
+			{
+				if (it->status->ok && *it->holder)
+				{
+					if (entryIt != m_entries.end())
+					{
+						entryIt->second.resource = std::move(*it->holder);
+					}
+				}
+				else
+				{
+					m_failed.insert(it->key);
+				}
+			}
+
+			it = m_pending.erase(it);
+		}
+	}
+
+	bool AssetManager::HasFailed(const AssetKey& key) const
+	{
+		return m_failed.find(key) != m_failed.end();
 	}
 
 	void AssetManager::Eject(AssetKit& kit, const AssetKey& key)
@@ -100,7 +179,19 @@ namespace Engine
 		it->second.requesters.erase(kit.Requester());
 		if (it->second.requesters.empty())
 		{
+			DiscardPending(key);
 			m_entries.erase(it);
+		}
+	}
+
+	void AssetManager::DiscardPending(const AssetKey& key) noexcept
+	{
+		for (PendingBuild& build : m_pending)
+		{
+			if (build.key == key)
+			{
+				build.discard = true;
+			}
 		}
 	}
 
@@ -120,6 +211,17 @@ namespace Engine
 		{
 			it->second.resource = std::move(resource);
 		}
+	}
+
+	bool AssetManager::AttachDecoded(const AssetKey& key, std::unique_ptr<IAssetResource>& resource)
+	{
+		const auto it = m_entries.find(key);
+		if (it == m_entries.end() || it->second.resource || !resource)
+		{
+			return false;
+		}
+		it->second.resource = std::move(resource);
+		return true;
 	}
 
 	IAssetResource* AssetManager::Find(const AssetKey& key) const
@@ -174,6 +276,11 @@ namespace Engine
 		m_restoreQueue.clear();
 		m_restoreCursor = 0;
 
+		for (PendingBuild& build : m_pending)
+		{
+			build.discard = true;
+		}
+
 		for (auto& pair : m_entries)
 		{
 			if (pair.second.resource)
@@ -204,7 +311,7 @@ namespace Engine
 
 		for (const auto& pair : m_entries)
 		{
-			if (pair.second.resource && queued.insert(pair.first).second)
+			if (pair.first.type != AssetType::Sound && pair.first.type != AssetType::Music && queued.insert(pair.first).second)
 			{
 				m_restoreQueue.push_back(pair.first);
 			}
@@ -228,9 +335,12 @@ namespace Engine
 				return false;
 			}
 
-			if (IAssetResource* resource = Find(m_restoreQueue[m_restoreCursor]))
+			const AssetKey key = m_restoreQueue[m_restoreCursor];
+			const auto it = m_entries.find(key);
+			if (it != m_entries.end() && !it->second.pending)
 			{
-				resource->Rebuild(resources, Uploader());
+				it->second.resource.reset();
+				BuildGpu(resources, key, it->second);
 			}
 			++m_restoreCursor;
 		}

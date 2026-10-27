@@ -17,7 +17,7 @@ namespace Engine
 		explicit TextureResource(std::wstring sourcePath);
 
 		void Release() noexcept override;
-		bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) override;
+		bool Rebuild(DX::DeviceResources& resources, ID3D12GraphicsCommandList* commandList) override;
 
 		D3D12_CPU_DESCRIPTOR_HANDLE CpuDescriptor() const noexcept { return m_cpuDescriptor; }
 		D3D12_GPU_DESCRIPTOR_HANDLE GpuDescriptor() const noexcept { return m_gpuDescriptor; }
@@ -27,6 +27,7 @@ namespace Engine
 	private:
 		std::wstring m_sourcePath;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_staging;
 		D3D12_CPU_DESCRIPTOR_HANDLE m_cpuDescriptor = {};
 		D3D12_GPU_DESCRIPTOR_HANDLE m_gpuDescriptor = {};
 		uint32_t m_width = 0;

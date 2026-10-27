@@ -441,9 +441,11 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\State\CoreMode.h" />
     <ClInclude Include="Engine\State\EngineMode.h" />
     <ClInclude Include="Engine\State\EngineState.h" />
+    <ClInclude Include="Engine\State\TransitionSpec.h" />
     <ClInclude Include="Engine\State\ModeHandoff.h" />
     <ClInclude Include="Engine\State\LoadingTracker.h" />
     <ClInclude Include="Engine\Assets\AssetUploader.h" />
+    <ClInclude Include="Engine\Assets\AssetWorker.h" />
     <ClInclude Include="Engine\Scene\Scene.h" />
     <ClInclude Include="Engine\State\InputCommands.h" />
     <ClInclude Include="Engine\State\InputMap.h" />

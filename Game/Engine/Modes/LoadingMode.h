@@ -38,6 +38,11 @@ namespace Engine
 		}
 
 		void BindAssets(AssetManager& assets) noexcept { m_assets = &assets; }
+		void BindStagedManifest(const AssetManifest& manifest) noexcept { m_stagedManifest = &manifest; }
+
+		// Marks the transition as failed; the mode then falls back to the Main Menu.
+		void MarkFailed() noexcept { m_failed = true; }
+		bool Failed() const noexcept { return m_failed; }
 
 		// No progress driver yet; callers set the value directly.
 		void SetLoadingProgress(float percent) noexcept { m_loadingBar.SetPercent(percent); }
@@ -74,9 +79,13 @@ namespace Engine
 			m_tracker = LoadingTracker{};
 			m_placeholderWork = m_tracker.AddWork();
 			m_assetWork.clear();
-			for (const AssetKey& key : m_assetKeys)
+			m_failed = false;
+			if (m_stagedManifest)
 			{
-				m_assetWork.push_back(AssetWork{ key, m_tracker.AddWork() });
+				for (const AssetKey& key : m_stagedManifest->Keys())
+				{
+					m_assetWork.push_back(AssetWork{ key, m_tracker.AddWork() });
+				}
 			}
 			m_destination = EngineState::Menu;
 			m_pendingHandoff.reset();
@@ -91,7 +100,11 @@ namespace Engine
 		{
 			for (const AssetWork& work : m_assetWork)
 			{
-				if (m_assets->IsBuilt(work.key))
+				if (m_assets->HasFailed(work.key))
+				{
+					m_failed = true;
+				}
+				else if (!m_failed && m_assets->IsBuilt(work.key))
 				{
 					m_tracker.Complete(work.id);
 				}
@@ -101,7 +114,12 @@ namespace Engine
 			m_tracker.Report(m_placeholderWork, Elapsed() / kLoadSeconds);
 			m_loadingBar.SetPercent(static_cast<float>(m_tracker.Aggregate()));
 
-			if (m_tracker.IsComplete())
+			if (m_failed)
+			{
+				m_pendingHandoff.reset();
+				RequestTransition(EngineState::Menu);
+			}
+			else if (m_tracker.IsComplete())
 			{
 				if (m_pendingHandoff)
 				{
@@ -158,12 +176,13 @@ namespace Engine
 			std::size_t id;
 		};
 
-		const std::vector<AssetKey> m_assetKeys{ TextureKey(kSplashPath), TextureKey(kLogoPath), TextureKey(kBarFillPath), TextureKey(kSpinnerPath), TextureKey(kCursorPath) };
+		const AssetManifest* m_stagedManifest = nullptr;
 		std::vector<AssetWork> m_assetWork;
 
 		LoadingTracker m_tracker;
 		std::size_t m_placeholderWork = 0;
 		EngineState m_destination = EngineState::Menu;
+		bool m_failed = false;
 		std::optional<ModeHandoff> m_pendingHandoff;
 	};
 }

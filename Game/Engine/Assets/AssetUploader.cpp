@@ -26,8 +26,9 @@ namespace Engine
 		DX::ThrowIfFailed(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_COPY, m_allocator.Get(), nullptr, IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf())));
 		m_commandList->Close();
 
+		m_fence.Reset();
 		DX::ThrowIfFailed(m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_fence.ReleaseAndGetAddressOf())));
-		m_fenceValue = 0;
+		m_issuedValue = 0;
 		m_fenceEvent.Attach(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
 		if (!m_fenceEvent.IsValid())
 		{
@@ -68,35 +69,22 @@ namespace Engine
 		return m_running;
 	}
 
-	void AssetUploader::Enqueue(UploadJob job)
+	uint64_t AssetUploader::Enqueue(UploadJob job)
 	{
+		uint64_t token = 0;
 		{
 			std::lock_guard lock(m_mutex);
-			m_jobs.push_back(PendingJob{ std::move(job), nullptr });
+			token = ++m_issuedValue;
+			m_jobs.push_back(PendingJob{ std::move(job), nullptr, token });
 		}
 		m_wake.notify_one();
+		return token;
 	}
 
-	void AssetUploader::ExecuteAndWait(UploadJob job)
+	bool AssetUploader::IsComplete(uint64_t token) const noexcept
 	{
-		std::mutex doneMutex;
-		std::condition_variable doneCv;
-		bool done = false;
-		{
-			std::lock_guard lock(m_mutex);
-			if (!m_running)
-			{
-				throw std::runtime_error("AssetUploader: ExecuteAndWait called while stopped.");
-			}
-			m_jobs.push_back(PendingJob{ std::move(job), [&] {
-				std::lock_guard doneLock(doneMutex);
-				done = true;
-				doneCv.notify_one();
-			} });
-		}
-		m_wake.notify_one();
-		std::unique_lock lock(doneMutex);
-		doneCv.wait(lock, [&] { return done; });
+		std::lock_guard lock(m_mutex);
+		return m_fence && m_fence->GetCompletedValue() >= token;
 	}
 
 	bool AssetUploader::IsIdle() const noexcept
@@ -124,12 +112,19 @@ namespace Engine
 
 			m_allocator->Reset();
 			m_commandList->Reset(m_allocator.Get(), nullptr);
-			pending.record(m_commandList.Get());
+			try
+			{
+				pending.record(m_commandList.Get());
+			}
+			catch (...)
+			{
+				OutputDebugStringW(L"AssetUploader: upload job threw; job skipped.\n");
+			}
 			m_commandList->Close();
 
 			ID3D12CommandList* lists[] = { m_commandList.Get() };
 			m_copyQueue->ExecuteCommandLists(1, lists);
-			const uint64_t value = ++m_fenceValue;
+			const uint64_t value = pending.token;
 			m_copyQueue->Signal(m_fence.Get(), value);
 			WaitForFence(value);
 

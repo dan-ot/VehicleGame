@@ -19,7 +19,7 @@ namespace Engine
 		explicit MeshResource(std::wstring sourcePath);
 
 		void Release() noexcept override;
-		bool Rebuild(DX::DeviceResources& resources, AssetUploader& uploader) override;
+		bool Rebuild(DX::DeviceResources& resources, ID3D12GraphicsCommandList* commandList) override;
 
 		D3D12_VERTEX_BUFFER_VIEW VertexBufferView() const noexcept { return m_vbView; }
 		D3D12_INDEX_BUFFER_VIEW IndexBufferView() const noexcept { return m_ibView; }
@@ -29,6 +29,8 @@ namespace Engine
 		std::wstring m_sourcePath;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBuffer;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexStaging;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_indexStaging;
 		D3D12_VERTEX_BUFFER_VIEW m_vbView = {};
 		D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 		UINT m_indexCount = 0;

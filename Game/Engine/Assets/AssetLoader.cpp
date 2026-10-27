@@ -39,7 +39,7 @@ namespace Engine
 		}
 	}
 
-	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, GpuContext& resources, AssetUploader& uploader) noexcept
+	std::unique_ptr<IAssetResource> AssetLoader::CreateAndBuild(const AssetKey& key, GpuContext& resources, ID3D12GraphicsCommandList* commandList) noexcept
 	{
 		auto resource = Create(key);
 		if (!resource)
@@ -51,7 +51,7 @@ namespace Engine
 		bool built = false;
 		try
 		{
-			built = resource->Rebuild(resources, uploader);
+			built = resource->Rebuild(resources, commandList);
 		}
 		catch (...)
 		{
