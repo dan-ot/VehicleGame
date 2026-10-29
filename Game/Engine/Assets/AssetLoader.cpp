@@ -10,6 +10,7 @@
 #include "SoundResource.h"
 #include "MusicResource.h"
 #include "FontResource.h"
+#include "ShaderResource.h"
 
 namespace Engine
 {
@@ -29,6 +30,8 @@ namespace Engine
 				return std::make_unique<MusicResource>(key.path);
 			case AssetType::Font:
 				return std::make_unique<FontResource>(key.path);
+			case AssetType::Shader:
+				return std::make_unique<ShaderResource>(key.path);
 			default:
 				return nullptr;
 			}
@@ -68,7 +71,7 @@ namespace Engine
 
 	std::unique_ptr<IAssetResource> AssetLoader::CreateCpu(const AssetKey& key) noexcept
 	{
-		if (key.type != AssetType::Sound && key.type != AssetType::Music)
+		if (key.type != AssetType::Sound && key.type != AssetType::Music && key.type != AssetType::Shader)
 		{
 			return nullptr;
 		}

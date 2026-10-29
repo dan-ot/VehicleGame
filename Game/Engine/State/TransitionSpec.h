@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../Assets/AssetManifest.h"
-#include "EngineState.h"
+#include "ModeId.h"
 
 namespace Engine
 {
@@ -17,7 +17,7 @@ namespace Engine
 
 	struct TransitionSpec
 	{
-		EngineState destination = EngineState::Menu;
+		ModeId destination = ModeId::MainMenu;
 		AssetManifest manifest;
 	};
 }

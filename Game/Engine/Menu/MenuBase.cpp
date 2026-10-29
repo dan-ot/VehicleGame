@@ -25,6 +25,20 @@ namespace Engine
 			BuildRoot(*m_root);
 			assert(m_root->Background() != nullptr && "Menu root level requires a background");
 		}
+		m_active = m_root.get();
+	}
+
+	void MenuBase::OpenSubmenu(MenuLevel& child) noexcept
+	{
+		m_active = &child;
+	}
+
+	void MenuBase::CloseSubmenu() noexcept
+	{
+		if (InSubmenu())
+		{
+			m_active = m_active->Parent() != nullptr ? m_active->Parent() : m_root.get();
+		}
 	}
 
 	MenuTextAssets MenuBase::ResolveTextAssets(const AssetManager& assets) const
@@ -47,9 +61,10 @@ namespace Engine
 		}
 
 		m_root->Recalculate(m_screenWidth, m_screenHeight);
-		m_root->SetTextAssets(ResolveTextAssets(*m_assets));
+		m_active->Recalculate(m_screenWidth, m_screenHeight);
+		m_active->SetTextAssets(ResolveTextAssets(*m_assets));
 		m_cursor.EnsurePlaced(m_screenWidth, m_screenHeight);
-		m_root->Render(renderer, RectF{ 0.0f, 0.0f, m_screenWidth, m_screenHeight });
+		m_active->Render(renderer, RectF{ 0.0f, 0.0f, m_screenWidth, m_screenHeight });
 		OnRender(renderer);
 		m_cursor.Render(renderer);
 	}
@@ -65,8 +80,8 @@ namespace Engine
 		m_cursor.Update(dt);
 		if (cursor.x != before.x || cursor.y != before.y)
 		{
-			const auto hovered = m_root->ItemAt(cursor.x + kCursorSize * 0.5f, cursor.y + kCursorSize * 0.5f);
-			if (hovered && m_root->Item(*hovered).CanFocus() && m_root->Focus() != hovered)
+			const auto hovered = m_active->ItemAt(cursor.x + kCursorSize * 0.5f, cursor.y + kCursorSize * 0.5f);
+			if (hovered && m_active->Item(*hovered).CanFocus() && m_active->Focus() != hovered)
 			{
 				FocusItem(*hovered, result);
 			}
@@ -106,9 +121,9 @@ namespace Engine
 			CycleFocus(keyboard.shift ? -1 : 1, result);
 		}
 
-		m_root->RouteInput(ResidualCommands(commands), keyboard, result.valueChanges);
+		m_active->RouteInput(ResidualCommands(commands), keyboard, result.valueChanges);
 
-		if (m_root->FocusedIsTextBox())
+		if (m_active->FocusedIsTextBox())
 		{
 			m_keyboard.Show(keyboard.lastDevice);
 		}
@@ -123,9 +138,9 @@ namespace Engine
 
 	void MenuBase::UpdateLevel(double dt)
 	{
-		if (m_root != nullptr)
+		if (m_active != nullptr)
 		{
-			m_root->Update(dt);
+			m_active->Update(dt);
 		}
 	}
 
@@ -179,14 +194,14 @@ namespace Engine
 
 	void MenuBase::Step(MenuDirection direction, MenuInputResult& result)
 	{
-		const auto focus = m_root->Focus();
+		const auto focus = m_active->Focus();
 		if (!focus)
 		{
 			return;
 		}
 
-		const auto next = m_root->Next(*focus, direction);
-		if (!next || !m_root->Item(*next).CanFocus())
+		const auto next = m_active->Next(*focus, direction);
+		if (!next || !m_active->Item(*next).CanFocus())
 		{
 			return;
 		}
@@ -197,26 +212,26 @@ namespace Engine
 
 	void MenuBase::FocusItem(MenuItemId id, MenuInputResult& result)
 	{
-		m_root->SetFocus(id);
-		m_root->SetTextFocus(id);
+		m_active->SetFocus(id);
+		m_active->SetTextFocus(id);
 		result.focusChanged = id;
 	}
 
 	void MenuBase::CycleFocus(int step, MenuInputResult& result)
 	{
-		const std::size_t count = m_root->ItemCount();
+		const std::size_t count = m_active->ItemCount();
 		if (count == 0)
 		{
 			return;
 		}
 
-		const auto current = m_root->Focus();
+		const auto current = m_active->Focus();
 		std::size_t index = current ? *current : (step > 0 ? count - 1 : 0);
 		for (std::size_t tried = 0; tried < count; ++tried)
 		{
 			index = (index + count + (step > 0 ? 1 : count - 1)) % count;
 			const auto id = static_cast<MenuItemId>(index);
-			if (m_root->Item(id).CanFocus())
+			if (m_active->Item(id).CanFocus())
 			{
 				FocusItem(id, result);
 				return;
@@ -226,7 +241,7 @@ namespace Engine
 
 	void MenuBase::CenterCursorOn(MenuItemId id)
 	{
-		const RectF rect = m_root->ItemRect(id);
+		const RectF rect = m_active->ItemRect(id);
 		m_cursor.PlaceAt(rect.x + rect.width * 0.5f - kCursorSize * 0.5f,
 			rect.y + rect.height * 0.5f - kCursorSize * 0.5f);
 	}

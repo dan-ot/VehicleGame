@@ -10,7 +10,7 @@ The asset system lives in `Game/Engine/Assets/`.
 | Model | `.gltf` / `.glb` (first mesh primitive) | `GltfLoader` | GPU (`MeshResource`) |
 | Sound | `.wav` (RIFF/WAVE 16-bit PCM) | `WavLoader` | CPU (`SoundResource`) |
 | Music | `.wav` (RIFF/WAVE 16-bit PCM, streamed) | `WavStreamReader` | CPU metadata (`MusicResource`), audio streamed on demand |
-| Shader | `.hlsl` | `ShaderCompiler` (DXC, HLSL to DXIL) | Compiled at runtime |
+| Shader | `.hlsl` (`VSMain` and `PSMain`) | `ShaderCompiler` (DXC, HLSL to DXIL) | CPU (`ShaderResource`), compiled at runtime |
 
 Sound and Music stay in CPU memory on purpose. The GPU does not consume them, and reading them back from the GPU would be inefficient.
 
@@ -22,14 +22,15 @@ Sound and Music stay in CPU memory on purpose. The GPU does not consume them, an
 
 ## Build Timing
 
-- CPU assets (`Sound`, `Music`) are built immediately in `AssetManager::Request` through `AssetLoader::CreateCpu`, which needs no `GpuContext`.
+- CPU assets (`Sound`, `Music`, `Shader`) are built immediately in `AssetManager::Request` through `AssetLoader::CreateCpu`, which needs no `GpuContext`.
 - GPU assets (`Texture`, `Model`, `Font`) are built through `AssetLoader::CreateAndBuild` with a `GpuContext`.
 
 ## Declaring Assets
 
 - Each mode overrides `DeclareAssets(AssetManifest&)` and lists the assets it needs.
 - `CoreMode` retains the Loading, Menu, and Play kits. Entering a mode declares its manifest on that mode's kit.
-- `CoreMode::RequestTransition(EngineState, AssetManifest)` supplies a manifest for the next state. The manifest is used only when that state is entered, and otherwise the mode's `DeclareAssets` runs. No mode uses this overload yet.
+- `ModeDescriptors::ManifestFor(ModeId)` returns a destination's manifest without constructing the mode, so transitions can stage assets before the mode exists.
+- `CoreMode::RequestTransition(ModeId)` stages the destination's manifest and constructs the mode only after its assets are built or have failed.
 
 ## Persistent Requesters
 
@@ -45,6 +46,7 @@ Sound and Music stay in CPU memory on purpose. The GPU does not consume them, an
 ## Device Loss
 
 - `AssetManager` keeps entries across device loss and restores them through `OnDeviceRestored` within the configured budget.
+- `ShaderResource` keeps its bytecode in memory, so its release is a no-op.
 - `TextureResource` and `MeshResource` release GPU objects on loss and rebuild them from their source files.
 - `SoundResource` keeps its PCM data, so its release is a no-op.
 
@@ -66,7 +68,7 @@ Placeholder paths are declared in the mode manifests. Missing files are logged t
 
 - `dxcompiler.lib` is linked in every configuration.
 - `dxcompiler.dll` and `dxil.dll` are copied from `vcpkg_installed\x64-windows\x64-windows\bin` to the output directory after each build.
-- `Engine/Render/QuadShader.hlsl` is compiled at runtime by `QuadRenderer` and is declared as a `None` project item. It is not an `FXCompile` item, so it has no precompiled output.
+- `Engine/Render/QuadShader.hlsl` is loaded through `AssetManager` as a `ShaderResource` by `QuadRenderer`, which holds it under `PersistentOwner::Renderer`. It is compiled at runtime and is declared as a `None` project item, so it has no precompiled output. The compile blocks briefly during renderer construction.
 - Xbox does not support runtime DXC compilation. Shaders must be precompiled for Xbox builds (see the TODO in `ShaderCompiler.h`).
 
 ## Known Follow-Ups

@@ -14,7 +14,8 @@ namespace Engine
 	enum class PersistentOwner : unsigned char
 	{
 		None,
-		Mixer
+		Mixer,
+		Renderer
 	};
 
 	class RequesterId

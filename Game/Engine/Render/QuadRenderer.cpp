@@ -6,8 +6,9 @@
 #include "QuadRenderer.h"
 #include "../../DeviceResources.h"
 #include "../Assets/AssetManager.h"
+#include "../Assets/AssetKit.h"
 #include "../Assets/FontResource.h"
-#include "../Assets/ShaderCompiler.h"
+#include "../Assets/ShaderResource.h"
 #include "../Assets/TextureResource.h"
 
 #include <pix3.h>
@@ -25,8 +26,11 @@ namespace Engine
 	struct Renderer::Impl
 	{
 		Impl(DX::DeviceResources& deviceResources, AssetManager& assetManager)
-			: resources(deviceResources), assets(assetManager)
+			: resources(deviceResources), assets(assetManager), shaderKit(RequesterId(PersistentOwner::Renderer))
 		{
+			AssetManifest manifest;
+			manifest.Add(AssetType::Shader, kShaderPath);
+			assets.Declare(shaderKit, manifest, &resources);
 		}
 
 		D3D12_GPU_DESCRIPTOR_HANDLE Resolve(const AssetKey& key) const
@@ -44,6 +48,7 @@ namespace Engine
 
 		DX::DeviceResources& resources;
 		AssetManager& assets;
+		AssetKit shaderKit;
 		Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 		Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 	};
@@ -54,7 +59,10 @@ namespace Engine
 		CreateDeviceResources();
 	}
 
-	Renderer::~Renderer() = default;
+	Renderer::~Renderer()
+	{
+		m_impl->assets.Release(m_impl->shaderKit);
+	}
 
 	void Renderer::OnDeviceLost() noexcept
 	{
@@ -64,13 +72,13 @@ namespace Engine
 
 	void Renderer::CreateDeviceResources()
 	{
-		std::vector<uint8_t> vertexShader;
-		std::vector<uint8_t> pixelShader;
-		if (!CompileShader(kShaderPath, "VSMain", "vs_6_0", vertexShader) ||
-			!CompileShader(kShaderPath, "PSMain", "ps_6_0", pixelShader))
+		const auto* shader = m_impl->assets.FindShader(MakeAssetKey(AssetType::Shader, kShaderPath));
+		if (!shader)
 		{
 			throw std::runtime_error("Renderer: failed to compile QuadShader.hlsl");
 		}
+		const auto& vertexShader = shader->VertexShader();
+		const auto& pixelShader = shader->PixelShader();
 
 		CD3DX12_DESCRIPTOR_RANGE srvRange;
 		srvRange.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);

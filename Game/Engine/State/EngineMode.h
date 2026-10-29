@@ -12,6 +12,7 @@
 #include "../Assets/AssetManifest.h"
 #include "EngineState.h"
 #include "InputCommands.h"
+#include "ModeId.h"
 #include "ModeHandoff.h"
 #include "RawKeyboardFrame.h"
 #include "ModeTimer.h"
@@ -53,7 +54,7 @@ namespace Engine
 			m_timer.SetTimeScale(scale);
 		}
 
-		std::optional<EngineState> TakeRequestedTransition() noexcept
+		std::optional<ModeId> TakeRequestedTransition() noexcept
 		{
 			auto requested = m_requested;
 			m_requested.reset();
@@ -89,7 +90,7 @@ namespace Engine
 		virtual void OnExit() {}
 		virtual void Update(const ModeTick& tick, const CommandFrame& commands, const RawKeyboardFrame& keyboard) = 0;
 
-		void RequestTransition(EngineState next) noexcept
+		void RequestTransition(ModeId next) noexcept
 		{
 			m_requested = next;
 		}
@@ -119,7 +120,7 @@ namespace Engine
 
 	private:
 		ModeTimer m_timer;
-		std::optional<EngineState> m_requested;
+		std::optional<ModeId> m_requested;
 		AssetKit* m_kit = nullptr;
 		EngineHandoffSlot* m_handoffs = nullptr;
 		SharedMixer* m_mixer = nullptr;

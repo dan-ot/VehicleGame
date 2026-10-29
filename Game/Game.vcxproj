@@ -393,6 +393,15 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <PropertyPageSchema Condition="'$(XboxPCRemotePath)'!=''" Include="$(XboxPCRemotePath)XboxPCcppDebugger.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Assets\ShaderResource.h" />
+    <ClInclude Include="Engine\Modes\LoadingModeBase.h" />
+    <ClInclude Include="Engine\Modes\LobbyLoadingMode.h" />
+    <ClInclude Include="Engine\Modes\LobbyPlayMode.h" />
+    <ClInclude Include="Engine\Modes\MainMenuMode.h" />
+    <ClInclude Include="Engine\Modes\MenuLoadingMode.h" />
+    <ClInclude Include="Engine\Modes\ModeDescriptors.h" />
+    <ClInclude Include="Engine\Modes\SplashScreenMode.h" />
+    <ClInclude Include="Engine\State\ModeId.h" />
     <ClInclude Include="UploadBuffer.h" />
     <ClInclude Include="GpuUploader.h" />
     <ClInclude Include="Engine\Assets\TextureResource.h" />
@@ -435,9 +444,6 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="Engine\Menu\MenuLevel.h" />
     <ClInclude Include="Engine\Menu\MenuBase.h" />
     <ClInclude Include="Engine\Layout\SplashLayout.h" />
-    <ClInclude Include="Engine\Modes\LoadingMode.h" />
-    <ClInclude Include="Engine\Modes\MenuMode.h" />
-    <ClInclude Include="Engine\Modes\PlayMode.h" />
     <ClInclude Include="Engine\State\CoreMode.h" />
     <ClInclude Include="Engine\State\EngineMode.h" />
     <ClInclude Include="Engine\State\EngineState.h" />
@@ -460,6 +466,7 @@ copy "$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug
     <ClInclude Include="DeviceResources.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Assets\ShaderResource.cpp" />
     <ClCompile Include="GpuUploader.cpp" />
     <ClCompile Include="Engine\Assets\TextureResource.cpp" />
     <ClCompile Include="Engine\Assets\MeshResource.cpp" />

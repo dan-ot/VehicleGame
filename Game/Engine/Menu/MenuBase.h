@@ -45,6 +45,12 @@ namespace Engine
 		void UpdateLevel(double dt);
 
 		MenuLevel& Root() noexcept { return *m_root; }
+
+		// Opt-in submenu helpers; specializations call these only when they need a child level.
+		bool InSubmenu() const noexcept { return m_active != m_root.get(); }
+		MenuLevel& ActiveLevel() noexcept { return *m_active; }
+		void OpenSubmenu(MenuLevel& child) noexcept;
+		void CloseSubmenu() noexcept;
 		virtual AssetKey TextFontKey() const { return AssetKey{}; }
 		virtual AssetKey WhiteTextureKey() const { return AssetKey{}; }
 
@@ -66,6 +72,7 @@ namespace Engine
 		MenuTextAssets ResolveTextAssets(const AssetManager& assets) const;
 
 		std::unique_ptr<MenuLevel> m_root;
+		MenuLevel* m_active = nullptr;
 		std::optional<MenuDirection> m_held;
 		double m_repeatTimer = 0.0;
 		bool m_wasAccept = false;

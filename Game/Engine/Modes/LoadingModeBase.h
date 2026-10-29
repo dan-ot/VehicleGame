@@ -1,5 +1,5 @@
 //
-// LoadingMode.h
+// LoadingModeBase.h - Shared loading splash and staged-asset residency tracker
 //
 
 #pragma once
@@ -14,6 +14,7 @@
 #include "../Render/StretchedImage.h"
 #include "../State/EngineMode.h"
 #include "../State/LoadingTracker.h"
+#include "ModeDescriptors.h"
 
 #include <algorithm>
 #include <atomic>
@@ -23,20 +24,9 @@
 
 namespace Engine
 {
-	class LoadingMode final : public IEngineMode
+	class LoadingModeBase : public IEngineMode
 	{
 	public:
-		LoadingMode()
-			: m_background(TextureKey(kSplashPath))
-			, m_logo(TextureKey(kLogoPath))
-			, m_loadingBar(TextureKey(kBarFillPath), kBarTileWidth, kBarTileHeight)
-			, m_spinner(TextureKey(kSpinnerPath), kSpinnerColumns, kSpinnerRows, kSpinnerFrames, kSpinnerFrameSeconds)
-			, m_cursor(TextureKey(kCursorPath), kCursorSize)
-		{
-			m_placeholderWork = m_tracker.AddWork();
-			m_cursor.SetScaling(CursorScaling{ kStickSpeedPixels, kMousePixelsPerUnit });
-		}
-
 		void BindAssets(AssetManager& assets) noexcept { m_assets = &assets; }
 		void BindStagedManifest(const AssetManifest& manifest) noexcept { m_stagedManifest = &manifest; }
 
@@ -65,13 +55,21 @@ namespace Engine
 		}
 
 	protected:
+		explicit LoadingModeBase(ModeId defaultDestination)
+			: m_background(TextureKey(kSplashPath))
+			, m_logo(TextureKey(kLogoPath))
+			, m_loadingBar(TextureKey(kBarFillPath), kBarTileWidth, kBarTileHeight)
+			, m_spinner(TextureKey(kSpinnerPath), kSpinnerColumns, kSpinnerRows, kSpinnerFrames, kSpinnerFrameSeconds)
+			, m_cursor(TextureKey(kCursorPath), kCursorSize)
+			, m_defaultDestination(defaultDestination)
+		{
+			m_placeholderWork = m_tracker.AddWork();
+			m_cursor.SetScaling(CursorScaling{ kStickSpeedPixels, kMousePixelsPerUnit });
+		}
+
 		void DeclareAssets(AssetManifest& manifest) override
 		{
-			manifest.Add(AssetType::Texture, kSplashPath);
-			manifest.Add(AssetType::Texture, kLogoPath);
-			manifest.Add(AssetType::Texture, kBarFillPath);
-			manifest.Add(AssetType::Texture, kSpinnerPath);
-			manifest.Add(AssetType::Texture, kCursorPath);
+			ModeDescriptors::Loading::DeclareAssets(manifest);
 		}
 
 		void OnEnter() override
@@ -87,7 +85,7 @@ namespace Engine
 					m_assetWork.push_back(AssetWork{ key, m_tracker.AddWork() });
 				}
 			}
-			m_destination = EngineState::Menu;
+			m_destination = m_defaultDestination;
 			m_pendingHandoff.reset();
 			if (const auto handoff = TakeHandoff())
 			{
@@ -117,7 +115,7 @@ namespace Engine
 			if (m_failed)
 			{
 				m_pendingHandoff.reset();
-				RequestTransition(EngineState::Menu);
+				RequestTransition(ModeId::MainMenu);
 			}
 			else if (m_tracker.IsComplete())
 			{
@@ -181,7 +179,8 @@ namespace Engine
 
 		LoadingTracker m_tracker;
 		std::size_t m_placeholderWork = 0;
-		EngineState m_destination = EngineState::Menu;
+		ModeId m_defaultDestination = ModeId::MainMenu;
+		ModeId m_destination = ModeId::MainMenu;
 		bool m_failed = false;
 		std::optional<ModeHandoff> m_pendingHandoff;
 	};

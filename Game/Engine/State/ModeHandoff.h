@@ -8,7 +8,7 @@
 #include <string>
 #include <variant>
 
-#include "EngineState.h"
+#include "ModeId.h"
 
 namespace Engine
 {
@@ -22,16 +22,11 @@ namespace Engine
 		std::wstring levelName;
 	};
 
-	struct LoadingHandoff
-	{
-		EngineState destination = EngineState::Menu;
-	};
-
-	using HandoffPayload = std::variant<std::monostate, MenuHandoff, PlayHandoff, LoadingHandoff>;
+	using HandoffPayload = std::variant<std::monostate, MenuHandoff, PlayHandoff>;
 
 	struct ModeHandoff
 	{
-		EngineState target = EngineState::Menu;
+		ModeId target = ModeId::MainMenu;
 		HandoffPayload payload;
 	};
 

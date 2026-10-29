@@ -11,6 +11,7 @@
 #include "SoundResource.h"
 #include "MusicResource.h"
 #include "FontResource.h"
+#include "ShaderResource.h"
 #include "../../DeviceResources.h"
 
 #include <chrono>
@@ -68,7 +69,7 @@ namespace Engine
 			return;
 		}
 
-		if (key.type == AssetType::Sound || key.type == AssetType::Music)
+		if (key.type == AssetType::Sound || key.type == AssetType::Music || key.type == AssetType::Shader)
 		{
 			entry.resource = AssetLoader::CreateCpu(key);
 		}
@@ -86,7 +87,7 @@ namespace Engine
 		{
 			const AssetKey& key = pair.first;
 			Entry& entry = pair.second;
-			if (!entry.resource && !entry.pending && key.type != AssetType::Sound && key.type != AssetType::Music && m_restoreQueue.empty())
+			if (!entry.resource && !entry.pending && key.type != AssetType::Sound && key.type != AssetType::Music && key.type != AssetType::Shader && m_restoreQueue.empty())
 			{
 				BuildGpu(gpu, key, entry);
 			}
@@ -250,6 +251,11 @@ namespace Engine
 		return key.type == AssetType::Sound ? dynamic_cast<const SoundResource*>(Find(key)) : nullptr;
 	}
 
+	const ShaderResource* AssetManager::FindShader(const AssetKey& key) const
+	{
+		return key.type == AssetType::Shader ? dynamic_cast<const ShaderResource*>(Find(key)) : nullptr;
+	}
+
 	const MusicResource* AssetManager::FindMusic(const AssetKey& key) const
 	{
 		return key.type == AssetType::Music ? dynamic_cast<const MusicResource*>(Find(key)) : nullptr;
@@ -311,7 +317,7 @@ namespace Engine
 
 		for (const auto& pair : m_entries)
 		{
-			if (pair.first.type != AssetType::Sound && pair.first.type != AssetType::Music && queued.insert(pair.first).second)
+			if (pair.first.type != AssetType::Sound && pair.first.type != AssetType::Music && pair.first.type != AssetType::Shader && queued.insert(pair.first).second)
 			{
 				m_restoreQueue.push_back(pair.first);
 			}

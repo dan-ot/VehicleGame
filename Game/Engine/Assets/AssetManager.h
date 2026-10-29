@@ -24,6 +24,7 @@ namespace Engine
 	class MeshResource;
 	class SoundResource;
 	class MusicResource;
+	class ShaderResource;
 
 	// GPU-side representation of one asset.
 	// GPU objects; they never retain decoded CPU copies, so Rebuild reads the source again.
@@ -83,6 +84,7 @@ namespace Engine
 		const MeshResource* FindModel(const AssetKey& key) const;
 		const SoundResource* FindSound(const AssetKey& key) const;
 		const MusicResource* FindMusic(const AssetKey& key) const;
+		const ShaderResource* FindShader(const AssetKey& key) const;
 
 		bool IsResident(const AssetKey& key) const;
 		bool IsBuilt(const AssetKey& key) const;
