@@ -97,7 +97,33 @@ gameplay guarantee we're making with the reticles is that this is where the barr
 Undirected weapons will generally fire if the weapon isn't destoryed and has ammo. It doesn't care much about the situation outside the vehicle.
 
 #### Soft Lock
+Soft Lock weapons have a 'target radius' based around the weapon's reticle (again, the reticle may lag or not reach camera center). The weapon has a target type preference list - this might be vehicle or object properties like "explosive" or "flying"
+or it might be specific sub-parts like "weapon", "pilot", or "motivator". The Soft Lock weapon picks the highest-priority target (or targets, if the weapon supports multiple targets like a multi-missile launcher) and automatically locks on them while
+they are in range of the reticle. This might apply outside the range you'd expect from an Undirected weapon - meaning a Soft Lock weapon on a restrictive turret might still be able to target a wide radius, including outside visible camera range. A
+weapon which requires lock will fire with a soft lock. The player cannot control what is locked with a soft lock (other than clever manipulation of the camera).
+
+The Soft Lock priority list is filtered by weapon limitations - i.e., if a weapon has a minimum or maximum range, it will not consider targets outside that range for locking. Within those limitations, it prefers closer targets (first by visual distance
+to the reticle, then by physical distance from the turret). Buliding the target list depends on two vehicle subsystems - some level of Compute resource is required, and the more you have the smarter the lock gets; and some level of Sensor is required.
+More sensor mostly allows a wider target list or helps to target in adverse conditions or specific sensory defenses. All Soft Lock weapons have these requirements; if your vehicle doesn't have a minimum amount of each subsystem available, the weapon
+does not fire (unless it also supports Undirected fire, in which case it uses those firing rules). The effect of Compute and Sensor ratings on the weapons is definite per weapon - for example, it may allow a weapon to be Soft Lock instead of Undirected,
+and then past another minimum Compute, allow the weapon to Soft Lock on multiple targets.
+
+Soft Locking is per weapon - thus, a vehicle with 3 soft lock weapons may have 3 (or more) soft-locked targets. The HUD should indicate a soft-locked target (I'm thinking a blue outline) with an icon or numeric indicator as to which weapon has the lock
+(these icons/indicators are part of the weapon list and are pickable during vehicle setup, so the pairing is predictable and in the player's control). Offscreen locks have a directional arrow of the appropriate color and style and with the icon/indicator
+to let the player know the weapon has a soft lock, even if they can't see the target.
+
+Soft Locking has a quiet chime/click/beep on the system sound channel. This plays any time a Soft Lock target is acquired - whether a new target from having none, or a change in target (even a change in sub-target on the same vehicle, like switching from
+a limb to a leg on a mech).
 
 #### Hard Lock
+Hard Lock weapons require a choice of target based on player input. They are limited in similar ways to Soft Lock weapons - they don't fire without a target, they require Compute and Sensors to obtain the lock. However, they are not reticle-limited when
+picking targets. Hitting the Target Cycle button (D-pad left, Left Arrow) scrolls through available targets which Sensors can currently detect; hitting the Target Select button initiates the Hard Lock. If the currently-locked target goes out of Sensor
+detection (behind a mountain, under the water, far away), the Hard Lock is broken and the next available target is selected; if the same happens to the currently-selected target, the next selection is made. If no target is available there is no selection
+and no Hard Lock possible. Depending on available Compute, Sensors, and the weapon itself, the pilot may have to hold a selection for a time to obtain a Hard Lock. For example, for every Compute available to the Hard Lock system, multiply it by the Sensor
+quality of the selection (faster for clear sensors, slower for obscured) and again by per-frame timing to achieve lock-per-second; accumulate this until the total is 10 for some weapons, and 3 for others. These Compute demands are only made when the player
+hits the Target Select, and are released when Target Select is used again (abandoning the Hard Lock) or the Hard Lock is otherwise broken (target destroyed, sensors foiled).
+
+Selected but not locked targets have one color of outline or off-screen indicator (yellow or orange comes to mind), and Hard Locked targets have another (red comes to mind). Targets are notified of an acquired Hard Lock (there's a 'Weapon Lock' alert on
+on the system sound channel for players; enemy AI receives a message which it can use to modify behavior).
 
 #### Automated
