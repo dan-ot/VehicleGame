@@ -124,6 +124,59 @@ quality of the selection (faster for clear sensors, slower for obscured) and aga
 hits the Target Select, and are released when Target Select is used again (abandoning the Hard Lock) or the Hard Lock is otherwise broken (target destroyed, sensors foiled).
 
 Selected but not locked targets have one color of outline or off-screen indicator (yellow or orange comes to mind), and Hard Locked targets have another (red comes to mind). Targets are notified of an acquired Hard Lock (there's a 'Weapon Lock' alert on
-on the system sound channel for players; enemy AI receives a message which it can use to modify behavior).
+on the system sound channel for players; enemy AI receives a message which it can use to modify behavior). Each step in the process (Select, Locking, Hard Locked, Hard Lock Lost) has a unique system sound - small, short, but different from Soft Lock - so a
+player can subconsciously track the progress.
+
+There is one Hard Lock per vehicle, regardless of the number of systems which support or require Hard Lock. All locks acquire at the rate of the slowest/most difficult lock, but also all locks consume the same set of Compute and Sensor (meaning, adding less
+demanding weapon systems doesn't complicate the Hard Lock - it stays at the most difficult to acquire). If multiple systems support Hard Lock, the entire kit of icons/indicators appear with the Hard Lock indicator; weapons still trigger with their
+appropriate groups (discussed later). Hard Lock is camera/reticle-independent; instead, it is directly related to Sensors. 
 
 #### Automated
+Automated weapons consume larger amounts of Compute (and rely on Sensors) but require no input from the player. They scan available Sensor data and select targets based on internal metrics (generally, physically closest for offensive weapons, highest-threat
+for defensive ones). When any target is detected, they sound a system ping; depending on the weapon in question, they may wait for a trigger or they may fire automatically. They present a specific color (white?) for their selection and icon/indicators.
+
+### Weapons
+The category of equipment labeled Weapons is grouped mainly due to a combination of UX factors:
+	- Weapons affect the environment outside of the vehicle
+	- Weapons draw on resources internal to the vehicle for that impact (ammo or energy). These resources can be exhausted, though they may also recharge
+	- Weapons use one of the Targeting modes to determine which part of the environment they'll impact
+	- Weapons have a range outside of which they are not effective
+
+#### Impact
+The core point of having weapons systems is to affect the environment. 
+
+##### Damage
+The primary effect is to cause damage. Damage-dealing weapons deal damage in some combination of three categories: Kinetic, Particulate, and Heat (or explosive). Objects in the game world (terrain, vehicles, buildings, people) react to these types of damage
+in different ways. Damage for a weapon system is expressed in the buildout phase as 'Damage Per Second'; however, each weapon has individual blasts which must either hit or miss (for example, a bullet from an automatic cannon, a laser from a blaster, or a
+single missile from a swarm missile launch). When a weapon is fired, it deals this damage to the first object it contacts, applying all damages. Weapons potentially also have a secondary or splash effect on nearby targets. Splash effects do not apply to the
+same object the impact damage (in this sense, different locations on a mech or large vehicle are different objects). Splash effects can apply to an internal system if the impact removed all the armor or defenses from that same object. Damage dealt to internal
+systems is randomly spread among those systems (more detail under Systems).
+
+##### Collection
+Collection systems draw external resources into the vehicle. They generally include, as part of their size requirements (more under Chassis), some amount of storage. Taking resources into a vehicle can change its weight and balance profile (see Propulsion and
+Movement, respectively). Once drawn into the vehicle, the collected resources may react to future damage (such as filling an internal tank with explosive gases, which are then triggered by a bullet strike). 
+
+Collection mission objectives are successful only if the material makes it to Extraction, so even if it's non-reactive (VIPs or refugees, for example), no credit is granted unless they make it to Extraction intact. Collection is also critical for salvage - if
+the player wants any materials from the battlefield to use in future missions, they must use a Collection-equipped vehicle to take those resources off the field via Extraction. Delivery missions may start with a Collection systems pre-loaded.
+
+#### Resources
+Weapons use two basic kinds of resources - first of all, they require ammo or fuel to fire. Storage for this is a spearate system (see Systems); multiple weapons which use the same ammo or fuel type can draw from the same storage (regardless of actual storage
+location - i.e., ammo stored in the legs can be used by weapons mounted on the head and arms). Weapons have a secondary storage (or magazine) of this resource which is independent of the main storage - if the main storage is damaged this magazine can still
+operate the weapon. The process of replenishing the magazine is 'reload rate' - it can be expressed as an average, but it's either a rate per second (frame) or a bundle of ammo all at once, every number of seconds (frames). Regardless if the ammo is liquid and
+infintesimally divisible, it is only tracked in whole units. Additionally, the ammo storage is expressed in the smallest unit available, but magazines are expressed in firing units for the weapon they support (consider a semi-auto launcher and a swarm launcher
+drawn from the same missile storage. The magazine for the single-shot launcher might hold 8 missiles, which reports as 8 shots ready to fire; while the magazine for the swarm missile launcher holds 8 missiles, which is 1 swarm.
+
+The second resource might be Energy (more on that in Power) - a weapon must draw from the vehicle's shared pool of Energy to activate. This draw might be very heavy for pure particle weapons, moderate for weapons with pumps or spinning barrels, and very slight
+for weapons with onboard power sources. The draw takes place during firing, not during loading or while idle.
+
+For Collection-type weapons, the system might be thought to work in reverse - the magazine is loaded and then moved into Storage. The general mechanics work the same way.
+
+#### Range
+Each weapon system has a specific range within which it is effective. The minimum range is optional, and assumed to be '0' or 'adjacent', though there are some weapons that are ineffective at close range (some missiles or drones might need time to arm, for
+example, or some weapons might be too explosive to safely use close-up). The weapon's range is accounted for in two places - first, a weapon which impacts an object outside of its range has no effect (mechanically - there might still be some level of visual
+feedback). Second, it's passed on to the Targeting system the weapon is using. If the weapon is out of range it does not fire. An out-of-range weapon's icon/indicator is rendered with lower Value (darker) to show it cannot fire, and attempts to trigger
+firing (for player input weapons only) make a system channel sound - a short alert of different pitches for under- or over-range.
+
+#### Types
+While the systems above are very flexible, meant to express a huge variety of weapons, the first version will be constrained. There will be a selection of three or four each from the following categories, and we'll grow from there. There's not meant to be an
+exhaustive cross-product of weapon types, or filled categories (like 
