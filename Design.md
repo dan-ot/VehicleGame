@@ -179,4 +179,13 @@ firing (for player input weapons only) make a system channel sound - a short ale
 
 #### Types
 While the systems above are very flexible, meant to express a huge variety of weapons, the first version will be constrained. There will be a selection of three or four each from the following categories, and we'll grow from there. There's not meant to be an
-exhaustive cross-product of weapon types, or filled categories (like 
+exhaustive cross-product of weapon types, or filled categories (like MechWarrior). I'd prefer interesting weapons systems with unique choices - I'd rather the weapons had personality than they made complete sense, or mirrored real-world weapon development.
+
+That said, there are four Types of effect a weapon might have: Ballistic, Beam, Missile, and Autonomous. They do no map to the types of damage - each weapon will have an impact damage and a splash damage, or the types of ammo.
+
+##### Ballistic
+Ballistic weapons fire projectiles with an arc trajectory - they rise a bit, then fall. The projectile is either a bullet (which means, in game terms, too small or too fast to be rendered - just trace the trajectory to calculate a hit and maybe have some
+'tracer' projectiles to let the player see the path) or a shell (slow enough or large enough to need to render - check impact point based on collision. We may need a high-speed collider system, or a midpoint system where the visual is rendered but we still
+do a 'bent ray' cast to determine impact.
+
+These trajectories are usually either flattish (like a bullet) or a high arc (like artillery)!
