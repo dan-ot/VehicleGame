@@ -188,4 +188,9 @@ Ballistic weapons fire projectiles with an arc trajectory - they rise a bit, the
 'tracer' projectiles to let the player see the path) or a shell (slow enough or large enough to need to render - check impact point based on collision. We may need a high-speed collider system, or a midpoint system where the visual is rendered but we still
 do a 'bent ray' cast to determine impact.
 
-These trajectories are usually either flattish (like a bullet) or a high arc (like artillery)!
+These trajectories are usually either flattish (like a bullet) or a high arc (like artillery). Especially for arcs, 'minimum' and 'maximum' ranges refer to impact distance from the vehicle, not travel distance of the projectile. This means we'll need a
+specific division in behavior for these two - there are no weapons that will use both. This trajectory is the defining characteristic of a Ballistic weapon. For shorter-range ballistics, where the flattened trajectory means the 'maximum range' is
+basically a straight line, I'd like the 'tracer' effect to only show within range (its purpose is to assist the player in shooting); but the full trajectory should be tracked, whether that's a visible shell or a traced bullet, so the impact effects can
+still be rendered (sparks from bullets hitting metal, for example).
+
+##### Beam
