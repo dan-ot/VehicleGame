@@ -193,4 +193,18 @@ specific division in behavior for these two - there are no weapons that will use
 basically a straight line, I'd like the 'tracer' effect to only show within range (its purpose is to assist the player in shooting); but the full trajectory should be tracked, whether that's a visible shell or a traced bullet, so the impact effects can
 still be rendered (sparks from bullets hitting metal, for example).
 
+Future versions may support external ballistic effects - wind, viscosity, air-to-water transfer, planet-specific gravity, and the like - but the first version should stop at 'bent ray tracing' or a specific arc path for a game object to travel.
+
 ##### Beam
+Beam weapons transmit damage from weapon to target instantly. They use a simple ray trace to detect impact, and include either an endpoint marker (like a red dot for a 'painted target' system) or a particle effect tracing the whole path. Even with an
+invisible (non-rendered) beam, we should have some way of marking the attacker for the defender specifically - maybe you get a 'lens flash' from the attacker only if they are successful in their targeting. Beam weapons may go through 'stages' of fire - an
+early acquisition phase, a 'building damage' phase, and a 'critical damage' phase on a heat ray, for example. The particle effect should denote which phase is present, and each phase may have its own impact characteristics (this is part of the weapon
+definition, not a requirement for all beam weapons).
+
+Future versions may support 'intervening media' properties - refraction as a beam passes through liquids, diffusion as it passes through vapors - but this will require not only advanced modeling on the part of the ray cast but regional modeling of these 
+effects. There may be an intermediate step where these regions are specifically defined ('this smoke cloud scatters beams 30%').
+
+##### Missile
+Missile weapons, despite the academic meaning of the phrase being very similar to Ballistic, are those which are self-powered and potentially self-guided as well. Their defining characteristics in game terms are that they travel fast but not instantaneously
+- depending on range, it would be possible to avoid their impact entirely, or react to their approach. They are modeled specifically as collidable objects, and they usually have two impact definitions - one for 'disarmed' and another for 'armed.' This is to
+support the idea of a minimum range on some missile systems - it takes a moment to arm some systems.
