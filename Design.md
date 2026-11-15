@@ -142,6 +142,11 @@ The category of equipment labeled Weapons is grouped mainly due to a combination
 	- Weapons use one of the Targeting modes to determine which part of the environment they'll impact
 	- Weapons have a range outside of which they are not effective
 
+Design-wise, weapons are critical. They should feel different from each other in play; they should present mechanically interesting choices (a ballistics-heavy build will approach the same fight differently from a missile-heavy or beam-heavy one); they should
+present aesthetically interesting choices (two ballistic weapons may rate very similarly in terms of 'average damage output' but one might make a resounding bang and the other is more of a thump). I don't want to go full loot-hound crazy like Borderlands or
+get into weapon combinatorics like Diablo IV or Path of Exile I/II, but I do want interesting variety. This might be achieved by allowing 'weapon skins' instead of fully-distinct weapons (different tracer/smoke trail colors, different 'fire' and 'impact'
+effects, but no numeric/mechanical changes).
+
 #### Impact
 The core point of having weapons systems is to affect the environment. 
 
@@ -207,4 +212,71 @@ effects. There may be an intermediate step where these regions are specifically 
 ##### Missile
 Missile weapons, despite the academic meaning of the phrase being very similar to Ballistic, are those which are self-powered and potentially self-guided as well. Their defining characteristics in game terms are that they travel fast but not instantaneously
 - depending on range, it would be possible to avoid their impact entirely, or react to their approach. They are modeled specifically as collidable objects, and they usually have two impact definitions - one for 'disarmed' and another for 'armed.' This is to
-support the idea of a minimum range on some missile systems - it takes a moment to arm some systems.
+support the idea of a minimum range on some missile systems - it takes a moment to arm some systems. In addition to self-propulsion, many Missile systems also have guidance on the missiles themselves - this is usually for something simple like 'locked target
+when launched' or 'hottest signature detected'. Guidance mostly keeps the given target toward the center of the flight path - it does not avoid obstacles or have any other logics beyond an internal Sensor capability (if the missile is self-guided, not locked)
+and 'rotate to face target' direction change. Guidance also does not change once the missile is launched - target loss, target cycle, or the like doesn't affect the missile once it exists independently in game logic. This means a target can utilize movement 
+post-launch to guide the missile into an obstacle or another vehicle.
+
+Guidance based on internal Sensors have only a Sensor score (no need to balance Energy, Power, or Fuel in this situation). The missile, once launched, periodically (sub-second, not every frame, will have to tune with gameplay) re-checks its Sensor list and
+adjusts to the most-appropriate target - this will be filtered on range (short Sensor range for many missiles), Sensor cone (generally 45 to 90 degrees), and Sensor hit quality (with a minimum filter). From the listed targets, it will generally choose the
+strongest hit and pursue that. Ties would be arbitrary, and a lack of Sensor inputs would mean the missile doesn't alter course - but missiles always move forward at their full speed, so it still might 'dumb-fire' hit a target.
+
+Some Guided missiles inherit their target from their launching vehicle - those wouldn't lose that Target (unless it was destroyed). In the future we might complicate this for advanced target-shedding play. These missiles also don't need a Sensor ping - it's
+assumed they have all the pertinent data from their launching vehicle (even if the vehicle loses that data - at least for the first version).
+
+##### Autonomous
+Some weapons systems have completely autonomous projectiles - not only are they their own in-game object, but they have their own behaviors and properties. These are things like infantry units which might get deployed, or drones that get launched and then
+act autonomously. The vehicle only has influence via the Targeting mechanism - beyond that, the 'projectile' makes all its own decisions. For the first version, this will laregly be mission objectives - scrap-collecting drones, victim rescue drones, and the
+like. Adding drones to full combat scenarios is an important thing to explore, but it can wait.
+
+##### Other
+This setup leaves out interesting new forms of weapon (flamethrowers, top of mind). We should be ready to expand this system, or repurpose it a bit.
+
+### Armor
+There are several ways of avoiding an impact - moving from the spot you were in when targeted, maneuvering so guided weapons collide with something before they collide with you, and as-yet-unmentioned Sensor/targeting tricks. However, getting hit isn't the
+end of the story - the impact damage(s) apply to any layers of armor you have mounted, outside-in. Each layer sheds, absorbs, or passes some amount of the damage based on type (see Damage under Weapons - i.e., Kinetic, Particulate, Heat). Shed damage has no
+effect (design-wise, this should be difficult or rare); absorbed damage subtracts integrity from that armor layer; and passed damage applies to the next layer mounted. Design-wise, we should generally have only one mitigation per layer (or two, for complex 
+or expensive armors).
+
+Each kind of armor has a weight, a mitigation chart, an integrity, and a restoration factor; simpler armor needs to be repaired (may take place during Mission Play), while complex armor may be able to use Energy to restore itself over time. Any armor segment
+reduced to 0 integrity is gone - damaged beyond repair. Visually, it should fly off the model, and we no longer count its weight or Energy draw.
+
+Armor is represented in the HUD by bars drawn alongside chassis parts. Each layer is a bar, with a color indicating what kind of armor is present; the length of the bar indicates its integrity. The display should collapse if inner layers are destroyed first
+(not leave visual holes).
+
+### Chassis
+The chassis gives the basic shape of the vehicle (how many legs? Where is the turret?), and expresses its resource limitations. Mechanically, it's divided into sub-parts - each sub-part is its own vehicle location, with its own equipment. The chassis determines
+the basic size and shape of the vehicle. Each chassis part has a few factors - Mounts, Space, Frame, and Connection.
+
+Chassis parts report their integrity through a 'paper doll' system (the parts may be visibly separate by a bit). If any specific parts are destroyed (Mobility, Connection, Power, Sensors) there are special indicators (letters or icons) - yellow for disabled, 
+red for destroyed. Integrity is represented by a fill amount, with the outline of the chassis part being permanent. This might revise as I fill in the design, but the integrity of the chassis part is the sum of the integrity of all associated systems (some 
+systems, like Connection, don't have an integrity number - they are either working or not). Mounts have their own integrity display, they're not included - only Connection and Space systems are indicated here.
+
+The chassis and connected systems (Space, Mounts, Frame/Armor) are the inputs to the balance system (see Movement above). Fully-destroyed Armor, Mounts, and Space-taking subsystems (or limbs/turrets which are part of a Connection chain which have those things) 
+also shed their associated weight, changing how the vehicle balances and behaves. Leg-based (I want to say 'hip and shoulder jointed') motivators have a lot of adaptability for rebalancing, while fixed-motivator systems - propellers, jets, wheels, tracks - are
+less able to automatically adjust. In any case, the pilot (player or AI) will have to change their piloting style to adapt to new physics and balance limitations.
+
+#### Connection
+Each chassis part needs to maintain a connection with two central systems - Pilot and Power (is Compute on this list?). If Pilot connection is lost, the player cannot issue commands to change any mounted equipment's behavior (automated weapons may still fire 
+but cannot be turned on or off). If Power connection is lost, no attached equipment or system can utilize power (some, like passive armor, might still function). Each chassis part has a Connection factor (don't need to track 'health' or 'damage' for it - it 
+either works or doesn't), and lists the other parts it is connected to in order to reach Pilot and Power. If any chassis part on these chains loses connection, and there isn't another path, everything on the chain also loses connection. There is not a specific 
+connection count for chassis parts - that's all down to vehicle design. The general intent is to publish chasses and let the player customize what goes on and in them.
+
+I'm not sure about 'critical hits' or how to handle limb/turret loss - this system seems ideal for that, with some metric on whether connection was broken or the joint fully severed. We'll punt on this for now, since unconnected limbs might still provide armor
+support or automated weapons, while lost limbs would not. It seems a lot to have a separate damage system for losing limbs.
+
+In the future, we might carry the idea of Connection to handle weapon ammo and loading.
+
+#### Space
+Space refers to the systems inside the chassis. These are things like Compute, Sensors, Storage, and Power; limbs or other mobility-related systems have Mobility. This system takes up an amount of space determined by the chassis (not available for the player to change, 
+in this version). When this system is destroyed, the limb or mobility cannot operate. This is general to any kind of movement - not specific to Movement as described in the section above. For example, if the Turret chassis loses Mobility, the player cannot rotate
+the turret any more (which means no reticle movment - they'll have to spin the vehicle to aim).
+
+Perhaps limb loss is when Mobility is fully destroyed, while 75% damage means the section no longer moves.
+
+#### Frame
+Frame is what holds Armor. At this point, I don't think Frame needs to limit how much armor - we have weight and Power for that; I also don't think we need to track damage for Frame, since Armor has its own tracking.
+
+#### Mount
+Mounts are points for equipment that affects the external environment (Weapons, Jets). I'm not sure the level of restriction just yet - I think keeping it maximum generic is ideal. The goal isn't to collect a huge variety of chassis which may or may not be
+compatible with the particular mission setup you want (MechWarrior) - it's to put just enough limits on concurrent equipment that you have to make interesting choices.
