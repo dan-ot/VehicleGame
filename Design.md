@@ -79,6 +79,17 @@ This is not a flight simulator - we may take some efforts to make 'flight' feel 
 
 Some vehicles may be equipped with 'bracing' or other crouch/stability modes - these use the opposite bumper from jump jets, or the same bumper as 'downward' movement for vertical vehicles.
 
+In the future, I'd like to differentiate what kind of tips are present on any given limbs - hands or claws could provide some ability to climb a vertical surface (while removing targeting on affected mounts).
+
+#### Balance
+As noted above (and I'll tease it out into this section as I get time), a vehicle must remain balanced as moving or when still.
+
+For the first version, the point of this is to provide differentiation between vehicle designs; provide limitations on movement beyond marking some terrain as 'impassable' or 'no friction'; and make for some fun combat moments and interesting weapon
+designs.
+
+For future versions, I'd like to take into account whether a vehicle uses limbs (for motivation or manipulation), so more complex forms can retain and regain balance more effectively (but might lose targeting/aiming in the process, until balance is
+regains).
+
 ### Targeting
 All vehicles have some level of 'turret' or targeting system that deviates from 'forward' in movement terms. This is centered on 'forward' movement - that is, the assumption that (0, 0) rotation means the turret or torso is level with the mobility
 base or legs and on movement centerline. Every vehicle has 'turret lock,' meaning a limit on how far from this center on each axis it can rotate; attempting to push beyond this limit is a no-op. It also has a rotation speed, which for most vehicles
@@ -278,5 +289,46 @@ Perhaps limb loss is when Mobility is fully destroyed, while 75% damage means th
 Frame is what holds Armor. At this point, I don't think Frame needs to limit how much armor - we have weight and Power for that; I also don't think we need to track damage for Frame, since Armor has its own tracking.
 
 #### Mount
-Mounts are points for equipment that affects the external environment (Weapons, Jets). I'm not sure the level of restriction just yet - I think keeping it maximum generic is ideal. The goal isn't to collect a huge variety of chassis which may or may not be
-compatible with the particular mission setup you want (MechWarrior) - it's to put just enough limits on concurrent equipment that you have to make interesting choices.
+Mounts are points for equipment that affects the external environment (Weapons, Jets). I'm not sure the level of restriction just yet - I think keeping it maximum generic is ideal. The goal isn't to collect a huge variety of chassis which may or may not be compatible 
+with the particular mission setup you want (MechWarrior) - it's to put just enough limits on concurrent equipment that you have to make interesting choices.
+
+Mounts should be sized, though - specifically to prevent overly-ridiculous pairings, like a cannon on a bicycle. Weight and Power also put limitations on vehicle-weapon pairings, but Mounts
+can help short-circuit the most egregious violations.
+
+### Power
+Many systems use Power - energy weapons, ballistics with high rates of fire, even more passive systems like Sensors. At its core, Power resolves to two function: Generation and Capacitance. Active Power-draw systems (Sensors, Compute) consume Generation. Any unconsumed
+Generation goes to fill up Capacitance. Other systems (most Weapons) draw down Capacitance. If there is not enough Generation to cover the cost of active-draw systems, they shut down until there's enough (we need a predictable algorithm for this - highest-draw first?
+Lowest-draw? The player can sort it out after). If there is not enough Capacitance to cover the cost of a system activation, the system does not activate (and no Capacitance is used). This system takes the place of Heat in MechWarrior.
+
+#### Generation
+Power generation is the act of turning fuel into Power. Each Generator consumes a specific fuel at a given rate, and produces Power (a single, generic resource) at a specific rate. For first release, Generators are either working or not; as a control subsystem, you can
+either turn them all on or all off. Some Generators use ambient conditions - light for solar generation, flammable-gas extraction for some specific planets, thermodynamic for extreme heat environments, and so on (for first version, we might just put an 'Ambient'
+generator type and supply the generated based on the environment). It's also possible to have external generators - we can assume an interface on any given vehicle, and portable generators or specialized support vehicles would provide Power on demand. The fuel for
+Generators may be the same fuel for Propulsion.
+
+Generators take up Space and provide Weight. They also require Connection to fuel storage. Some generators (fission, for example) have fuel built into the installation; they cannot be refilled during a Mission but also cannot run out of fuel during a mission. The
+Generator and Propulsion might use the same fuel (or might both be internally-fueled), or Propulsion might be an Active Power system. Generators may have an Impact block (like a Weapon hit) for when they get destroyed.
+
+When Sensor detect 'power signatures,' they detect Generator usage - the conversion of fuel to Power (among other things), not Power-drawing systems or Capacitance. Ambient generators do not convert fuel internally so also do not show up on 'power signature' Sensors.
+External generators show up independently (you would detect the generator but not any connected vehicles).
+
+#### Capacitance
+Capacitance is stored Power - it is consumed by Power Draw systems and refilled by Generators (those installed in the vehicle, or externally-connected). We should probably just call it Batteries - sounds less official but most players will understand the system much
+more clearly. We don't worry about charge rates or draw rates like real-world batteries - the charge rate is all spare Generator power, and the draw rate is any equipment which needs Active Draw power. Capacitance does not show up on Sensors for 'power signature.'
+
+The main choices to make with Capacitance are balancing Space, weight, capacity, and integrity. Like generators, in the first version capacitance either works or doesn't (we won't deal with degraded due to damage or conditions). Capacitance system may have an Impact block
+(like Weapons) for when they get destroyed.
+
+In the future I'd like ambient interaction with capacitance (in particular, bleed at extreme heat or cold; attraction for lightning or plasma strike, etc).
+
+### Propulsion
+Propulsion is force applied to motivator systems. In order for throttle (from Movement) to turn into motion, it gets processed through Propulsion. This process requires some combination of Fuel and Power (specific mix, which might be 0 on either side, determined by the
+Propulsion system in question). The specific chain is thus: throttle determines what percentage of motion the Propulsion produces. The Propulsion consumes fuel appropriate to that throttle. Then the Propulsion generates an amount of force. The force has to overcome
+environmental effects (water resistance, strong winds, other forms of restraint). After all that, we get the actual forward speed.
+
+### Sensors
+
+
+### Compute
+
+### Cargo
