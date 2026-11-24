@@ -395,3 +395,39 @@ here in any case).
 Cargo would be collected and deployed by a Weapons-compliant system - this represents the loading or unloading process. For some missions (delivery especially), you may merely be measuring how much you extract with - in which case you can't collect or deploy the stored
 Cargo. Collection and Deployment come into play when considering scrap/resource collection as a side mission, or the environmental effects of deploying certain kinds of cargo (instant smokescreen? flammable patch? and so on). Collection and Deployment also become more
 interesting when we get hands/grabbing/carrying and environmental tool usage - you might carry a shipping container to throw or drop it, then crack it open to make a hazard area. We'll skip that for the first version.
+
+## Interstitial Play
+When not in Mission play, Cav & Arty is a lot of menus. Design-wise, we should pay attention to the core-loop menus - the path a player has to go from not playing to Mission Play, then from Mission through choices back to the next Mission. These menus should load quickly,
+not have a lot of frills (unless we can afford frills), and direct the player back to where they want to be - shooting things and completing missions.
+
+The other main flow for these non-Mission menus is vehicle design. This is usually done in the context of Mission play - you are using campaign resources to design your in-Mission vehicle - but we might have a general 'Vehicle Lab' to really get creative...maybe build a
+shopping list for in-Mission salvaging. The between-Mission design lab and Vehicle Lab do similar things, but due to context and limitations in each, they should be very visually different - a player should know which one they're engaging in.
+
+### Core Loop
+The core loop is to start the game. From there, you pick or create a Career to play. Multiplayer will be important but let's punt it for future versions - I'm not sure if Multiplayer should be a specific Career (online/offline characters, like Minecraft Dungeons II),
+a mergeable mode (State of Decay 2 style, play your pilot/garage in your friend's missions), or a simple drop-in format (MechWarrior 5: Mercenaries, you can play one of your friend's vehicles on a Mission). I like the first two ideas most - especially the second. If we can
+succinctly express the in-game UX, we could consider couch co-op - but a split screen needs 2 HUDs. Maybe a 2-pilot set of vehicles just for couch play? Split the camera, share the HUD...
+
+Regardless, if you have an existing Career on the current machine the default option will be to load it. If you don't have a Career yet, the selection changes to New Career. If we have an async check for existing Careers (cloud saves, for example), we wait on 'Resume Career'
+until we know there is no Career to resume, even though it's disabled. You could also see Saved Careers to grab an existing (but not the most recent) Career.
+
+
+
+#### New Career
+A New Career presents you with a mode choice - Play Mode, which allows you to play with any unlocked (or otherwise discovered) vehicles or equipment; Story Mode, which takes you through a series of missions with cutscenes between (this is not necessary for the first
+version), Game Mode, which lets you fail a Mission and always retains one vehicle for service so the game is never actually over, but you could perpetually be on low resources; and Hardcore Mode, in which you play as a Pilot in the Mission. You cannot switch vehicles
+without abandoning your current vehicle, and there is no guarantee you will have enough vehicles or resources to do another mission. Also, as a Pilot, you might die during the Mission; in either of these cases, your Career is over. It gets memorialized but cannot be played
+any longer.
+
+I like the idea of two sets of unlocks - one for your 'account' (that assumes we have a login and a server to log into, which is not first version), and one per Career. When choosing Play Mode, you have access to all unlocks you have ever done - I like the idea that this
+carries across saves, so even if you delete an advanced save you don't lose access to Play Mode vehicles.
+
+In future versions, this is also where you customize your Pilot and potentially Team graphics and colors.
+
+#### Saved Careers
+Saved Careers should present you all the Careers you have in progress (however the combination of multiplayer and career modes shake out). From here you can load one of them or delete one of them (at a time). Loading one takes you into the play flow, like creating a New
+Career does. You can see the file size used per game and inspect the state of the saved game to help decide whether to play or keep it.
+
+### Lab
+
+### Settings
