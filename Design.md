@@ -299,10 +299,34 @@ Mounts should be sized, though - specifically to prevent overly-ridiculous pairi
 can help short-circuit the most egregious violations.
 
 #### Mobility
-Mobility Chassis parts allow the vehicle to move. Losing your mobility is not a guaranteed out - but the mission might be impossible, so you may switch to recovery or Bail the pilot. Mobility parts usually come in a couple flavors: Foot/Claw, Wheel/Tread, Hover, and
-Rotary.
+Mobility Chassis parts allow the vehicle to move. Losing your mobility is not a guaranteed out - but the mission might be impossible, so you may switch to recovery or Bail the pilot. Mobility parts usually come in a couple flavors: Foot/Paw, Wheel/Tread/Hover, Rotary,
+and Jets. There are two basic mounts for Mobility - one is on a central part with a lot of Space (tracked vehicle, VTOL), and the other is on the end of a limb with several Connections. This latter allows a lot of adaptability (especially in Balance and recovery) but
+presents an enticing target.
+
+In future versions I'd like to take Traction into account, on top of Balance; but we're a combat simulator, not a driving simulator, so we can cheese it for specific Mobility types (Hover and Rotary slide a lot; Wheel slides a little less; Tread and Foot/Paw slide the
+least).
+
+##### Foot/Paw
+These Mobility types feature a flexible ending of various shapes that can 'wrap around' terrain for an excellent grip. This allows them the ability to climb. However, all this takes time, making them a bit slower, and presents complexity, making them a bit more fragile
+and expensive. The main difference between Foot and Paw is shape (Pad forward of the leg for foot, allowing better balance and recovery; or pad surrounding/underneath the leg allowing better grip).
+
+##### Wheel/Tread/Hover
+Properly organized, it should be Tread/Wheel/Hover - presenting a sliding scale of grip to adaptability. Tread vehicles cannot strafe but have excellent grip on uneven or slanted surfaces; Wheeled vehicles can slide/drift at high speeds and are generally much faster;
+and Hover vehicles can strafe, don't depend on surface properties (they work over liquids as well as over smooth or rough), but are prone to Traction loss.
+
+##### Rotary
+This Mobility allows for flight (given a certain weight limit isn't surpassed). We aren't a flight simulator, we're a combat simulator, so we limit player choices to rotary and VTOL-style; we want them to be able to hover, and we want a lower top speed overall -
+battlefields which are appropriate for walking across would be much too small for flying over. The exchange for this expanded mobility is a general weakness - Rotary craft are subject to many more forces, and the loss of the ability to fly is frequently devastating.
+
+##### Jets
+This is a special case Mobility that generally gets added to an existing Mobility system to enable larger jumps, faster takeoffs, or smoother landings. Jets generally apply in a specific direction or range of directions (again - the controls problem, the lift they
+provide is important but if we can get the controls right, a diagonal leap or a sideways scoot are very interesting for avoiding impacts). Unlike other Mobility, they don't tie into the core Propulsion force generation; they are self-contained in that respect. They
+May consume the same fuel as Propulsion, may have their own fuel Cargo, or might even be self-charging (with built-in fuel). Their use is generally short-lived - a single burst, which might be repeatable, or a steady burn of 10 seconds or less.
 
 #### Manipulation
+Manipulation Chassis parts allow the vehicle to interact more directly with its environment. This usually takes the form of claws or hands. The most direct manipulation is a strike or punch, but both of these manipulators can also be used to pick up/drop, throw,
+grapple, and climb. Hands are generally more effective, but much more complex (repesented by a higher cost to install or repair and lower integrity). This can all wait for a later version - there's a lot of control nuance here and I'm not sure I'm ready to tackle that
+without practical experience with the demands we've put on the controls with all these other systems.
 
 ### Power
 Many systems use Power - energy weapons, ballistics with high rates of fire, even more passive systems like Sensors. At its core, Power resolves to two function: Generation and Capacitance. Active Power-draw systems (Sensors, Compute) consume Generation. Any unconsumed
