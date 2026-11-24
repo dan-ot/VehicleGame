@@ -107,6 +107,8 @@ gameplay guarantee we're making with the reticles is that this is where the barr
 
 Undirected weapons will generally fire if the weapon isn't destoryed and has ammo. It doesn't care much about the situation outside the vehicle.
 
+An important case for Undirected fire is melee weapons and improvised weapons (held objects from the environment, given a limb for grabbing).
+
 #### Soft Lock
 Soft Lock weapons have a 'target radius' based around the weapon's reticle (again, the reticle may lag or not reach camera center). The weapon has a target type preference list - this might be vehicle or object properties like "explosive" or "flying"
 or it might be specific sub-parts like "weapon", "pilot", or "motivator". The Soft Lock weapon picks the highest-priority target (or targets, if the weapon supports multiple targets like a multi-missile launcher) and automatically locks on them while
@@ -286,7 +288,8 @@ the turret any more (which means no reticle movment - they'll have to spin the v
 Perhaps limb loss is when Mobility is fully destroyed, while 75% damage means the section no longer moves.
 
 #### Frame
-Frame is what holds Armor. At this point, I don't think Frame needs to limit how much armor - we have weight and Power for that; I also don't think we need to track damage for Frame, since Armor has its own tracking.
+Frame is what holds Armor. At this point, I don't think Frame needs to limit how much armor - we have weight and Power for that; I also don't think we need to track damage for Frame, since Armor has its own tracking. The external Frame slot may also be used to mount
+specialized Cargo storage; this only takes up the outermost layer, potentially allowing other layers of Armor underneath.
 
 #### Mount
 Mounts are points for equipment that affects the external environment (Weapons, Jets). I'm not sure the level of restriction just yet - I think keeping it maximum generic is ideal. The goal isn't to collect a huge variety of chassis which may or may not be compatible 
@@ -294,6 +297,12 @@ with the particular mission setup you want (MechWarrior) - it's to put just enou
 
 Mounts should be sized, though - specifically to prevent overly-ridiculous pairings, like a cannon on a bicycle. Weight and Power also put limitations on vehicle-weapon pairings, but Mounts
 can help short-circuit the most egregious violations.
+
+#### Mobility
+Mobility Chassis parts allow the vehicle to move. Losing your mobility is not a guaranteed out - but the mission might be impossible, so you may switch to recovery or Bail the pilot. Mobility parts usually come in a couple flavors: Foot/Claw, Wheel/Tread, Hover, and
+Rotary.
+
+#### Manipulation
 
 ### Power
 Many systems use Power - energy weapons, ballistics with high rates of fire, even more passive systems like Sensors. At its core, Power resolves to two function: Generation and Capacitance. Active Power-draw systems (Sensors, Compute) consume Generation. Any unconsumed
@@ -327,8 +336,38 @@ Propulsion system in question). The specific chain is thus: throttle determines 
 environmental effects (water resistance, strong winds, other forms of restraint). After all that, we get the actual forward speed.
 
 ### Sensors
+Sensors are critical for success on the battlefield. They feed non-visual info and power all Targeting beyond Direct targeting. Sensors take up Power and Space; they are frequently grouped together in a single chassis part but that's not a requirement. In game engine terms,
+the core camera/render flow is not a Sensor (we don't narratively address what it is). The influence the player feels when dealing with Sensors mostly appears in the HUD, and in operation of the Targeting system. To call out specifically, a mission-requirement scanner which
+is used to search a building for a MacGuffin is not a Sensor (it would probably be a Weapon, by engine terms, since you'd target and trigger it manually). The specific thing Sensors do as a subsystem is feed information about the environment to other systems.
 
+Each Sensor system collects a specific kind of data, over a specific set of ranges. All of this is added together to produce a 'Sensor' data kit of contacts and relative locations, which is then consumed by other systems (Targeting and HUD). This flow is important - there
+are (planned, at least) weapons and systems that spoil this data at different points. Sensors work (mechanically, without having actually coded it yet) through ray-casting to detectable targets; the ray strength starts at a value set by the Sensor. Every intervening region
+which affects the ray (solid objects for radar, fog for lasers, trees for visual, etc) subtracts from the sensor strength. If the final rating is below the Sensor's detection rating, the target is not part of sensor data. There is probably a heuristic way to do that.
+Sensors only run this test for objects with their kind of data (thus, a heat sensor does not run this test against things that don't generate any heat) - this means objects have to mark themselves for what kind of Sensor data they generate.
+
+Sensors are Active or Passive - when operating equipment, we might split these two. Active sensors must add energy to their environment to get data back - radar and sonar are good examples. In this process, they create strong signals which can be picked up by other Sensors.
 
 ### Compute
+This may be an unneccessary resource - it's on the chopping block. The purpose of including it is to force specialization around high-end systems - smart weapons, Automated Targeting, drone clouds, and the like. Including one of these may work on a normal amount of Compute,
+but including two or three starts to add up the extra Compute space required. As just mentioned, Compute would use up Space and Power. But, having written all the other systems out (which would be used directly, while Compute is only a limitation), it might make sense to
+just increase the Space and Power requirements of the other systems. Perhaps Compute just acts like Ammo - it must connect to the consumer via a healthy Connection (see Chassis), letting you put Sensors in one limb and Compute in the body (or vice versa), and letting you
+destroy Compute without destroying the Sensors (but disabling them, because they needed the Compute).
 
 ### Cargo
+There are various game systems (a superset of vehicle systems) which require you to carry or store things. Cargo is reserved Space which starts with a minimal weight and gets heavier depending on what's being stored. Each kind of Cargo storage holds a specific set of things
+- for instance, a liquid container for stable liquids, or an energy cell for collected plasma, or safety-aware quarters for VIPs you're transporting. Probably the most common are Ammo storage for Weapons systems, Fuel storage for Power and Propulsion systems, and scrap
+storage for specialized scrap-collecting vehicles (remember from Mission - you have to extract any scrap you want to keep).
+
+There are a couple main things Cargo does. First, it reserves Space; then it converts that Space into its own unit of measurment. For example, it might reserve 3 slots, and be able to store 100 gallons of liquid in each slot; or reserve 3 slots, and store 1 VIP per slot.
+This gives it a 'fullness' measure, from 0% to 100%. The material itself will have a 'weight per unit' which can be used for weight calculations (balance, speed resistance). Maybe in the future we get fancy for 'shiftable' - liquid or semi-solid - to provide entertaining
+balance challenges, but for now it's the same regardless of material. A specialized kind of Cargo is handled by Frame instead of Space (I need to annotate this under Frame as well); it still has similar properties as other Cargo, like weight distribution and integrity,
+but it can store material which doesn't actually fit inside a Chassis Space (like a small cargo mech carrying broken limbs and Chassis parts off the battlefield).
+
+Second, it protects the contents; it has its own 'armor'/Impact-handling, and its own integrity. Like other systems, at low integrity it is broken and may leak material (this could be critical depending on the material - spraying jet fuel or plasma all over yourself can
+have big consequences in a fight); at 0 integrity it is destroyed, the weight is all gone, and so is the material (also critical for many missions - goodbye, VIPs). For missions requiring collection or delivery of a material contained in Cargo, there will usually be levels
+of sucess depending on how much actually makes it out. Specifically for broken Cargo containers - the side effects of the break, and how it reacts to further damage, all depend on the matrial being stored (not sure if I will get that far in this doc, but it doesn't belong
+here in any case).
+
+Cargo would be collected and deployed by a Weapons-compliant system - this represents the loading or unloading process. For some missions (delivery especially), you may merely be measuring how much you extract with - in which case you can't collect or deploy the stored
+Cargo. Collection and Deployment come into play when considering scrap/resource collection as a side mission, or the environmental effects of deploying certain kinds of cargo (instant smokescreen? flammable patch? and so on). Collection and Deployment also become more
+interesting when we get hands/grabbing/carrying and environmental tool usage - you might carry a shipping container to throw or drop it, then crack it open to make a hazard area. We'll skip that for the first version.
