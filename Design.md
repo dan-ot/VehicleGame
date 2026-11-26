@@ -411,11 +411,28 @@ succinctly express the in-game UX, we could consider couch co-op - but a split s
 Regardless, if you have an existing Career on the current machine the default option will be to load it. If you don't have a Career yet, the selection changes to New Career. If we have an async check for existing Careers (cloud saves, for example), we wait on 'Resume Career'
 until we know there is no Career to resume, even though it's disabled. You could also see Saved Careers to grab an existing (but not the most recent) Career.
 
+Once you've picked a Career to play, you are taken to the Mission screen. Here you choose your next mission. If you just created a Career and have not played more than 3 mission yet, there will be a Tutorial mission available (maybe not with first version, but it's
+important to get in once we've stabilized the design). This mission (or a similar one) is re-offered with any major systems change, or if you haven't launched the game in a few weeks or more; it does not reduce the number of normal missions you're offered. If you're on a
+Story Career the next mission is the next step in the story (I'd love to do branching stories, but...later versions). For Play, you craft the details of the mission you're going to play (or randomize them); for Core and Hardcore, the next Mission is determined by the 
+previous one (and general game world state). You might also choose to change locations, which is a moderately-expensive state reset. For Core and Hardcore, Missions occur over a similar territory until territory control has been resolved; this might be an expected arc
+of 3 to 5 successful missions in a row, but intermittent failures could prolong that and constant failure could cause an 'arc loss' condition and force a location change. The general goal is to provide localized, short-lived plots to engage in, and a paired short-term
+success feeling (individual mission success) with long-term success feelings (arc success, large reward, location change).
 
+Once your given mission details are locked in, you go to your Garage to see the vehicles you have available. Each vechicle has a deployment cost (I think I prefer fuel and ammo economics over 'tonnage limits' like MechWarrior) - your economic goal is to deploy the least
+amount of resource necessary to complete the mission. Over-deploying might guarnatee mission success but still lose resources on the mission overall - we'll have to watch mission arc rewards to make sure that you can't overdeploy every mission in the arc but still come
+out ahead due to the larger end reward. While in the Garage, you can bring an individual vehicle to the Garage Lab - here, unless you are in Play mode, you are limited to the resources you've collected to this point when customizing your deployed vehicles. I'm not sure about
+customization costs - we'll have to try them to see if they work. Specializing your vehicles to each Mission, and incresing your odds of success while being efficient, is a big part of the long-term gameplay, and I don't want to dampen that creativity. Because the Garage
+exists in the context of a specific Mission, you might have specialized equipment to load and balance on your vehicles (special scanning gear, enhanced stealth modes, VIP or civilian rescue modules, unique Cargo modules, and so on). The Garage lets you see the total group
+of vehicles you can deploy in the Mission, and specify which are in the initial wave (so, for instance, you could withold your fragile salvage vehicles until later in the mission). Each individual vehicle can then be taken to the Garage Lab; I guess we should have an empty
+spot to represent a new Chassis you might buy on the Market, if any are available.
+
+The Garage (and Garage Lab) will also have access to a Market, with prices also determined by general game state and mission arc state (if you captured an ammo factory previously in the arc, ammo might be very cheap going forward). This Market is for in-game resources only
+- this is not an in-game storefront for real-money transactions (if that exists, and it probably should, it would be off the Main Menu or the Vehicle Lab). This flow also does not focus on customization - paint jobs, decals, and facade pieces to change the look of your
+vehicles. You customize your vehicles in the Vehicle Lab, though that might produce a 'customization package' per Chassis that you can easily apply to new vehicles in the Garage Lab.
 
 #### New Career
 A New Career presents you with a mode choice - Play Mode, which allows you to play with any unlocked (or otherwise discovered) vehicles or equipment; Story Mode, which takes you through a series of missions with cutscenes between (this is not necessary for the first
-version), Game Mode, which lets you fail a Mission and always retains one vehicle for service so the game is never actually over, but you could perpetually be on low resources; and Hardcore Mode, in which you play as a Pilot in the Mission. You cannot switch vehicles
+version), Core Mode, which lets you fail a Mission and always retains one vehicle for service so the game is never actually over, but you could perpetually be on low resources; and Hardcore Mode, in which you play as a Pilot in the Mission. You cannot switch vehicles
 without abandoning your current vehicle, and there is no guarantee you will have enough vehicles or resources to do another mission. Also, as a Pilot, you might die during the Mission; in either of these cases, your Career is over. It gets memorialized but cannot be played
 any longer.
 
@@ -428,6 +445,14 @@ In future versions, this is also where you customize your Pilot and potentially 
 Saved Careers should present you all the Careers you have in progress (however the combination of multiplayer and career modes shake out). From here you can load one of them or delete one of them (at a time). Loading one takes you into the play flow, like creating a New
 Career does. You can see the file size used per game and inspect the state of the saved game to help decide whether to play or keep it.
 
-### Lab
+#### Mission
+
+#### Garage
+
+#### Garage Lab
+
+#### Market
+
+### Vehicle Lab
 
 ### Settings
